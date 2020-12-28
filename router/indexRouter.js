@@ -56,4 +56,12 @@ router.get('/t/sched/calendarResults', controller.getTcalendarResults);
 
 //PARENT
 
-//
+//PARENT PAYMENT
+router.get('/p/pay/ccQuery', controller.getPccQuery);
+router.get('/p/pay/ccInfo', controller.getPccInfo);
+router.get('/p/pay/ccOTP', controller.getPccOTP);
+router.get('/p/pay/bankQuery', controller.getPbankQuery);
+router.get('/p/pay/bankUpload', controller.getPbankUpload);
+//PARENT TRANSACTIONS
+router.get('/p/trans/account', controller.getPaccount);
+router.get('/p/trans/breakdown', controller.getPbreakdown);
