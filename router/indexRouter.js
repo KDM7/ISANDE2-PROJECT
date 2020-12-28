@@ -50,4 +50,10 @@ router.get('/t/users/students', controller.getTstudents);
 router.get('/t/users/studentsProfile', controller.getTstudentsProfile);
 router.get('/t/users/grades', controller.getTgrades);
 //TEACHER SCHEDULE
-router.get()
+router.get('/t/sched/classSched', controller.getTclassSched);
+router.get('/t/sched/calendarQuery', controller.getTcalendarQuery);
+router.get('/t/sched/calendarResults', controller.getTcalendarResults);
+
+//PARENT
+
+//
