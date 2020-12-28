@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body class="bg-primary">
+    <style>
+        .form-control {
+            background: #f7f9fc;
+            text-indent: 8px;
+        }
+        
+        .btn-outline-primary-a {
+            color: #3e7fc3;
+            background-color: transparent;
+            background-image: none;
+            border-color: #3e7fc3
+        }
+        
+        .btn-outline-primary-a:hover {
+            color: #fff;
+            background-color: #3e7fc3;
+            border-color: #3e7fc3
+        }
+        
+        .btn-outline-primary-a.focus,
+        .btn-outline-primary-a:focus {
+            box-shadow: 0 0 0 .2rem rgba(62, 127, 195, .5)
+        }
+        
+        .btn-outline-primary-a.disabled,
+        .btn-outline-primary-a:disabled {
+            color: #3e7fc3;
+            background-color: transparent
+        }
+        
+        .btn-outline-primary-a:not(:disabled):not(.disabled).active,
+        .btn-outline-primary-a:not(:disabled):not(.disabled):active,
+        .show>.btn-outline-primary.dropdown-toggle {
+            color: #fff;
+            background-color: #3e7fc3;
+            border-color: #3e7fc3
+        }
+        
+        .btn-outline-primary-a:not(:disabled):not(.disabled).active:focus,
+        .btn-outline-primary-a:not(:disabled):not(.disabled):active:focus,
+        .show>.btn-outline-primary.dropdown-toggle:focus {
+            box-shadow: 0 0 0 .2rem rgba(62, 127, 195, .5)
+        }
+    </style>
+    <div class="d-flex justify-content-center p-5">
+        <div class="card shadow-lg border-0 rounded-0  m-5">
+            <div class="card-header shadow bg-primary">
+                <div class="display-4 p-5 text-white">
+                    REGIS-GRACE MONTESSORI SCHOOL
+                    <img src=".\img\Logo.PNG" alt="" style="width: 128px;
+                        height: 91.02px;">
+                </div>
+            </div>
+            <div class="p-5">
+                <div class="card-body">
+                    <form>
+                        <h3 class="text-center display-5 text-black"><strong>Login</strong></h3>
+                        <hr>
+                        <div class="form-group"><input class="form-control rounded-0 border-top-0 border-right-0 border-left-0 border-bottom" type="number" name="studentID" placeholder="Student ID"></div>
+                        <div class="form-group"><input class="form-control rounded-0 border-top-0 border-right-0 border-left-0 border-bottom" type="password" name="password" placeholder="Password"></div>
+                        <div class="form-group"><a href="#" class="btn btn-outline-primary-a btn-block rounded-0" role="button">Log In</a></div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="card-footer rounded-0" style="background-color: #011125;"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body class="bg-light">
+    <div>
+        <header class="container">
+            <div class="jumbotron p-0 mb-0 shadow">
+                <!-- <div class="row">
+                    <div class="col-2">
+                    </div>
+                    <div class="col-10">
+                        <div class="display-4">Regis-Grace Montessori School</div>
+                    </div>
+                </div>
+ -->
+ 			<img src="../img/banner.png" alt="" class="m-0" style="width: 100%;">
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-brand text-white">Login: Parent Name</div>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="Login(ver1).html">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+        </header>
+
+        <div class="container">
+
+            <div class="row mb-2">
+                <!--SIDEBAR START-->
+                <div class="col-3">
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Payment
+                        </p>
+                        <a href="enroll_payOnline.html" class="list-group-item list-group-item-action">Credit Card</a>
+                        <a href="enroll_payBank.html" class="list-group-item list-group-item-action">Upload Bank Receipt</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Transactions
+                        </p>
+                        
+                        <a href="viewstatement.html" class="list-group-item list-group-item-action">Statement Of Accounts</a>
+                        <a href="viewbreakdown.html" class="list-group-item list-group-item-action">Breakdown Details</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Schedule
+                        </p>
+                        <a href="academicCalendar.html" class="list-group-item list-group-item-action">View Academic Calendar</a>
+                        <a href="classSched.html" class="list-group-item list-group-item-action">View Student Schedule</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Grades
+                        </p>
+                        <a href="viewgrades.html" class="list-group-item list-group-item-action">View Grades</a> 
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            My Account
+                        </p>
+                        <a href="viewprofile.html" class="list-group-item list-group-item-action">My Profile</a>
+                        <a href="editpassword.html" class="list-group-item list-group-item-action">Change Password</a>
+                        <a href="Login(ver1).html" class="list-group-item list-group-item-action">Logout</a>
+                    </div>
+
+                </div>
+                <!--SIDEBAR END-->
+                <div class="col-9">
+                    <div class="d-flex flex-column mt-2">
+                        <div class="shadow">
+                            <div class="container">
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <h1 class="display-5 text-center font-weight-bold">Enroll in Regis-Grace Montessori School
+                                        </h1>
+                                        <div class="row justify-content-center">
+                                            <h5 class="display-5 text-center font-weight-light">Please follow the instructions below</h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <div class="container">
+                                    <form>
+                                        <h5 class="display-5 text-left">Online Payment</h5>
+                                        <hr style="border: 2px solid black;" />
+                                        <p class="">Step 1 : Check your email for the One Time Password (OTP)</p><br>
+                                        <p class="">Step 2 : Please Input the OTP</p><br>
+                                        <p class="">Step 3 : Check if amounts are the same</p><br>
+                                        <p class="">Step 4 : Confirm Payment</p><br>
+                                        <div class="row">
+                                            <div class="form-group w-25 col-4">
+                                                <label for="formGroupExampleInput2">Amount Due:</label>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">PHP</div>
+                                                    </div>
+                                                <input type="email" class="form-control" id="amountPaid" value="33137.00" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group w-25 col-4">
+                                                <label for="formGroupExampleInput2">Amount Being Paid:</label>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">PHP</div>
+                                                    </div>
+                                                <input type="email" class="form-control" id="amountPaid" value="33137.00" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group w-50">
+                                            <label for="formGroupExampleInput2">OTP</label>
+                                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                        </div>
+                                        <a href="enroll_CC.html" class="btn btn-outline-secondary mb-4">Cancel</a>
+                                        <button type="button" class="btn btn-outline-primary mb-4" data-toggle="modal" data-target="#exampleModal">Confirm</button>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="exampleModalLabel">Hooray</h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Thank You for paying
+                                                    
+                                                    
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <hr>
+        <footer>
+        </footer>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>

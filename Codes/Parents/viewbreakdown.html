@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body class="bg-light">
+    <div>
+        <header class="container">
+            <div class="jumbotron p-0 mb-0 shadow">
+                <!-- <div class="row">
+                    <div class="col-2">
+                    </div>
+                    <div class="col-10">
+                        <div class="display-4">Regis-Grace Montessori School</div>
+                    </div>
+                </div>
+ -->
+ 			<img src="../img/banner.png" alt="" class="m-0" style="width: 100%;">
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-brand text-white">Login: Parent Name</div>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="Login(ver1).html">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+        </header>
+
+        <div class="container">
+
+            <div class="row mb-2">
+                <!--SIDEBAR START-->
+                <div class="col-3">
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Payment
+                        </p>
+                        <a href="enroll_payOnline.html" class="list-group-item list-group-item-action">Credit Card</a>
+                        <a href="enroll_payBank.html" class="list-group-item list-group-item-action">Upload Bank Receipt</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Transactions
+                        </p>
+                        
+                        <a href="viewstatement.html" class="list-group-item list-group-item-action">Statement Of Accounts</a>
+                        <a href="viewbreakdown.html" class="list-group-item list-group-item-action">Breakdown Details</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Schedule
+                        </p>
+                        <a href="academicCalendar.html" class="list-group-item list-group-item-action">View Academic Calendar</a>
+                        <a href="classSched.html" class="list-group-item list-group-item-action">View Student Schedule</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Grades
+                        </p>
+                        <a href="viewgrades.html" class="list-group-item list-group-item-action">View Grades</a> 
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            My Account
+                        </p>
+                        <a href="viewprofile.html" class="list-group-item list-group-item-action">My Profile</a>
+                        <a href="editpassword.html" class="list-group-item list-group-item-action">Change Password</a>
+                        <a href="Login(ver1).html" class="list-group-item list-group-item-action">Logout</a>
+                    </div>
+
+                </div>
+                <!--SIDEBAR END-->
+                <div class="col-9">
+                    <div class="d-flex flex-column mt-2">
+                        <div class="container">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <p class="display-5 text-center font-weight-bold">Breakdown Details as A.Y. 2020-2021
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <form>
+                            <div class="form-group">
+                                <label for="sel1">Academic Year:</label>
+                                <select class="form-control" id="sel1">
+                                  <option>2019-2020</option>
+                                  <option>2018-2019</option>
+                                  <option>2017-2018</option>
+                                  <option>2016-2017</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sel1">Student:</label>
+                                <select class="form-control" id="sel1">
+                                  <option>JoJo</option>
+                                  <option>Bizare</option>
+                                  <option>Adventure</option>
+                                  <option>:)</option>
+                                </select>
+                            </div>
+                        </form>
+                        <div class="mt-2">
+                            <table class="table table-striped">
+                                <thead class="thead-dark">
+                                    <th class="text-center" colspan="2">Student Information</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="text-right">Student No:</th>
+                                        <td class="text-left">18-696969</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Parent Name:</th>
+                                        <td class="text-left">Kevin</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Grade Level/Section:</th>
+                                        <td class="text-left">Grade-11 - GAS-Ruby</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table table-striped">
+                                <thead class="thead-dark">
+                                    <th class="text-center" colspan="4">Breakdown Details Balance</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-center">Due Date</td>
+                                        <td class="text-center">Paid Amount</td>
+                                        <td class="text-center">Balance Amount</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Upon Enrollment</td>
+                                            <td></td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 6700.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of July </td>
+                                            <td class="text-right">Jun 15, 2020</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of August</td>
+                                            <td class="text-right">Jul 15, 2020</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of September</td>
+                                            <td class="text-right">Aug 15, 2020</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of October</td>
+                                            <td class="text-right">Sep 15, 2020</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of November</td>
+                                            <td class="text-right">Oct 15, 2020</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of December</td>
+                                            <td class="text-right">Nov 15, 2020</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of January</td>
+                                            <td class="text-right">Dec 15,2020</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of February</td>
+                                            <td class="text-right">Jan 15, 2021</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Month of March</td>
+                                            <td class="text-right">Feb 15, 2021</td>
+                                            <td class="text-right">Php 0.00</td>
+                                            <td class="text-right">Php 2977.88</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-left">Total/Current Balance: </td>
+                                            <td class="text-right" colspan="3">Php 33,500.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div>
+                                <p class="text-center font-italic">Your Account Balance is
+                                    <span class="font-weight-bold">Php 18,611.12</span>, please make your payment on or before the Due Date
+                                    <span class="font-weight-bold">Sep 15, 2020</span>
+                                </p>
+                                <p class="text-center text-uppercase">Please disregard notice if payment is made. Thank you.</p>
+                            </div>
+
+                            <table class="table table-striped">
+                                <thead class="thead-dark">
+                                    <th class="text-center" colspan="6">Breakdown Details Payment</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-center">Fee Type</td>
+                                        <td class="text-center">OR#</td>
+                                        <td class="text-center">AR#</td>
+                                        <td class="text-center">Remarks</td>
+                                        <td class="text-center">Date Issue</td>
+                                        <td class="text-center">Paid Amount</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right" colspan="5">Total Paid Amount</td>
+                                        <td class="text-right">Php 0.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <hr>
+        <footer>
+        </footer>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>

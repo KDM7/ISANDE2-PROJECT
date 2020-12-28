@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body class="bg-light">
+    <div>
+        <header class="container">
+            <div class="jumbotron p-0 mb-0 shadow">
+                <!-- <div class="row">
+                    <div class="col-2">
+                    </div>
+                    <div class="col-10">
+                        <div class="display-4">Regis-Grace Montessori School</div>
+                    </div>
+                </div>
+ -->
+ 			<img src="../img/banner.png" alt="" class="m-0" style="width: 100%;">
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-brand text-white">Login: Admin Name</div>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="Login(ver1).html">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+        </header>
+
+        <div class="container">
+
+            <div class="row mb-2">
+                <!--SIDEBAR START-->
+                <div class="col-3">
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Users
+                        </p>
+                        <a href="user_Admin.html" class="list-group-item list-group-item-action">Admin</a>
+                        <a href="user_Teacher.html" class="list-group-item list-group-item-action">Teachers</a>
+                        <a href="user_Student.html" class="list-group-item list-group-item-action">Students <span class="badge badge-danger">!</span></a>
+                        <a href="user_Parent.html" class="list-group-item list-group-item-action">Parents <span class="badge badge-danger">!</span></a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Schedules
+                        </p>
+                        <a href="sched_classSched.html" class="list-group-item list-group-item-action">Class Schedules</a>
+                        <a href="sched_academicCalendar.html" class="list-group-item list-group-item-action">Academic Calendar</a>
+                        <a href="sched_currentSchoolYear.html" class="list-group-item list-group-item-action">Current School Year</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Fees
+                        </p>
+                        <a href="fees_Tuition.html" class="list-group-item list-group-item-action">Tuition Fees</a>
+                        <a href="fees_Miscellaneous.html" class="list-group-item list-group-item-action">Miscellaneous Fees</a>
+                        <a href="fees_Other.html" class="list-group-item list-group-item-action">Other Fees</a>
+                        <a href="fees_Additional.html" class="list-group-item list-group-item-action">Additional Fees</a>
+                        <a href="fees_UponEnrollment.html" class="list-group-item list-group-item-action">Upon Enrollment</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Documents
+                        </p>
+                        <a href="documents_StudentDocument.html" class="list-group-item list-group-item-action">Student Documents</a>
+                        <a href="documents_StudentAgreement.html" class="list-group-item list-group-item-action">Student Agreements</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            My Account
+                        </p>
+                        <a href="#" class="list-group-item list-group-item-action">My Profile</a>
+                        <a href="#" class="list-group-item list-group-item-action">Change Password</a>
+                        <a href="Login(ver1).html" class="list-group-item list-group-item-action">Logout</a>
+                    </div>
+
+                </div>
+                <!--SIDEBAR END-->
+                <div class="col-9">
+                    <div class="d-flex flex-column mt-2">
+
+                        <div class="mt-2">
+                            <div class="shadow">
+                                <table class="table table-bordered">
+                                    <thead class="thead-primary">
+                                        <tr>
+                                            <th scope="col">Personal Information</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-left">First Name</th>
+                                            <td class="text-left">Shania Nikka</td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-left">Last Name</th>
+                                            <td class="text-left">Ajoc</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Middle Name</th>
+                                            <td class="text-left">Brunel</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-left">Grade Level</th>
+                                            <td class="text-left">Grade 12</td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-left">Gender</th>
+                                            <td class="text-left">Female</td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-left">Birthday</th>
+                                            <td class="text-left">08/08/2001</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-left">Age</th>
+                                            <td class="text-left">19</td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-left">Birthplace</th>
+                                            <td class="text-left">Manila City</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th class="text-left">Nationality</th>
+                                            <td class="text-left">Filipino</td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <th class="text-left">Religion</th>
+                                            <td class="text-left">Christian</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <br><br>
+                                <div class="shadow">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-primary">
+                                            <tr>
+                                                <th scope="col">Contact Info</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th class="text-left">Tel No.</th>
+                                                <td class="text-left">1234567</td>
+                                            </tr>
+        
+                                            <tr>
+                                                <th class="text-left">Cell No.</th>
+                                                <td class="text-left">09178311218</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">Email</th>
+                                                <td class="text-left">nikka@gmail.com</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">House# / Street / Subd. or Brngy</th>
+                                                <td class="text-left">12 Hello St., Brgy. Acacia</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">Municipality|Province</th>
+                                                <td class="text-left">Quezon City</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+
+                            <br><br>
+                            <div class="shadow">
+                                <table class="table table-bordered">
+                                    <thead class="thead-primary">
+                                        <tr>
+                                            <th scope="col">Family Record</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+    
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-left">Mother's Name</th>
+                                            <td class="text-left">Ajoc, Rose J.</td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-left">Email</th>
+                                            <td class="text-left">rose@gmail.com</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Occupation</th>
+                                            <td class="text-left">Businesswoman</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Work Address</th>
+                                            <td class="text-left"> Makati Stock Exchange, Ayala Tower One Ayala Avenue cor., Paseo de Roxas, Makati, Metro Manila</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Contact Info</th>
+                                            <td class="text-left">0945842567</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Father's Name</th>
+                                            <td class="text-left">Ajoc, Manny D.</td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-left">Email</th>
+                                            <td class="text-left">manny@gmail.com</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Occupation</th>
+                                            <td class="text-left">Businessman</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Work Address</th>
+                                            <td class="text-left"> Makati Stock Exchange, Ayala Tower One Ayala Avenue cor., Paseo de Roxas, Makati, Metro Manila</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Contact Info</th>
+                                            <td class="text-left">09496731040</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <br><br>
+                                <div class="shadow">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-primary">
+                                            <tr>
+                                                <th scope="col">Siblings</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th class="text-left">Number of Siblings</th>
+                                                <td class="text-left">2</td>
+                                            </tr>
+        
+                                            <tr>
+                                                <th class="text-left">Brother/Sister Name</th>
+                                                <td class="text-left">Samantha B. Ajoc</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">Age</th>
+                                                <td class="text-left">28</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">School/Occupation</th>
+                                                <td class="text-left">Businesswoman</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">Brother/Sister Name</th>
+                                                <td class="text-left">Jonathan B. Ajoc</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">Age</th>
+                                                <td class="text-left">18</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">School/Occupation</th>
+                                                <td class="text-left">International School for Better Beginnings</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                            <br><br>
+                            <div class="shadow">
+                                <table class="table table-bordered">
+                                    <thead class="thead-primary">
+                                        <tr>
+                                            <th scope="col">Contact Person</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+    
+                                    <tbody>
+                                        <tr>
+                                            <th class="text-left">Related to</th>
+                                            <td class="text-left">Mother</td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-left">Name</th>
+                                            <td class="text-left">Gary G. Herk</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Relation</th>
+                                            <td class="text-left">Family friend</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Email</th>
+                                            <td class="text-left">gary@gmail.com</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Contact Info</th>
+                                            <td class="text-left">0945846734</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Work Address</th>
+                                            <td class="text-left">Makati Stock Exchange, Ayala Tower One Ayala Avenue cor., Paseo de Roxas, Makati, Metro Manila</td>
+                                        </tr>
+    
+                                        <tr>
+                                            <th class="text-left">Fetcher's Name</th>
+                                            <td class="text-left">John Mark Z. Bool</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Contact Info</th>
+                                            <td class="text-left">0945671238</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                                
+                                
+    
+                                <br><br>
+                                <div class="shadow">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-primary">
+                                            <tr>
+                                                <th scope="col">Educational Background</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th class="text-left">School Last Attended</th>
+                                                <td class="text-left">International School for Better Beginnings</td>
+                                            </tr>
+        
+                                            <tr>
+                                                <th class="text-left">Academic Year</th>
+                                                <td class="text-left">A.Y. 2019-2020</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">School Last Attended</th>
+                                                <td class="text-left">International School for Better Beginnings</td>
+                                            </tr>
+        
+                                            <tr>
+                                                <th class="text-left">Academic Year</th>
+                                                <td class="text-left">A.Y. 2018-2019</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-left">School Last Attended</th>
+                                                <td class="text-left">Chiang Kai Shek College</td>
+                                            </tr>
+        
+                                            <tr>
+                                                <th class="text-left">Academic Year</th>
+                                                <td class="text-left">A.Y. 2017-2018</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+    
+                                <br><br>
+                                <div class="shadow">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-primary">
+                                            <tr>
+                                                <th scope="col">Reason for Applying</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-left">If your goal is to drive your career path onward and upward, a job that would be one or more levels up from where you are employed now would be a smart move. A better title frequently comes with higher pay and more benefits, so landing a job in a higher pay grade than you have now is one of the best reasons to apply.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <br><br>
+                                <div class="shadow">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-primary">
+                                            <tr>
+                                                <th scope="col">Student Documents</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-left"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-4">
+                    <div class="d-flex flex-column mt-2">
+
+                        <div class="mt-2">
+                            
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <hr>
+        <footer>
+        </footer>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
