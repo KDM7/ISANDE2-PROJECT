@@ -1,0 +1,62 @@
+{{!-- This is for creating student documents, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+                <div class="col-9">
+                    <div class="shadow">
+                        <div class="d-flex flex-column mt-2">
+                            <div class="container">
+								<h1 class="display-4 text-center">New Student Document</h1>
+							</div>
+							<div class="container">
+								<form>
+									<div class="form-group">
+                                        <label for="formGroupExampleInput2">Document Name</label>
+										<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+										<label for="formGroupExampleInput2">Order Arrangement</label>
+										<input type="number" class="form-control" id="formGroupExampleInput2" placeholder="">
+									</div>
+                                    <div class="form-group ">
+                                        <div class="row">
+                                            <div class="col-6 mb-5 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-outline-primary mb-4" data-toggle="modal" data-target="#exampleModal">Submit</button>
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            New Student Document Added
+                                                            
+                                                            
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <a href="documents_StudentDocument.html" class="btn btn-outline-secondary" style="margin-bottom: 71px;">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
