@@ -1,0 +1,74 @@
+{{!-- This is for sending a student an email, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+                <div class="col-9">
+                    <div class="shadow">
+                        <div class="d-flex flex-column mt-2">
+                            <div class="container">
+								<h1 class="display-4 text-center">Send Email</h1>
+							</div>
+							<div class="container">
+								<form>
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput2">Admin Name</label>
+										<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="Ajoc, Shania Nikka B." readonly>
+                                    </div>
+                                    <div class="col-12">
+                                        Student Type
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" disabled>
+                                                    New
+                                                </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">New</a>
+                                                <a class="dropdown-item" href="#">Old</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <p>Email Type</p>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                        <label class="form-check-label" for="inlineRadio1">New Student Registration</label>
+                                      </div>
+                                      <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled>
+                                        <label class="form-check-label" for="inlineRadio3">Online Reciept</label>
+                                      </div>
+                                    <br><br>
+                                    <div class="col-6 mb-5 d-flex justify-content-end">
+                                        <button type="button" class="btn btn-outline-primary mb-4" data-toggle="modal" data-target="#exampleModal">Send</button>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Email has been sent
+                                                    
+                                                    
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
