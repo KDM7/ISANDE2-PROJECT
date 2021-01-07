@@ -8,17 +8,13 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itis
 
 var db = mongoose.connection;
 
-const userSchema = new mongoose.Schema({
-    userID: { type: String, required: true},
-    password: { type: String, required: true },
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    middleName: { type: String, required: true },
-    type: { type: String, required: true },
-    gender: { type: String, required: true }
-}, { collection: "users" });
+const sectionSchema = new mongoose.Schema({
+    sectionID : {type : String, required : true},
+    schoolYear : {type : String, required : true},
+    sectionName : {type : String, required:true}
+}, { collection: "sections" });
 
 
-const userModel = db.model('users', userSchema);
+const sectionModel = db.model('sections', sectionSchema);
 
-module.exports = userModel;
+module.exports = sectionModel;
