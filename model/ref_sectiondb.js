@@ -10,7 +10,7 @@ var db = mongoose.connection;
 
 const ref_sectionSchema = new mongoose.Schema({
     sectionName : {type : String, required : true},
-    gradeLvl : {type : Number , required :true},
+    gradeLvl : {type : String , required :true},
 }, { collection: "ref_section" });
 
 
