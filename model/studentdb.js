@@ -9,7 +9,7 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itis
 var db = mongoose.connection;
 
 const studentSchema = new mongoose.Schema({
-    studentID: { type: String, required: true},
+    userID: { type: String, required: true},
     parentID : {type : String, required : false},
     mobileNumber : {type : String, required : true},
     telephoneNumber : {type : String , required : false},
