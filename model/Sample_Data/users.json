@@ -1,0 +1,72 @@
+[{
+    "userID" : "Abra",
+    "password" : "123",
+    "firstName" : "Abe",
+    "lastName" : "Cal",
+    "middleName" : "Bon",
+    "type" : "S",
+    "gender" : "M"  
+  },
+  {
+    "userID" : "Kadabra",
+    "password" : "1234",
+    "firstName" : "Abel",
+    "lastName" : "Call",
+    "middleName" : "Boni",
+    "type" : "S",
+    "gender" : "F"
+  },
+  {
+    "userID" : "Jacko",
+    "password" : "12345",
+    "firstName" : "Abelo",
+    "lastName" : "Callo",
+    "middleName" : "Bonip",
+    "type" : "P",
+    "gender" : "M"
+  },
+  {
+    "userID" : "Lantern",
+    "password" : "123456",
+    "firstName" : "Abelop",
+    "lastName" : "Callon",
+    "middleName" : "Bonipi",
+    "type" : "P",
+    "gender" : "F"
+  },
+  {
+    "userID" : "Darude",
+    "password" : "456",
+    "firstName" : "Kar",
+    "lastName" : "Van",
+    "middleName" : "Rol",
+    "type" : "T",
+    "gender" : "M"
+  },
+  {
+    "userID" : "Sandstorm",
+    "password" : "4567",
+    "firstName" : "Karl",
+    "lastName" : "Vani",
+    "middleName" : "Roll",
+    "type" : "T",
+    "gender" : "F"
+  },
+  {
+    "userID" : "hello",
+    "password" : "45678",
+    "firstName" : "Karli",
+    "lastName" : "Vanis",
+    "middleName" : "Rolle",
+    "type" : "A",
+    "gender" : "M"
+  },
+  {
+    "userID" : "world!",
+    "password" : "456789",
+    "firstName" : "Karlin",
+    "lastName" : "Vaniss",
+    "middleName" : "Rolled",
+    "type" : "A",
+    "gender" : "F"
+  }]

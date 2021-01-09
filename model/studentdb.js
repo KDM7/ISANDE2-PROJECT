@@ -9,22 +9,16 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itis
 var db = mongoose.connection;
 
 const studentSchema = new mongoose.Schema({
-    studentID: { type: String, required: true},
+    userID: { type: String, required: true},
     parentID : {type : String, required : false},
-    mobileNumber : {type : String, required : true},
-    telephoneNumber : {type : String , required : false},
+    mobileNum : {type : String, required : true},
+    teleNum : {type : String , required : false},
     nationality :{type : String, required : true},
     birthDate : {type : Date, required :true},
     birthPlace : {type : String, required : true},
     email : {type : String, required : true},
     religion : {type : String, required : true},
-    address : {
-        type :{
-            streetAddress : {type :String, required :true},
-            province : {type : String, required : true}
-        },
-        required : true
-    }
+    address : {type : String, required : true}
 }, { collection: "students" });
 
 

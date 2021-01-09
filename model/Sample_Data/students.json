@@ -1,0 +1,24 @@
+[{
+    "userID" : "Abra",
+    "parentID" : "Jacko",
+    "mobileNum" : "4567",
+    "teleNum" : "4567",
+    "nationality" : "F",
+    "birthDate" : "07/15/2000",
+    "birthPlace" : "Sad",
+    "email" : "123@gmail.com",
+    "religion" : "Jesus",
+    "address" : "Sad"
+  },
+  {
+    "userID" : "Kadabra",
+    "parentID" : "Lantern",
+    "mobileNum" : "6789",
+    "teleNum" : "6789",
+    "nationality" : "F",
+    "birthDate" : "07/16/2000",
+    "birthPlace" : "Sadness",
+    "email" : "123@yahoo.com",
+    "religion" : "Jesus",
+    "address" : "Sadness"
+  }]

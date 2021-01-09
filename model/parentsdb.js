@@ -10,7 +10,7 @@ var db = mongoose.connection;
 
 const parentSchema = new mongoose.Schema({
     userID: { type: String, required: true },
-    phoneNum : { type: String, required: true},
+    mobileNum : { type: String, required: true},
     nationality : { type : String, required : true},
     birthDate : {type : Date, required : true},
     birthPlace : { type : String, required :true}

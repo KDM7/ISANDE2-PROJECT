@@ -40,7 +40,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // ROUTERS
-const indexRouter = require('./router/indexRouter');
+const indexRouter = require('./router/user_indexRouter');
 const { text } = require('body-parser');
 app.use('/', indexRouter)
 

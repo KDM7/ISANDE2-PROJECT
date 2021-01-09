@@ -16,19 +16,19 @@ const studentDetailsSchema = new mongoose.Schema({
             mOccu : {type : String, required : true},
             mEmail : {type : String, required : false},
             mWorkAddress : {type : String, required : false},
-            mContactInfo : {type : String, required : true},
+            mNum : {type : String, required : true},
             fName : {type : String, required : true},
             fOccu : {type : String, required : true},
             fEmail : {type : String, required : false},
             fWorkAddress : {type : String, required : false},
-            fContactInfo : {type : String, required : true},
+            fNum : {type : String, required : true},
             cName : {type :String, required : true},
             relation : {type :String, required : true},
             cEmail : {type : String, required : false},
-            cContactInfo : {type : String, required : true},
+            cNum : {type : String, required : true},
             cWorkAddress : {type : String, required :false},
             fetcherName : {type : String, required : false},
-            fetcherContact : {type : String, required :true}
+            fetchNum : {type : String, required :true}
             /*
             siblings array 
              */
