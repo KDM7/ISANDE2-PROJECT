@@ -145,5 +145,5 @@ const indexFunctions = {
     },
 }
 
-
+module.exports = indexFunctions;
 
