@@ -28,17 +28,12 @@ const studentDetailsSchema = new mongoose.Schema({
             cNum : {type : String, required : true},
             cWorkAddress : {type : String, required :false},
             fetcherName : {type : String, required : false},
-            fetchNum : {type : String, required :true}
-            /*
-            siblings array 
-             */
+            fetchNum : {type : String, required :true},
+            siblings : {type : [{name:String,age:Number,occu:String}] , required : false}
         },
         required : true
     },
-    /* educationalBackground
-        -- schholName
-        -- academicYear 
-    */
+    eduBackground:{type : [{name:String, acadYear:String}]},
     reason : {type : String, required : true}
 }, { collection: "student_details" });
 
