@@ -3,7 +3,7 @@ $(document).ready(function() {
 
         var user = $('#id').val();
         var pass = $('#pword').val();
-
+        console.log('hello');
         // checking if fields are not empty
         if (validator.isEmpty(user)) {
             alert('No user id provided');

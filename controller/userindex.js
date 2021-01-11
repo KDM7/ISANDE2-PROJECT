@@ -91,14 +91,14 @@ const indexFunctions = {
     postLogin: async function (req, res) {
         var {
             user,
-            pass
+            // pass
         } = req.body;
         try {
             var match = await findUser(parseInt(user));
             if (match) {
                 // bcrypt.compare(pass, match.password, function (err, result) {
                     if (result) {
-                        if (match.isSysAd) {
+                        if (match.adminID) {
                             //send 201 admin
                             req.session.logUser = match;
                             req.session.type = 'admin';
