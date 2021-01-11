@@ -1,0 +1,14 @@
+[{
+    "paymentNum" : 12100000,
+    "amountPaid" : 1000.00,
+    "datePaid" : "07/10/2015",
+    "remarks" : "P",
+    "studentID" : "Abra"
+},
+{
+    "paymentNum" : 12100001,
+    "amountPaid" : 1000.00,
+    "datePaid" : "07/10/2015",
+    "remarks" : "P",
+    "studentID" : "Kadabra"
+}]
