@@ -39,7 +39,7 @@ $(document).ready(function() {
                     case 203:
                         {
                             //student
-                            window.location.href = 's/trans/brkdwn';
+                            window.location.href = '/s/trans/brkdwn';
                             break;
                         }
                     case 401:
