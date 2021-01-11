@@ -3,7 +3,6 @@ $(document).ready(function() {
 
         var user = $('#id').val();
         var pass = $('#pword').val();
-        var b = true
         // checking if fields are not empty
         if (validator.isEmpty(user)) {
             alert('No user id provided');
@@ -12,7 +11,7 @@ $(document).ready(function() {
             alert('No password provided');
         }
 
-        if (b) {
+        if (!validator.isEmpty(user) && !validator.isEmpty(pass)) {
             $.post('/', {
                 user: user,
                 pass: pass
@@ -37,7 +36,7 @@ $(document).ready(function() {
                             window.location.href = '/p/trans/brkdwn';
                             break;
                         }
-                    case 203:
+                    case 204:
                         {
                             //student
                             window.location.href = '/s/trans/brkdwn';

@@ -81,7 +81,6 @@ const indexFunctions = {
         res.render('login', {
             title: 'Login'
         });
-        console.log('hello');
     },
     // to show the students from the admins side
     getAuserStudents: function (req, res) {
@@ -109,17 +108,16 @@ const indexFunctions = {
     },
     //
     postLogin: async function (req, res) {
-        console.log('world');
         var {
             user,
             pass
         } = req.body;
         try {
-            var match = await findUser(parseInt(user));
+            var match = await findUser(user);
             if (match) {
-                
                 // bcrypt.compare(pass, match.password, function (err, result) {
-                    // if (result) {
+                    var result = match.password == pass;
+                    if (result) {
                         if (match.type == 'A') {
                             //send 201 admin
                             req.session.logUser = match;
@@ -149,10 +147,10 @@ const indexFunctions = {
                                 status: 204
                             });
                         }
-                    // } else res.send({
-                    //     status: 401,
-                    //     msg: 'Incorrect password.'
-                    // });
+                    } else res.send({
+                        status: 401,
+                        msg: 'Incorrect password.'
+                    });
                 // });
             } else res.send({
                 status: 401,
