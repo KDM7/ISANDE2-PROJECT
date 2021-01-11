@@ -11,7 +11,7 @@ const teacherModel = require("../model/teacherdb");
 const parentModel = require("../model/parentsdb");
 const studentModel = require("../model/studentdb");
 
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const e = require('express');
 const saltRounds = 10;
 
@@ -86,7 +86,63 @@ const indexFunctions = {
         res.render('s_trans_BD', {
             title: 'Breakdown of details'
         });
-    }
+    },
+    //
+    postLogin: async function (req, res) {
+        var {
+            user,
+            pass
+        } = req.body;
+        try {
+            var match = await findUser(parseInt(user));
+            if (match) {
+                // bcrypt.compare(pass, match.password, function (err, result) {
+                    if (result) {
+                        if (match.isSysAd) {
+                            //send 201 admin
+                            req.session.logUser = match;
+                            req.session.type = 'admin';
+                            res.send({
+                                status: 201
+                            });
+                        } else if (match.teacherID) {
+                            //send 202 teacher
+                            req.session.logUser = match;
+                            req.session.type = 'teacher';
+                            res.send({
+                                status: 202
+                            });
+                        } else if (match.parentID){
+                            //send 203 parent
+                            req.session.logUser = match;
+                            req.session.type = 'parent';
+                            res.send({
+                                status: 203
+                            });
+                        } else {
+                            //send 204 student
+                            req.session.logUser = match;
+                            req.session.type = 'student';
+                            res.send({
+                                status: 204
+                            });
+                        }
+                    } else res.send({
+                        status: 401,
+                        msg: 'Incorrect password.'
+                    });
+                // });
+            } else res.send({
+                status: 401,
+                msg: 'No user found.'
+            });
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            });
+        }
+    },
 }
 
 

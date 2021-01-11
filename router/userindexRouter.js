@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express();
-const controller = require('../controller/user_index');
-const indexMiddleware = require('../middlewares/indexMiddleware');
+const controller = require('../controller/userindex');
+// const indexMiddleware = require('../middlewares/indexMiddleware');
 
 // GETS
 router.get('/', controller.getLogin);
@@ -15,8 +15,10 @@ router.get('/p/trans/brkdwn', controller.getPtransBD);
 
 router.get('s/trans/brkdwn', controller.getStransBD);
 
+router.post('/', controller.postLogin);
 
 
+module.exports = router;
 
 
 
