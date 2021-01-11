@@ -13,7 +13,7 @@ router.get('/t/users/students', controller.getTuserStudents);
 
 router.get('/p/trans/brkdwn', controller.getPtransBD);
 
-router.get('s/trans/brkdwn', controller.getStransBD);
+router.get('/s/trans/brkdwn', controller.getStransBD);
 
 router.post('/', controller.postLogin);
 
