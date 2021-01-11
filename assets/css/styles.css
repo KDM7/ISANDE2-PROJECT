@@ -4,7 +4,7 @@
     margin: auto;
 }
 
-#form {
+#login-form {
     border-radius: 3%;
     position: relative;
     z-index: 1;
@@ -15,7 +15,7 @@
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 
-#form button{
+#login-form button{
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
     outline: 0;
@@ -31,7 +31,7 @@
     border-radius: 6px;
 }
 
-#form input {
+#login-form input {
     font-family: "Roboto", sans-serif;
     outline: 0;
     background: #f2f2f2;
@@ -45,7 +45,7 @@
 }
 
 body {
-    background: url('./img/Spirit.png') no-repeat center center fixed; 
+    background: url('../../../../assets/img/Spirit.png') no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;

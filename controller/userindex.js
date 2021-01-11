@@ -56,12 +56,32 @@ function Student(userID, parentID, mobileNum, teleNum, nationality, birthDate, b
     this.address = address;
 }
 
+async function findUser(userID) {
+    var user = await userModel.aggregate([{
+        '$match' : {
+            'userID' : userID
+        }
+    }, {
+        '$project' : {
+            'userID': 1,
+            'password': 1, 
+            'firstName': 1, 
+            'lastName': 1, 
+            'middleName': 1, 
+            'type': 1, 
+            'gender': 1
+        }
+    }]);
+    return user[0];
+}
+
 const indexFunctions = {
     // to show the login page
     getLogin: function (req, res) {
         res.render('login', {
             title: 'Login'
         });
+        console.log('hello');
     },
     // to show the students from the admins side
     getAuserStudents: function (req, res) {
@@ -89,30 +109,32 @@ const indexFunctions = {
     },
     //
     postLogin: async function (req, res) {
+        console.log('world');
         var {
             user,
-            // pass
+            pass
         } = req.body;
         try {
             var match = await findUser(parseInt(user));
             if (match) {
+                
                 // bcrypt.compare(pass, match.password, function (err, result) {
-                    if (result) {
-                        if (match.adminID) {
+                    // if (result) {
+                        if (match.type == 'A') {
                             //send 201 admin
                             req.session.logUser = match;
                             req.session.type = 'admin';
                             res.send({
                                 status: 201
                             });
-                        } else if (match.teacherID) {
+                        } else if (match.type == 'T') {
                             //send 202 teacher
                             req.session.logUser = match;
                             req.session.type = 'teacher';
                             res.send({
                                 status: 202
                             });
-                        } else if (match.parentID){
+                        } else if (match.type == 'P'){
                             //send 203 parent
                             req.session.logUser = match;
                             req.session.type = 'parent';
@@ -127,10 +149,10 @@ const indexFunctions = {
                                 status: 204
                             });
                         }
-                    } else res.send({
-                        status: 401,
-                        msg: 'Incorrect password.'
-                    });
+                    // } else res.send({
+                    //     status: 401,
+                    //     msg: 'Incorrect password.'
+                    // });
                 // });
             } else res.send({
                 status: 401,

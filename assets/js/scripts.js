@@ -3,7 +3,7 @@ $(document).ready(function() {
 
         var user = $('#id').val();
         var pass = $('#pword').val();
-        console.log('hello');
+        var b = true
         // checking if fields are not empty
         if (validator.isEmpty(user)) {
             alert('No user id provided');
@@ -12,11 +12,12 @@ $(document).ready(function() {
             alert('No password provided');
         }
 
-        if (!validator.isEmpty(user) && !validator.isEmpty(pass)) {
+        if (b) {
             $.post('/', {
                 user: user,
                 pass: pass
             }, function(result) {
+                console.log(result.status);
                 switch (result.status) {
                     case 201:
                         {
