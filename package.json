@@ -28,6 +28,7 @@
     "express-validator": "^6.9.1",
     "jquery": "^3.5.1",
     "mongoose": "^5.11.9",
+    "popper.js": "^1.16.1",
     "validator": "^13.5.2"
   },
   "devDependencies": {
