@@ -88,6 +88,147 @@ const indexFunctions = {
             title: 'Students'
         });
     },
+
+    // to show edit student agreements page for admins side
+    getAdocEditSA: function(req, res){
+        res.render('a_doc_editSA', {
+            title: 'Edit Student Agreement',
+        });
+    },
+
+    // to show edit student documents page for admins side
+    getAdocEditSD: function(req, res){
+        res.render('a_doc_editSD', {
+            title: 'Edit Student Document',
+        });
+    },
+
+    // to show new student agreements page for admin side
+    getAdocNewSA: function(req, res){
+        res.render('a_doc_newSA', {
+            title: 'New Student Agreement',
+        });
+    },
+
+    // to show new student documents page for admin side
+    getAdocNewSD: function(req, res){
+        res.render('a_doc_newSD', {
+            title: 'New Student Document',
+        });
+    },
+
+    // to show student agreements page for admin side
+    getAdocSA: function(req, res){
+        res.render('a_doc_SA', {
+            title: 'Student Agreement',
+        });
+    },
+
+    // to show student documents page for admin side
+    getAdocSD: function(req, res){
+        res.render('a_doc_SD', {
+            title: 'Student Document',
+        });
+    },
+
+    // to show Additional Fees page for admin side
+    getAfeeAdd: function(req, res){
+        res.render('a_fee_add', {
+            title: 'Additional Fees',
+        });
+    },
+
+    // to show Edit Upon Enrollment page for admin side
+    getAfeeEditUE: function(req, res){
+        res.render('a_fees_editUE', {
+            title: 'Edit Upon Enrollment'
+        });
+    },
+
+    // to show Miscellaneous Fees page for admin side
+    getAfeeMisc: function(req, res){
+        res.render('a_fee_misc',{
+            title: 'Miscellaneous Fees'
+        });
+    },
+
+    // to show Other Fees page for admin side
+    getAfeeOthers: function(req, res){
+        res.render('a_fees_others', {
+            title: 'Other Fees'
+        });
+    },
+
+    // to show Tuition Fees page for admin side
+    getAfeeTuition: function(req, res){
+        res.render('a_fees_tuition', {
+            title: 'Tuition Fees',
+        });
+    },
+
+    // to show Upon Enrollment page for admin side
+    getAfeeUponE: function(req, res){
+        res.render('a_fees_uponE', {
+            title: 'Upon Enrollment',
+        });
+    },
+
+    // to show all admins for admin side
+    getAuserAdmin: function(req, res){
+        res.render('a_users_admins', {
+            title: 'Admins',
+        })
+    },
+
+    // to show the profile of an admin for admin side
+    getAuserAProf: function(req, res){
+        res.render('a_users_AProfile', {
+            title: 'Admin',
+        });
+    },
+
+    // to show all accounts of all of the parent's children for admin side
+    getAuserPAcc: function(req, res){
+        res.render('a_users_PAccount', {
+            title: 'Admin',
+        });
+    },
+
+    // to show all of the parents for admin side
+    getAuserParent: function(req, res){
+        res.render('a_users_parents', {
+            title: 'Parents',
+        });
+    },
+
+    //to show the profile of a parent for admin side 
+    getAuserPProf: function(req, res){
+        res.render('a_users_PProfile', {
+            title: 'Parent',
+        });
+    },
+
+    // to show a students account for admin side
+    getAuserSAcc: function(req, res){
+        res.render('a_users_SAccount', {
+            title: 'Student',
+        });
+    },
+
+    // to show page for sending a student an email for admin side
+    getAuserSEmail: function(req, res){
+        res.render('a_users_SEmail', {
+            title: 'Send Email',
+        });
+    },
+
+    // to show a students profile for admin side
+    getAuserSProf: function(req, res){
+        res.render('a_users_SProfile', {
+            title: 'Student',
+        });
+    },
+
     // to show the students from the teachers dis
     getTuserStudents: function (req, res) {
         res.render('t_users_students', {

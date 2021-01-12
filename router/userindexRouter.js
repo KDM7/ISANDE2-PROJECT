@@ -7,6 +7,27 @@ const controller = require('../controller/userindex');
 router.get('/', controller.getLogin);
 
 //
+
+router.get('/a/doc/editSA', controller.getAdocEditSA);
+router.get('/a/doc/editSD', controller.getAdocEditSD);
+router.get('/a/doc/newSA', controller.getAdocNewSA);
+router.get('/a/doc/newSD', controller.getAdocNewSD);
+router.get('/a/doc/SA', controller.getAdocSA);
+router.get('/a/doc/SD', controller.getAdocSD);
+router.get('/a/fees/add', controller.getAfeeAdd);
+router.get('/a/fees/editUE', controller.getAfeeEditUE);
+router.get('/a/fees/misc', controller.getAfeeMisc);
+router.get('/a/fees/other', controller.getAfeeOthers);
+router.get('/a/fees/tuition', controller.getAfeeTuition);
+router.get('/a/fees/uponE', controller.getAfeeUponE);
+router.get('/a/user/SProfile', controller.getAuserSProf);
+router.get('/a/users/SEmail', controller.getAuserSEmail);
+router.get('/a/users/SAccount', controller.getAuserSAcc);
+router.get('/a/users/PProfile', controller.getAuserPProf);
+router.get('/a/users/parents', controller.getAuserParent);
+router.get('/a/users/PAccount', controller.getAuserPAcc);
+router.get('/a/users/AProfile', controller.getAuserAProf);
+router.get('/a/users/admins', controller.getAuserAdmin);
 router.get('/a/users/students', controller.getAuserStudents);
 
 router.get('/t/users/students', controller.getTuserStudents);
