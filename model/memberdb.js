@@ -8,12 +8,12 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itis
 
 var db = mongoose.connection;
 
-const subjectSchema = new mongoose.Schema({
-    subjectCode : { type: Number, required: true},
-    SubjectName : {type : String, required : true}
-}, { collection: "subjects" });
+const memberSchema = new mongoose.Schema({
+    sectionID : {type : Number, required : true},
+    studentID : {type :String,required :true}
+}, { collection: "members" });
 
 
-const subjectModel = db.model('subjects', subjectSchema);
+const memberModel = db.model('members', memberSchema);
 
-module.exports = subjectModel;
+module.exports = memberModel;
