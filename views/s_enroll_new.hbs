@@ -1,0 +1,302 @@
+<div>
+        <header class="container">
+            
+
+        </header>
+        
+            <div class="container bg-light">
+
+                <div class="row mb-2">
+                    
+                    <div class="col-12">
+                         <div class="list-group mt-2 shadow bg-light">
+                            <div class="shadow">
+                                <div class="container">
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <h1 class="display-5 text-center font-weight-bold">Enroll in Regis-Grace Montessori School
+                                            </h1>
+                                            <div class="row justify-content-center">
+                                                <h5 class="display-5 text-center font-weight-light">Please kindly fill-out all the </h5>
+                                                <h5 class="display-5 text-center font-weight-light text-primary pl-2 pr-2">required fields(*) </h5>
+                                                <h5 class="display-5 text-center font-weight-light"> with your information.</h5>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="container">
+                                        <h5 class="display-5 text-left">Personal information</h6>
+                                            <hr style="border: 2px solid black;" />
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="GrdLvl">Grade Level</label>
+                                                <span style="color:red">*</span>
+                                                <br>
+                                                <select name="grade_level_id" id="gradeLvl" class="form-control valid" required> 
+
+                                                   {{#each sections}}
+                                                        <option value="{{this.sectionID}}">{{this.gradeLvl}} - {{this.sectionName}}</option>       
+                                                   {{/each}}                 
+                                                </select>
+                                            </div>
+                                            <hr style="border: 2px solid black;" />
+                                            <div class="form-group">
+                                                <label for="firstName">First Name</label>
+                                                <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="firstName" placeholder="" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lastName">Last Name</label>
+                                                <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="lastName" placeholder="" required>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="middleName">Middle Name</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="middleName" placeholder="" required>
+                                                    
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="age">Age</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="number" class="form-control " id="age" placeholder="" required>
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="gender">Gender</label>
+                                                    <span style="color:red">*</span>
+                                                    <select name="grade_level_id" id="gender" class="form-control valid" onchange="myFunction2()" required> 
+                                                        <option value="2">Male</option>
+                                                        <option value="3">Female</option>                           
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="mobileNum">Mobile Number</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="mobileNum" placeholder="" required>
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="teleNum">Telephone</label>
+                                                    <input type="text" class="form-control" id="teleNum" placeholder="">
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="nationality">Nationality</label>
+                                                    <input type="text" class="form-control" id="nationality" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label for="birthDate" class="col-10 col-form-label">Birth Date</label>
+                                                    <span style="color:red">*</span>
+                                                    <div class="col-11">
+                                                        <input class="form-control" type="date" id="birthDate">
+                                                        <script>
+                                                            Date.prototype.toDateInputValue = (function() {
+                                                                var local = new Date(this);
+                                                                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                                                                return local.toJSON().slice(0, 10);
+                                                            });
+                                                            document.getElementById('dateSold').value = new Date().toDateInputValue();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                    <div class="form-group w-25 col-8">
+                                                        <label for="birthPlace">Birth Place</label>
+                                                        <span style="color:red">*</span>
+                                                        <input type="text" class="form-control" id="birthPlace" placeholder="" required>
+                                                    </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="email" placeholder="" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="religion">Religion</label>
+                                                <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="religion" placeholder="" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="address">Address</label>
+                                                <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="address" placeholder="" required>
+                                            </div>
+                                            <hr style="border: 2px solid black;" />
+                                            <h5 class="display-5 text-left">Family Record</h6>
+                                            <hr style="border: 2px solid black;" />
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <label for="mName">Mother's Name(Lastname, Firstname M.I)</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="mName" placeholder="">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label for="mOccu">Occupation</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="mOccu" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="mEmail">Email</label>
+                                                <input type="text" class="form-control" id="mEmail" placeholder="">
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <label for="mWorkAddress">Work Address</label>
+                                                    <input type="text" class="form-control" id="address" placeholder="">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label for="mNum">Contact info</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="mNum" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <label for="fName">Father's Name(Lastname, Firstname M.I)</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="fName" placeholder="">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label for="fOccu">Occupation</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="fOccu" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="fEmail">Email</label>
+                                                <input type="text" class="form-control" id="fEmail" placeholder="">
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <label for="fWorkAddress">Work Address</label>
+                                                    <input type="text" class="form-control" id="fWorkAddress" placeholder="">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label for="fNum">Contact info</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="fNum" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group w-25">
+                                                <label for="formGroupExampleInput2">Number of Siblings</label>
+                                                <input type="number" class="form-control" id="numSibling" placeholder="">
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-5">
+                                                    <label for="formGroupExampleInput2" class="m-2">Brothers/Sisters of Student</label>
+                                                    <input type="text" class="form-control m-2" id="sibling1" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="sibling2" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="sibling3" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="sibling4" placeholder="">
+                                                </div>
+                                                <div class="form-group col-2">
+                                                    <label for="formGroupExampleInput2" class="m-2">Age</label>
+                                                    <input type="number" class="form-control m-2" id="age1" placeholder="">
+                                                    <input type="number" class="form-control m-2" id="age2" placeholder="">
+                                                    <input type="number" class="form-control m-2" id="age3" placeholder="">
+                                                    <input type="number" class="form-control m-2" id="age4" placeholder="">
+                                                </div>
+                                                <div class="form-group col-5">
+                                                    <label for="formGroupExampleInput2" class="m-2">School/Occupation</label>
+                                                    <input type="text" class="form-control m-2" id="occu1" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="occu2" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="occu3" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="occu4" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                                <label class="form-check-label" for="inlineRadio1">Mother</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label" for="inlineRadio2">Father</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                                <label class="form-check-label" for="inlineRadio3">Others</label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <label for="cName" class="m-2">Contact Person</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control m-2" id="cName" placeholder="" required>
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label for="relation" class="m-2">Relation</label>
+                                                    <input type="text" class="form-control m-2" id="relation" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="cEmail" class="m-2">Email</label>
+                                                <input type="text" class="form-control m-2" id="cEmail" placeholder="">
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <label for="cNum" class="m-2">Contact Info</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control m-2" id="cNum" placeholder="" required>
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label for="cWorkAddress" class="m-2">Work Address</label>
+                                                    <input type="text" class="form-control m-2" id="cWorkAddress" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="fetchName" class="m-2">Fetcher's Name</label>
+                                                <input type="text" class="form-control m-2" id="fetchName" placeholder="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="fetchNum" class="m-2">Fetcher's Contact</label>
+                                                <input type="text" class="form-control m-2" id="fetchNum" placeholder="">
+                                            </div>
+                                            <hr style="border: 2px solid black;" />
+                                            <h5 class="display-5 text-left">Educational Background</h6>
+                                            <hr style="border: 2px solid black;" />
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <label for="formGroupExampleInput2" class="m-2">School Last Attended</label>
+                                                    <input type="text" class="form-control m-2" id="school1" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="school2" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="school3" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="school4" placeholder="">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label for="formGroupExampleInput2" class="m-2">Academic Year</label>
+                                                    <input type="text" class="form-control m-2" id="year1" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="year2" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="year3" placeholder="">
+                                                    <input type="text" class="form-control m-2" id="year4" placeholder="">
+                                                </div>
+                                            </div>
+                                            <hr style="border: 2px solid black;" />
+                                            <h5 class="display-5 text-left">Reason for Applying</h6>
+                                            <hr style="border: 2px solid black;" />
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="d-flex border justify-content-center">
+                                        <button id="submitEnrollNew" class="btn btn-outline-success btn-lg btn-block mt-5 mb-5 w-75">Next</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        
+
+        <hr>
+        <footer>
+        </footer>
+
+    </div>

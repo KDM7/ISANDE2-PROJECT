@@ -11,7 +11,8 @@ var db = mongoose.connection;
 const sectionSchema = new mongoose.Schema({
     sectionID : {type : Number, required : true},
     schoolYear : {type : String, required : true},
-    sectionName : {type : String, required:true}
+    sectionName : {type : String, required:true},
+    sectionAdviser : {type : String, required : false}
 }, { collection: "sections" });
 
 

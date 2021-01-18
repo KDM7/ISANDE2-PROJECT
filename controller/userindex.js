@@ -10,11 +10,16 @@ const adminModel = require("../model/admindb");
 const teacherModel = require("../model/teacherdb");
 const parentModel = require("../model/parentsdb");
 const studentModel = require("../model/studentdb");
+const sectionModel = require("../model/sectiondb");
+const schoolYearModel = require("../model/schoolYeardb");
 
 // const bcrypt = require('bcrypt');
 const e = require('express');
 const saltRounds = 10;
 
+/*
+    CONSTRUCTORS
+*/
 function User(userID, password, firstName, lastName, middleName, type, gender) {
     this.userID = userID;
     this.password = password;
@@ -56,6 +61,20 @@ function Student(userID, parentID, mobileNum, teleNum, nationality, birthDate, b
     this.address = address;
 }
 
+function Section(sectionID,sectionName,schoolYear,sectionAdviser)
+{
+    this.sectionID =sectionID;
+    this.sectionName = sectionName;
+    this.schoolYear = schoolYear;
+    this.sectionAdviser = sectionAdviser;
+}
+
+function schoolYear(schoolYear,isCurrent){
+    this.schoolYear = schoolYear;
+    this.isCurrent = isCurrent;
+}
+
+//functions
 async function findUser(userID) {
     var user = await userModel.aggregate([{
         '$match' : {
@@ -75,13 +94,127 @@ async function findUser(userID) {
     return user[0];
 }
 
+//gets current schoolyear
+async function getCurrentSY(){
+    var schoolYear = await schoolYearModel.aggregate([
+        {
+          '$match': {
+            'isCurrent': true
+          }
+        }, {
+          '$project': {
+            'schoolYear': 1
+          }
+        }
+      ])
+    return schoolYear[0].schoolYear; //returns string
+}
+
+//gets a list of the current sections
+async function getCurrentSections (){
+    var current = await getCurrentSY();
+    var sections = await sectionModel.aggregate([
+        {
+          '$match': {
+            'schoolYear': current
+          }
+        }, {
+          '$lookup': {
+            'from': 'ref_section', 
+            'localField': 'sectionName', 
+            'foreignField': 'sectionName', 
+            'as': 'gradeLvl'
+          }
+        }, {
+          '$unwind': {
+            'path': '$gradeLvl', 
+            'preserveNullAndEmptyArrays': false
+          }
+        }, {
+          '$project': {
+            'sectionID': 1, 
+            'sectionName': 1, 
+            'sectionAdviser': 1, 
+            'gradeLvl': '$gradeLvl.gradeLvl'
+          }
+        }
+      ])
+     return sections; //returns all sections in an array 
+}
+
 const indexFunctions = {
+    /* 
+        LOGIN FUNCTIONS    
+    */ 
+
     // to show the login page
     getLogin: function (req, res) {
         res.render('login', {
             title: 'Login'
         });
     },
+
+    //
+    postLogin: async function (req, res) {
+        var {
+            user,
+            pass
+        } = req.body;
+        try {
+            var match = await findUser(user);
+            if (match) {
+                // bcrypt.compare(pass, match.password, function (err, result) {
+                    var result = match.password == pass;
+                    if (result) {
+                        if (match.type == 'A') {
+                            //send 201 admin
+                            req.session.logUser = match;
+                            req.session.type = 'admin';
+                            res.send({
+                                status: 201
+                            });
+                        } else if (match.type == 'T') {
+                            //send 202 teacher
+                            req.session.logUser = match;
+                            req.session.type = 'teacher';
+                            res.send({
+                                status: 202
+                            });
+                        } else if (match.type == 'P'){
+                            //send 203 parent
+                            req.session.logUser = match;
+                            req.session.type = 'parent';
+                            res.send({
+                                status: 203
+                            });
+                        } else {
+                            //send 204 student
+                            req.session.logUser = match;
+                            req.session.type = 'student';
+                            res.send({
+                                status: 204
+                            });
+                        }
+                    } else res.send({
+                        status: 401,
+                        msg: 'Incorrect password.'
+                    });
+                // });
+            } else res.send({
+                status: 401,
+                msg: 'No user found.'
+            });
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            });
+        }
+    },
+
+    /*      
+        ADMIN FUNCTIONS
+    */
     // to show the students from the admins side
     getAuserStudents: function (req, res) {
         res.render('a_users_students', {
@@ -229,81 +362,56 @@ const indexFunctions = {
         });
     },
 
+    /* 
+        TEACHER FUCNTIONS
+    */
+
     // to show the students from the teachers dis
     getTuserStudents: function (req, res) {
         res.render('t_users_students', {
             title: 'Students'
         });
     },
+    
+    /*
+        PARENT FUNCTIONS
+    */
     // to show the breakdown of details from the parents side
     getPtransBD: function (req, res) {
         res.render('p_trans_BD', {
             title: 'Breakdown of Details'
         });
     },
+
+
+    /*
+        STUDENT FUNCTIONS 
+    */
     // to show the breakdown of details from the students side
+    
+    /* 
+        Enrollment Functions
+    */
+
+    getEnrollment: async function (req,res){
+        try {
+            var sections = await getCurrentSections()
+            console.log(sections);
+            res.render('s_enroll_new.hbs',{
+                title : 'Enrollment Page',
+                sections: sections
+            })
+        } catch (e) {
+            console.log(e)
+        }
+    },
+
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
             title: 'Breakdown of details'
         });
     },
-    //
-    postLogin: async function (req, res) {
-        var {
-            user,
-            pass
-        } = req.body;
-        try {
-            var match = await findUser(user);
-            if (match) {
-                // bcrypt.compare(pass, match.password, function (err, result) {
-                    var result = match.password == pass;
-                    if (result) {
-                        if (match.type == 'A') {
-                            //send 201 admin
-                            req.session.logUser = match;
-                            req.session.type = 'admin';
-                            res.send({
-                                status: 201
-                            });
-                        } else if (match.type == 'T') {
-                            //send 202 teacher
-                            req.session.logUser = match;
-                            req.session.type = 'teacher';
-                            res.send({
-                                status: 202
-                            });
-                        } else if (match.type == 'P'){
-                            //send 203 parent
-                            req.session.logUser = match;
-                            req.session.type = 'parent';
-                            res.send({
-                                status: 203
-                            });
-                        } else {
-                            //send 204 student
-                            req.session.logUser = match;
-                            req.session.type = 'student';
-                            res.send({
-                                status: 204
-                            });
-                        }
-                    } else res.send({
-                        status: 401,
-                        msg: 'Incorrect password.'
-                    });
-                // });
-            } else res.send({
-                status: 401,
-                msg: 'No user found.'
-            });
-        } catch (e) {
-            res.send({
-                status: 500,
-                msg: e
-            });
-        }
-    },
+    
 }
 
 module.exports = indexFunctions;

@@ -5,9 +5,11 @@ const controller = require('../controller/userindex');
 
 // GETS
 router.get('/', controller.getLogin);
-
+router.post('/', controller.postLogin);
 //
-
+/*
+    ADMIN
+*/
 router.get('/a/doc/editSA', controller.getAdocEditSA);
 router.get('/a/doc/editSD', controller.getAdocEditSD);
 router.get('/a/doc/newSA', controller.getAdocNewSA);
@@ -30,13 +32,23 @@ router.get('/a/users/AProfile', controller.getAuserAProf);
 router.get('/a/users/admins', controller.getAuserAdmin);
 router.get('/a/users/students', controller.getAuserStudents);
 
+/*
+    TEACHER
+*/
 router.get('/t/users/students', controller.getTuserStudents);
 
+/*
+    PARENT
+*/
 router.get('/p/trans/brkdwn', controller.getPtransBD);
 
+/*
+    STUDENT
+*/
+router.get('/enroll', controller.getEnrollment);
 router.get('/s/trans/brkdwn', controller.getStransBD);
 
-router.post('/', controller.postLogin);
+
 
 
 module.exports = router;

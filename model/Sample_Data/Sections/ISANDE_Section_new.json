@@ -1,3 +1,3 @@
-[{"sectionID":"22000001","sectionName":"Jupiter","schoolYear":"2020-2021"},
-{"sectionID":"22000002","sectionName":"Saturn","schoolYear":"2020-2021"},
-{"sectionID":"22000003","sectionName":"Venus","schoolYear":"2020-2021"}]
+[{"sectionID":"22000001","sectionName":"Jupiter","schoolYear":"2020-2021","sectionAdviser": "c.buffy"},
+{"sectionID":"22000002","sectionName":"Saturn","schoolYear":"2020-2021", "sectionAdviser" : "b.bertie"},
+{"sectionID":"22000003","sectionName":"Venus","schoolYear":"2020-2021","sectionAdviser" : "l.graeber"}]

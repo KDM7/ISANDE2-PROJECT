@@ -52,4 +52,22 @@ $(document).ready(function() {
             });
         }
     });
+
+    /*
+        ADMIN
+    */
+
+    /*
+        TEACHER
+    */
+
+    /*
+        PARENT
+    */
+
+    /*
+        STUDENT
+    */
+
+    
 });
