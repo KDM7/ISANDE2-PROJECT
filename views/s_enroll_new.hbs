@@ -67,9 +67,9 @@
                                                 <div class="form-group w-25 col-4">
                                                     <label for="gender">Gender</label>
                                                     <span style="color:red">*</span>
-                                                    <select name="grade_level_id" id="gender" class="form-control valid" onchange="myFunction2()" required> 
-                                                        <option value="2">Male</option>
-                                                        <option value="3">Female</option>                           
+                                                    <select name="grade_level_id" id="gender" class="form-control valid" required> 
+                                                        <option value="M">Male</option>
+                                                        <option value="F">Female</option>                           
                                                     </select>
                                                 </div>
                                             </div>
@@ -100,7 +100,7 @@
                                                                 local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
                                                                 return local.toJSON().slice(0, 10);
                                                             });
-                                                            document.getElementById('dateSold').value = new Date().toDateInputValue();
+                                                            document.getElementById('birthDate').value = new Date().toDateInputValue();
                                                         </script>
                                                     </div>
                                                 </div>

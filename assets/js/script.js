@@ -69,5 +69,15 @@ $(document).ready(function() {
         STUDENT
     */
 
-    
+    $('#submitEnrollNew').click(function(){
+        var sectionID = $('#gradeLvl').val();
+        var userInfo = {
+            firstName : $('#firstName').val(),
+            lastName : $('#lastName').val(),
+            middleName : $('#middleName').val(),
+            gender : $('#gender').val(),
+        };
+        console.log(sectionID);
+        console.log(userInfo);
+    });
 });

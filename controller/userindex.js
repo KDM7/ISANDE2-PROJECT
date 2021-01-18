@@ -411,7 +411,6 @@ const indexFunctions = {
             title: 'Breakdown of details'
         });
     },
-    
 }
 
 module.exports = indexFunctions;
