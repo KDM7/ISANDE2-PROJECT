@@ -12,6 +12,7 @@ const parentModel = require("../model/parentsdb");
 const studentModel = require("../model/studentdb");
 const sectionModel = require("../model/sectiondb");
 const schoolYearModel = require("../model/schoolYeardb");
+const studentDetailsModel = require("../model/studentDetailsdb")
 
 // const bcrypt = require('bcrypt');
 const e = require('express');
@@ -72,6 +73,42 @@ function Section(sectionID,sectionName,schoolYear,sectionAdviser)
 function schoolYear(schoolYear,isCurrent){
     this.schoolYear = schoolYear;
     this.isCurrent = isCurrent;
+}
+//the following 4 constructors are for the student details function
+function familyRecords(mName, mOccu, mEmail, mWorkAddress, mNum, fName, fOccu, fEmail, fWorkAddress, fNum, cName, relation, cEmail, cNum, cWorkAddress, fetchName, fetchNum) {
+    this.mName = mName;
+    this.mOccu = mOccu;
+    this.mEmail = mEmail;
+    this.mWorkAddress = mWorkAddress;
+    this.mNum = mNum;
+    this.fName = fName;
+    this.fOccu = fOccu;
+    this.fEmail = fEmail;
+    this.fWorkAddress = fWorkAddress;
+    this.fNum = fNum;
+    this.cName = cName;
+    this.relation = relation;
+    this.cEmail = cEmail;
+    this.cNum = cNum;
+    this.cWorkAddress = cWorkAddress;
+    this.fetchName = fetchName;
+    this.fetchNum = fetchNum;
+}
+
+function siblings(name, age, occu) {
+    this.name = name;
+    this.age = age;
+    this.occu = occu;
+}
+
+function eduBackground(name, acadYear) {
+    this.name = name;
+    this.acadYear = acadYear;
+}
+
+function studentDetails(studentID, reason) {
+    this.studentID = studentID;
+    this.reason = reason;
 }
 
 //functions
@@ -141,6 +178,8 @@ async function getCurrentSections (){
       ])
      return sections; //returns all sections in an array 
 }
+
+
 
 const indexFunctions = {
     /* 
@@ -405,6 +444,10 @@ const indexFunctions = {
             console.log(e)
         }
     },
+
+    getEnrollemtOld: async function (req, res) {
+        var oldStudent = await get
+    }
 
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
