@@ -77,7 +77,7 @@ $(document).ready(function() {
             middleName : $('#middleName').val(),
             gender : $('#gender').val(),
         };
-        console.log(sectionID);
-        console.log(userInfo);
+        
+        
     });
 });
