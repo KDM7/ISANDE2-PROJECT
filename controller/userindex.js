@@ -252,7 +252,10 @@ const indexFunctions = {
     // to show the students from the admins side
     getAuserStudents: function (req, res) {
         res.render('a_users_students', {
-            title: 'Students'
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
+            title: 'Students',
         });
     },
 
