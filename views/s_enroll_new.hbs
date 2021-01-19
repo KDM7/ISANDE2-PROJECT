@@ -67,9 +67,9 @@
                                                 <div class="form-group w-25 col-4">
                                                     <label for="gender">Gender</label>
                                                     <span style="color:red">*</span>
-                                                    <select name="grade_level_id" id="gender" class="form-control valid" onchange="myFunction2()" required> 
-                                                        <option value="2">Male</option>
-                                                        <option value="3">Female</option>                           
+                                                    <select name="grade_level_id" id="gender" class="form-control valid" required> 
+                                                        <option value="M">Male</option>
+                                                        <option value="F">Female</option>                           
                                                     </select>
                                                 </div>
                                             </div>
@@ -100,7 +100,7 @@
                                                                 local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
                                                                 return local.toJSON().slice(0, 10);
                                                             });
-                                                            document.getElementById('dateSold').value = new Date().toDateInputValue();
+                                                            document.getElementById('birthDate').value = new Date().toDateInputValue();
                                                         </script>
                                                     </div>
                                                 </div>
@@ -147,7 +147,7 @@
                                             <div class="row">
                                                 <div class="form-group col-6">
                                                     <label for="mWorkAddress">Work Address</label>
-                                                    <input type="text" class="form-control" id="address" placeholder="">
+                                                    <input type="text" class="form-control" id="mWorkAddress" placeholder="">
                                                 </div>
                                                 <div class="form-group col-6">
                                                     <label for="mNum">Contact info</label>
@@ -278,7 +278,7 @@
                                             <h5 class="display-5 text-left">Reason for Applying</h6>
                                             <hr style="border: 2px solid black;" />
                                             <div class="form-group">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                <textarea class="form-control" id="reason" rows="3"></textarea>
                                             </div>
                                         </form>
                                     </div>
