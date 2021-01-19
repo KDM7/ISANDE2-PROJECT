@@ -50,7 +50,7 @@ router.get('/p/trans/SA', controller.getPtransSA);
 /*
     STUDENT
 */
-router.get('/enroll', controller.getEnrollment);
+router.get('/enroll', controller.getEnrollmentNew);
 router.get('/s/trans/brkdwn', controller.getStransBD);
 
 
