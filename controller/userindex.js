@@ -432,7 +432,7 @@ const indexFunctions = {
         Enrollment Functions
     */
 
-    getEnrollment: async function (req,res){
+    getEnrollmentNew: async function (req,res){
         try {
             var sections = await getCurrentSections()
             console.log(sections);
@@ -447,7 +447,7 @@ const indexFunctions = {
 
     getEnrollemtOld: async function (req, res) {
         var oldStudent = await get
-    }
+    },
 
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
