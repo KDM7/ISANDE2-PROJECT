@@ -14,7 +14,7 @@ const sectionModel = require("../model/sectiondb");
 const schoolYearModel = require("../model/schoolYeardb");
 const studentDetailsModel = require("../model/studentDetailsdb")
 
-// const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const e = require('express');
 const saltRounds = 10;
 
@@ -196,9 +196,15 @@ const indexFunctions = {
         } = req.body;
         try {
             var match = await findUser(user);
+            console.log(user);
+            console.log(pass);
+            console.log(match);
             if (match) {
-                // bcrypt.compare(pass, match.password, function (err, result) {
-                var result = match.password == pass;
+                console.log('matching');
+                bcrypt.compare(pass, match.password, function (err, result) {
+                // var result = match.password == pass;
+                console.log('hi');
+                console.log(result);
                 if (result) {
                     if (match.type == 'A') {
                         //send 201 admin
@@ -233,12 +239,13 @@ const indexFunctions = {
                     status: 401,
                     msg: 'Incorrect password.'
                 });
-                // });
+                });
             } else res.send({
                 status: 401,
                 msg: 'No user found.'
             });
         } catch (e) {
+            console.log(e);
             res.send({
                 status: 500,
                 msg: e
