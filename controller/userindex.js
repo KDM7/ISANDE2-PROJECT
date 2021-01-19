@@ -422,6 +422,12 @@ const indexFunctions = {
         });
     },
 
+    getPaccNChild: function (req, res) {
+        res.render('p_acc_NChild', {
+            title: 'Register new Child'
+        });
+    },
+
 
     /*
         STUDENT FUNCTIONS 
@@ -445,9 +451,15 @@ const indexFunctions = {
         }
     },
 
-    getEnrollemtOld: async function (req, res) {
-        var oldStudent = await get
-    }
+    getEnrollmentParent: async function (req, res) {
+        res.render('s_enroll_parent', {
+            title: 'Register Parent'
+        });
+    },
+
+    // getEnrollemtOld: async function (req, res) {
+    //     var oldStudent = await get
+    // }
 
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
