@@ -464,7 +464,8 @@ const indexFunctions = {
         Enrollment Functions
     */
 
-    getEnrollment: async function (req, res) {
+
+    getEnrollmentNew: async function (req,res){
         try {
             var sections = await getCurrentSections()
             console.log(sections);
