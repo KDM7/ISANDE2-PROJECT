@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itisdev.uy0ui.mongodb.net/ISANDE?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => { console.log('student: studentdb.js;4'); },
+    .then(() => { console.log('student'); },
         err => {
-            console.log('theres problems: studentdb.js;6');
+            console.log('theres problems');
         });
 
 var db = mongoose.connection;
