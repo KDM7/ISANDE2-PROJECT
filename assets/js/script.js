@@ -16,7 +16,7 @@ $(document).ready(function() {
                 user: user,
                 pass: pass
             }, function(result) {
-                console.log(result.status);
+                console.log(result);
                 switch (result.status) {
                     case 201:
                         {
@@ -43,9 +43,13 @@ $(document).ready(function() {
                             break;
                         }
                     case 401:
+                        {
+                            alert('case 401: ' + result.msg);
+                            break;
+                        }
                     case 500:
                         {
-                            alert('case 500' + result.msg);
+                            alert('case 500: ' + result.msg);
                             break;
                         }
                 }
@@ -113,6 +117,7 @@ $(document).ready(function() {
             religion:           $('#religion').val(),
             address :           $('#address').val()         
         }
+        alert('Thank you for applying, these are the user credentials \nUserID:.....\nPassword:...')
         console.log(sectionID);
         console.log(studentDetails);
         console.log(studentData);
