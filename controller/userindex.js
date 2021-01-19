@@ -250,12 +250,23 @@ const indexFunctions = {
         ADMIN FUNCTIONS
     */
     // to show the students from the admins side
-    getAuserStudents: function (req, res) {
+    getAuserStudents: async function (req, res) {
+        var schoolYear = await schoolYearModel.aggregate(
+            [
+                {
+                  '$project': {
+                    'value': '$schoolYear', 
+                    'selected': '$isCurrent'
+                  }
+                }
+              ]
+        );
         res.render('a_users_students', {
-            firstname: req.session.logUser.firstName,
-            middlename: req.session.logUser.middleName,
-            lastname: req.session.logUser.lastName,
+            // firstname: req.session.logUser.firstName,
+            // middlename: req.session.logUser.middleName,
+            // lastname: req.session.logUser.lastName,
             title: 'Students',
+            schoolYear: schoolYear,
         });
     },
 

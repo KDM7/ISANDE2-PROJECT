@@ -30,7 +30,22 @@ app.engine('hbs', exphbs.create({
     partialsDir: 'views/partials',
     layoutsDir: 'views/layouts',
     helpers: {
-        
+        isSelected: function(selected){
+            if(selected)
+                return 'selected';
+        },
+        getDate: function (date) {
+            var d = new Date(date);
+            var day, month;
+            day = d.getDate();
+            if (day < 10)
+                day = '0' + day;
+            month = d.getMonth() + 1;
+            if (month < 10)
+                month = '0' + month;
+
+            return month + '/' + day + '/' + d.getFullYear();
+        },
     }
 }).engine);
 app.set('view engine', 'hbs');
