@@ -41,11 +41,13 @@ router.get('/t/users/students', controller.getTuserStudents);
     PARENT
 */
 router.get('/p/trans/brkdwn', controller.getPtransBD);
+router.get('/p/acc/NChild', controller.getPaccNChild);
 
 /*
     STUDENT
 */
 router.get('/enroll', controller.getEnrollment);
+router.get('/enroll/parent', controller.getEnrollmentParent);
 router.get('/s/trans/brkdwn', controller.getStransBD);
 
 
