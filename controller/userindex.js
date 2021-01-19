@@ -61,15 +61,14 @@ function Student(userID, parentID, mobileNum, teleNum, nationality, birthDate, b
     this.address = address;
 }
 
-function Section(sectionID,sectionName,schoolYear,sectionAdviser)
-{
-    this.sectionID =sectionID;
+function Section(sectionID, sectionName, schoolYear, sectionAdviser) {
+    this.sectionID = sectionID;
     this.sectionName = sectionName;
     this.schoolYear = schoolYear;
     this.sectionAdviser = sectionAdviser;
 }
 
-function schoolYear(schoolYear,isCurrent){
+function schoolYear(schoolYear, isCurrent) {
     this.schoolYear = schoolYear;
     this.isCurrent = isCurrent;
 }
@@ -77,17 +76,17 @@ function schoolYear(schoolYear,isCurrent){
 //functions
 async function findUser(userID) {
     var user = await userModel.aggregate([{
-        '$match' : {
-            'userID' : userID
+        '$match': {
+            'userID': userID
         }
     }, {
-        '$project' : {
+        '$project': {
             'userID': 1,
-            'password': 1, 
-            'firstName': 1, 
-            'lastName': 1, 
-            'middleName': 1, 
-            'type': 1, 
+            'password': 1,
+            'firstName': 1,
+            'lastName': 1,
+            'middleName': 1,
+            'type': 1,
             'gender': 1
         }
     }]);
@@ -95,57 +94,53 @@ async function findUser(userID) {
 }
 
 //gets current schoolyear
-async function getCurrentSY(){
-    var schoolYear = await schoolYearModel.aggregate([
-        {
-          '$match': {
+async function getCurrentSY() {
+    var schoolYear = await schoolYearModel.aggregate([{
+        '$match': {
             'isCurrent': true
-          }
-        }, {
-          '$project': {
-            'schoolYear': 1
-          }
         }
-      ])
+    }, {
+        '$project': {
+            'schoolYear': 1
+        }
+    }])
     return schoolYear[0].schoolYear; //returns string
 }
 
 //gets a list of the current sections
-async function getCurrentSections (){
+async function getCurrentSections() {
     var current = await getCurrentSY();
-    var sections = await sectionModel.aggregate([
-        {
-          '$match': {
+    var sections = await sectionModel.aggregate([{
+        '$match': {
             'schoolYear': current
-          }
-        }, {
-          '$lookup': {
-            'from': 'ref_section', 
-            'localField': 'sectionName', 
-            'foreignField': 'sectionName', 
-            'as': 'gradeLvl'
-          }
-        }, {
-          '$unwind': {
-            'path': '$gradeLvl', 
-            'preserveNullAndEmptyArrays': false
-          }
-        }, {
-          '$project': {
-            'sectionID': 1, 
-            'sectionName': 1, 
-            'sectionAdviser': 1, 
-            'gradeLvl': '$gradeLvl.gradeLvl'
-          }
         }
-      ])
-     return sections; //returns all sections in an array 
+    }, {
+        '$lookup': {
+            'from': 'ref_section',
+            'localField': 'sectionName',
+            'foreignField': 'sectionName',
+            'as': 'gradeLvl'
+        }
+    }, {
+        '$unwind': {
+            'path': '$gradeLvl',
+            'preserveNullAndEmptyArrays': false
+        }
+    }, {
+        '$project': {
+            'sectionID': 1,
+            'sectionName': 1,
+            'sectionAdviser': 1,
+            'gradeLvl': '$gradeLvl.gradeLvl'
+        }
+    }])
+    return sections; //returns all sections in an array 
 }
 
 const indexFunctions = {
     /* 
         LOGIN FUNCTIONS    
-    */ 
+    */
 
     // to show the login page
     getLogin: function (req, res) {
@@ -164,41 +159,41 @@ const indexFunctions = {
             var match = await findUser(user);
             if (match) {
                 // bcrypt.compare(pass, match.password, function (err, result) {
-                    var result = match.password == pass;
-                    if (result) {
-                        if (match.type == 'A') {
-                            //send 201 admin
-                            req.session.logUser = match;
-                            req.session.type = 'admin';
-                            res.send({
-                                status: 201
-                            });
-                        } else if (match.type == 'T') {
-                            //send 202 teacher
-                            req.session.logUser = match;
-                            req.session.type = 'teacher';
-                            res.send({
-                                status: 202
-                            });
-                        } else if (match.type == 'P'){
-                            //send 203 parent
-                            req.session.logUser = match;
-                            req.session.type = 'parent';
-                            res.send({
-                                status: 203
-                            });
-                        } else {
-                            //send 204 student
-                            req.session.logUser = match;
-                            req.session.type = 'student';
-                            res.send({
-                                status: 204
-                            });
-                        }
-                    } else res.send({
-                        status: 401,
-                        msg: 'Incorrect password.'
-                    });
+                var result = match.password == pass;
+                if (result) {
+                    if (match.type == 'A') {
+                        //send 201 admin
+                        req.session.logUser = match;
+                        req.session.type = 'admin';
+                        res.send({
+                            status: 201
+                        });
+                    } else if (match.type == 'T') {
+                        //send 202 teacher
+                        req.session.logUser = match;
+                        req.session.type = 'teacher';
+                        res.send({
+                            status: 202
+                        });
+                    } else if (match.type == 'P') {
+                        //send 203 parent
+                        req.session.logUser = match;
+                        req.session.type = 'parent';
+                        res.send({
+                            status: 203
+                        });
+                    } else {
+                        //send 204 student
+                        req.session.logUser = match;
+                        req.session.type = 'student';
+                        res.send({
+                            status: 204
+                        });
+                    }
+                } else res.send({
+                    status: 401,
+                    msg: 'Incorrect password.'
+                });
                 // });
             } else res.send({
                 status: 401,
@@ -223,140 +218,140 @@ const indexFunctions = {
     },
 
     // to show edit student agreements page for admins side
-    getAdocEditSA: function(req, res){
+    getAdocEditSA: function (req, res) {
         res.render('a_doc_editSA', {
             title: 'Edit Student Agreement',
         });
     },
 
     // to show edit student documents page for admins side
-    getAdocEditSD: function(req, res){
+    getAdocEditSD: function (req, res) {
         res.render('a_doc_editSD', {
             title: 'Edit Student Document',
         });
     },
 
     // to show new student agreements page for admin side
-    getAdocNewSA: function(req, res){
+    getAdocNewSA: function (req, res) {
         res.render('a_doc_newSA', {
             title: 'New Student Agreement',
         });
     },
 
     // to show new student documents page for admin side
-    getAdocNewSD: function(req, res){
+    getAdocNewSD: function (req, res) {
         res.render('a_doc_newSD', {
             title: 'New Student Document',
         });
     },
 
     // to show student agreements page for admin side
-    getAdocSA: function(req, res){
+    getAdocSA: function (req, res) {
         res.render('a_doc_SA', {
             title: 'Student Agreement',
         });
     },
 
     // to show student documents page for admin side
-    getAdocSD: function(req, res){
+    getAdocSD: function (req, res) {
         res.render('a_doc_SD', {
             title: 'Student Document',
         });
     },
 
     // to show Additional Fees page for admin side
-    getAfeeAdd: function(req, res){
+    getAfeeAdd: function (req, res) {
         res.render('a_fee_add', {
             title: 'Additional Fees',
         });
     },
 
     // to show Edit Upon Enrollment page for admin side
-    getAfeeEditUE: function(req, res){
+    getAfeeEditUE: function (req, res) {
         res.render('a_fees_editUE', {
             title: 'Edit Upon Enrollment'
         });
     },
 
     // to show Miscellaneous Fees page for admin side
-    getAfeeMisc: function(req, res){
-        res.render('a_fee_misc',{
+    getAfeeMisc: function (req, res) {
+        res.render('a_fee_misc', {
             title: 'Miscellaneous Fees'
         });
     },
 
     // to show Other Fees page for admin side
-    getAfeeOthers: function(req, res){
+    getAfeeOthers: function (req, res) {
         res.render('a_fees_others', {
             title: 'Other Fees'
         });
     },
 
     // to show Tuition Fees page for admin side
-    getAfeeTuition: function(req, res){
+    getAfeeTuition: function (req, res) {
         res.render('a_fees_tuition', {
             title: 'Tuition Fees',
         });
     },
 
     // to show Upon Enrollment page for admin side
-    getAfeeUponE: function(req, res){
+    getAfeeUponE: function (req, res) {
         res.render('a_fees_uponE', {
             title: 'Upon Enrollment',
         });
     },
 
     // to show all admins for admin side
-    getAuserAdmin: function(req, res){
+    getAuserAdmin: function (req, res) {
         res.render('a_users_admins', {
             title: 'Admins',
         })
     },
 
     // to show the profile of an admin for admin side
-    getAuserAProf: function(req, res){
+    getAuserAProf: function (req, res) {
         res.render('a_users_AProfile', {
             title: 'Admin',
         });
     },
 
     // to show all accounts of all of the parent's children for admin side
-    getAuserPAcc: function(req, res){
+    getAuserPAcc: function (req, res) {
         res.render('a_users_PAccount', {
             title: 'Admin',
         });
     },
 
     // to show all of the parents for admin side
-    getAuserParent: function(req, res){
+    getAuserParent: function (req, res) {
         res.render('a_users_parents', {
             title: 'Parents',
         });
     },
 
     //to show the profile of a parent for admin side 
-    getAuserPProf: function(req, res){
+    getAuserPProf: function (req, res) {
         res.render('a_users_PProfile', {
             title: 'Parent',
         });
     },
 
     // to show a students account for admin side
-    getAuserSAcc: function(req, res){
+    getAuserSAcc: function (req, res) {
         res.render('a_users_SAccount', {
             title: 'Student',
         });
     },
 
     // to show page for sending a student an email for admin side
-    getAuserSEmail: function(req, res){
+    getAuserSEmail: function (req, res) {
         res.render('a_users_SEmail', {
             title: 'Send Email',
         });
     },
 
     // to show a students profile for admin side
-    getAuserSProf: function(req, res){
+    getAuserSProf: function (req, res) {
         res.render('a_users_SProfile', {
             title: 'Student',
         });
@@ -372,10 +367,38 @@ const indexFunctions = {
             title: 'Students'
         });
     },
-    
+
     /*
         PARENT FUNCTIONS
     */
+    // to show paying for enrollment (bank) from the parents side
+    getPpaybank: function (req, res) {
+        res.render('p_pay_bank', {
+            title: 'Payment'
+        });
+    },
+
+    // to show selecting of payment plan for enrollment (bank) from the parents side
+    getPpayBPlan: function (req, res) {
+        res.render('p_pay_BPlan', {
+            title: 'Payment'
+        });
+    },
+
+    // to show paying for enrollment (credit card) from the parents side
+    getPpaycc: function (req, res) {
+        res.render('p_pay_cc', {
+            title: 'Payment'
+        });
+    },
+
+    // to show selecting of payment plan for enrollment (credit card) from the parents side
+    getPpayCCPlan: function (req, res) {
+        res.render('p_pay_CCPlan', {
+            title: 'Payment'
+        });
+    },
+
     // to show the breakdown of details from the parents side
     getPtransBD: function (req, res) {
         res.render('p_trans_BD', {
@@ -383,22 +406,28 @@ const indexFunctions = {
         });
     },
 
+    // to show the Statement of Accounts from the parents side
+    getPtransSA: function (req, res) {
+        res.render('p_trans_SA', {
+            title: 'Statement of Accounts'
+        });
+    },
 
     /*
         STUDENT FUNCTIONS 
     */
     // to show the breakdown of details from the students side
-    
+
     /* 
         Enrollment Functions
     */
 
-    getEnrollment: async function (req,res){
+    getEnrollment: async function (req, res) {
         try {
             var sections = await getCurrentSections()
             console.log(sections);
-            res.render('s_enroll_new.hbs',{
-                title : 'Enrollment Page',
+            res.render('s_enroll_new.hbs', {
+                title: 'Enrollment Page',
                 sections: sections
             })
         } catch (e) {
@@ -411,8 +440,7 @@ const indexFunctions = {
             title: 'Breakdown of details'
         });
     },
-    
+
 }
 
 module.exports = indexFunctions;
-

@@ -40,7 +40,12 @@ router.get('/t/users/students', controller.getTuserStudents);
 /*
     PARENT
 */
+router.get('/p/pay/bank', controller.getPpaybank);
+router.get('/p/pay/BPlan', controller.getPpayBPlan);
+router.get('/p/pay/cc', controller.getPpaycc);
+router.get('/p/pay/CCPlan', controller.getPpayCCPlan);
 router.get('/p/trans/brkdwn', controller.getPtransBD);
+router.get('/p/trans/SA', controller.getPtransSA);
 
 /*
     STUDENT
