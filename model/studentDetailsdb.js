@@ -30,6 +30,7 @@ const studentDetailsSchema = new mongoose.Schema({
             siblings : {type : [{name:String,age:Number,occu:String}] , required : false},
             fetchName : {type : String, required : false},
             fetchNum : {type : String, required :false}
+
             /*
             siblings array 
              */

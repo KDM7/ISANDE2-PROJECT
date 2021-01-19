@@ -69,5 +69,52 @@ $(document).ready(function() {
         STUDENT
     */
 
-    
+    // sibling and educational background is not yet fixed
+    $('#submitEnrollNew').click(function(){
+        var sectionID = $('#gradeLvl').val();
+        var userInfo = {
+            firstName :         $('#firstName').val(),
+            lastName :          $('#lastName').val(),
+            middleName :        $('#middleName').val(),
+            gender :            $('#gender').val(),
+        };
+        
+        var studentDetails ={
+            familyRecords : {
+                mName:          $('#mName').val(),
+                mOccu :         $('#mOccu').val(),
+                mEmail :        $('#mEmail').val(),
+                mWorkAddress :  $('#mWorkAddress').val(),
+                mNum :          $('#mNum').val(),
+                fName :         $('#fName').val(),
+                fOccu :         $('#fOccu').val(),
+                fEmail :        $('#fEmail').val(),
+                fWorkAddress :  $('#fWorkAddress').val(),
+                fNum :          $('#fNum').val(),
+                cName :         $('#cName').val(),
+                relation :      $('#relation').val(),
+                cEmail :        $('#cEmail').val(),
+                cNum :          $('#cNum').val(),
+                cWorkAddress :  $('#cWorkAddress').val(),
+                fetcherName :   $('#fetchName').val(),
+                fetchNum :      $('#fetchNum').val(),
+                //siblings : 
+            },
+            //eduBackground :
+            reason :            $('#reason').val()
+        };
+        var studentData ={
+            mobileNum :         $('#mobileNum').val(),
+            teleNum :           $('#teleNum').val(),
+            nationality :       $('#nationality').val(),
+            birthDate :         $('#birthDate').val(),
+            birthPlace:         $('#birthPlace').val(),
+            email :             $('#email').val(),
+            religion:           $('#religion').val(),
+            address :           $('#address').val()         
+        }
+        console.log(sectionID);
+        console.log(studentDetails);
+        console.log(studentData);
+    });
 });
