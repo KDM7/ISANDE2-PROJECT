@@ -3,380 +3,430 @@
 {{>a_navbar}}
 {{>a_sidebar}}
 
-                <div class="col-9">
-                    <div class="shadow">
-                        <div class="d-flex flex-column mt-2 bg-light">
-                            <div class="container">
-                                <div class="row mt-2">
-                                    <div class="col-6">
-                                        School Year:
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    2020-2021
-                                                </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">2019-2020</a>
-                                                <a class="dropdown-item" href="#">2018-2019</a>
-                                                <a class="dropdown-item" href="#">2017-2018</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <form class="form-inline justify-content-end">
-                                            <input class="form-control mr-sm-2" type="search" placeholder="Search Users" aria-label="Search">
-                                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-                                    <div class="col-6 mt-4">
-                                        Grade Level
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Grade 12
-                                                </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Grade 12</a>
-                                                <a class="dropdown-item" href="#">Grade 11</a>
-                                                <a class="dropdown-item" href="#">Grade 10</a>
-                                                <a class="dropdown-item" href="#">Grade 9</a>
-                                                <a class="dropdown-item" href="#">Grade 8</a>
-                                                <a class="dropdown-item" href="#">Grade 7</a>
-                                                <a class="dropdown-item" href="#">Grade 6</a>
-                                                <a class="dropdown-item" href="#">Grade 5</a>
-                                                <a class="dropdown-item" href="#">Grade 4</a>
-                                                <a class="dropdown-item" href="#">Grade 3</a>
-                                                <a class="dropdown-item" href="#">Grade 2</a>
-                                                <a class="dropdown-item" href="#">Grade 1</a>
-                                                <a class="dropdown-item" href="#">Advanced Casa</a>
-                                                <a class="dropdown-item" href="#">Senior Casa</a>
-                                                <a class="dropdown-item" href="#">Junior Casa</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="btn-group mt-4" style="margin-left: 69px;">
-                                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Send Enrollment Notification
-                                                </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Send Enrollment Notification</a>
-                                                <a class="dropdown-item" href="#">Send Grades Notification</a>
-                                                <a class="dropdown-item" href="#">Send Class Schedule Notification</a>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn btn-outline-primary mt-4" data-toggle="modal" data-target="#exampleModal">Send</button>
-                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Email has been sent
-                                                            
-                                                            
-
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                    </div>
-                                </div>
+<div class="col-9">
+    <div class="shadow">
+        <div class="d-flex flex-column mt-2 bg-light">
+            <div class="container">
+                <div class="row mt-2">
+                    <div class="col-6">
+                        {{!--                         
+                        School Year:
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                2020-2021
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">2019-2020</a>
+                                <a class="dropdown-item" href="#">2018-2019</a>
+                                <a class="dropdown-item" href="#">2017-2018</a>
                             </div>
-                            <div class="mt-2">
-                                <table class="table table-bordered">
-                                    <thead class="thead-primary">
-                                        <tr>
-                                            <th scope="col">Remarks</th>
-                                            <th scope="col">Student Number</th>
-                                            <th scope="col">Admin Name</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col"></th>
-                                            <th scope="col"></th>
-                                            <th scope="col">
-                                                
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000001</th>
-                                            <td>Abas, Sajjad</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account <span class="badge badge-danger">!</span></a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-secondary">N/A</td>
-                                            <th scope="row">TA-000001</th>
-                                            <td>Ajoc, Shania Nikka B.</td>
-                                            <td>New</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td> 
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile  <span class="badge badge-danger">!</span></a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000002</th>
-                                            <td>Barte, Gwyn</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account <span class="badge badge-danger">!</span></a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000003</th>
-                                            <td>Yusis, Ivan Heilee</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-danger">FAILED</td>
-                                            <th scope="row">18-000004</th>
-                                            <td>Tumalian, Pauline</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary disabled">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000005</th>
-                                            <td>Prado, Hannah Dorothy</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000006</th>
-                                            <td>Polinag, Jomary</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000007</th>
-                                            <td>Bautista, Ryan Cristoff</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000008</th>
-                                            <td>Recia, Christian Jennace</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-secondary">N/A</td>
-                                            <th scope="row">TA-000002</th>
-                                            <td>Carandang, Antonio Jaoquin</td>
-                                            <td>New</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile <span class="badge badge-danger">!</span></a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000009</th>
-                                            <td>Banaag, Aidrian Curl</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000010</th>
-                                            <td>Balonzo, Julie</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000011</th>
-                                            <td>Pabustan, Nishamae</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000012</th>
-                                            <td>Ramirez, Kiefer Blake</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-primary" >View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000013</th>
-                                            <td>Balonzo, Junlyn</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-success">PASSED</td>
-                                            <th scope="row">18-000014</th>
-                                            <td>Wehbi, Natalia Angeline</td>
-                                            <td>Old</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="text-secondary">N/A</td>
-                                            <th scope="row">TA-000003</th>
-                                            <td>Rocha, Jorge Jr.</td>
-                                            <td>New</td>
-                                            <td>
-                                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
-                                            </td>
-                                            <td>
-                                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile <span class="badge badge-danger">!</span></a>
-                                            </td>
-                                            <td>
-                                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination pagination-sm justify-content-end m-2">
-                                        <li class="page-item"><a class="page-link text-primary" href="#">Previous</a></li>
-                                        <li class="page-item"><a class="page-link text-primary" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link text-primary" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link text-primary" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link text-primary" href="#">Next</a></li>
-                                    </ul>
-                                </nav>
+                        </div>
+                         --}}
+                        <div class="form-group row">
+                            <label for="a_u_ST_schoolYear"
+                                class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
+                            <select class="form-control col-9 p-0 m-0" id="a_u_ST_schoolYear">
+                                <option>2019-2020</option>
+                                <option>2018-2019</option>
+                                <option>2017-2018</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <form class="form-inline justify-content-end">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search Users"
+                                aria-label="Search">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-2">
+
+                    <div class="col-6 mt-4">
+                        {{!--                         
+                        Grade Level
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                Grade 12
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Grade 12</a>
+                                <a class="dropdown-item" href="#">Grade 11</a>
+                                <a class="dropdown-item" href="#">Grade 10</a>
+                                <a class="dropdown-item" href="#">Grade 9</a>
+                                <a class="dropdown-item" href="#">Grade 8</a>
+                                <a class="dropdown-item" href="#">Grade 7</a>
+                                <a class="dropdown-item" href="#">Grade 6</a>
+                                <a class="dropdown-item" href="#">Grade 5</a>
+                                <a class="dropdown-item" href="#">Grade 4</a>
+                                <a class="dropdown-item" href="#">Grade 3</a>
+                                <a class="dropdown-item" href="#">Grade 2</a>
+                                <a class="dropdown-item" href="#">Grade 1</a>
+                                <a class="dropdown-item" href="#">Advanced Casa</a>
+                                <a class="dropdown-item" href="#">Senior Casa</a>
+                                <a class="dropdown-item" href="#">Junior Casa</a>
+                            </div>
+                        </div>
+                         --}}
+                        <div class="form-group row">
+                            <label for="a_u_ST_gradeLVL"
+                                class="col-3 d-flex justify-content-center align-items-center m-0">Grade Level:</label>
+                            <select class="form-control col-9 p-0 m-0" id="a_u_ST_gradeLVL">
+                                <option>12</option>
+                                <option>11</option>
+                                <option>10</option>
+                                <option>9</option>
+                                <option>8</option>
+                                <option>7</option>
+                                <option>6</option>
+                                <option>5</option>
+                                <option>4</option>
+                                <option>3</option>
+                                <option>2</option>
+                                <option>1</option>
+                                <option>Advanced Casa</option>
+                                <option>Senior Casa</option>
+                                <option>Junior Casa</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-6">
+                        <div class="btn-group mt-4" style="margin-left: 69px;">
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                Send Enrollment Notification
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Send Enrollment Notification</a>
+                                <a class="dropdown-item" href="#">Send Grades Notification</a>
+                                <a class="dropdown-item" href="#">Send Class Schedule Notification</a>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary mt-4" data-toggle="modal"
+                            data-target="#exampleModal">Send</button>
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Email has been sent
+
+
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="mt-2">
+                <table class="table table-bordered">
+                    <thead class="thead-primary">
+                        <tr>
+                            <th scope="col">Remarks</th>
+                            <th scope="col">Student Number</th>
+                            <th scope="col">Admin Name</th>
+                            <th scope="col">Status</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col">
 
-
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000001</th>
+                            <td>Abas, Sajjad</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account <span
+                                        class="badge badge-danger">!</span></a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-secondary">N/A</td>
+                            <th scope="row">TA-000001</th>
+                            <td>Ajoc, Shania Nikka B.</td>
+                            <td>New</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile <span
+                                        class="badge badge-danger">!</span></a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000002</th>
+                            <td>Barte, Gwyn</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account <span
+                                        class="badge badge-danger">!</span></a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000003</th>
+                            <td>Yusis, Ivan Heilee</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-danger">FAILED</td>
+                            <th scope="row">18-000004</th>
+                            <td>Tumalian, Pauline</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary disabled">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000005</th>
+                            <td>Prado, Hannah Dorothy</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000006</th>
+                            <td>Polinag, Jomary</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000007</th>
+                            <td>Bautista, Ryan Cristoff</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000008</th>
+                            <td>Recia, Christian Jennace</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-secondary">N/A</td>
+                            <th scope="row">TA-000002</th>
+                            <td>Carandang, Antonio Jaoquin</td>
+                            <td>New</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile <span
+                                        class="badge badge-danger">!</span></a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000009</th>
+                            <td>Banaag, Aidrian Curl</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000010</th>
+                            <td>Balonzo, Julie</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000011</th>
+                            <td>Pabustan, Nishamae</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000012</th>
+                            <td>Ramirez, Kiefer Blake</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000013</th>
+                            <td>Balonzo, Junlyn</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-success">PASSED</td>
+                            <th scope="row">18-000014</th>
+                            <td>Wehbi, Natalia Angeline</td>
+                            <td>Old</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile</a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-secondary">N/A</td>
+                            <th scope="row">TA-000003</th>
+                            <td>Rocha, Jorge Jr.</td>
+                            <td>New</td>
+                            <td>
+                                <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
+                            </td>
+                            <td>
+                                <a href="user_NewStudentProfile.html" class="btn btn-outline-primary">View Profile <span
+                                        class="badge badge-danger">!</span></a>
+                            </td>
+                            <td>
+                                <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pagination-sm justify-content-end m-2">
+                        <li class="page-item"><a class="page-link text-primary" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link text-primary" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link text-primary" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link text-primary" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link text-primary" href="#">Next</a></li>
+                    </ul>
+                </nav>
             </div>
         </div>
+    </div>
+</div>
+
+
+</div>
+</div>
