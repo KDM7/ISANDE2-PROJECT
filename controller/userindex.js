@@ -340,10 +340,54 @@ const indexFunctions = {
 
     // to show Upon Enrollment page for admin side
     getAfeeUponE: function(req, res){
-        res.render('a_fees_uponE', {
-            title: 'Upon Enrollment',
+        res.render('a_fees_edituponE', {
+            title: 'Edit Upon Enrollment',
         });
     },
+
+    // to show the set school year page for admin side
+    getAschedCurSchoolYr: function(req, res){
+        res.render('a_sched_CurSchoolYr', {
+            title: 'Set CUrrent School Year',
+        });
+    },    
+
+    // to show the class schedule page for admin side
+    getAschedClassSched: function(req, res){
+        res.render('a_sched_classSched', {
+            title: 'Class Schedules',
+        });
+    },
+
+    // to show the add class schedule page for admin side
+    getAschednewClassSched: function(req, res){
+        res.render('a_sched_newClassSched', {
+            title: 'New Class Schedules',
+        });
+    },
+
+    // to show the academic calendar page for admin side
+    getAschedAcadCalendar: function(req, res){
+        res.render('a_sched_acadCalendar', {
+            title: 'Academic Calendar',
+        });
+    },
+    
+    // to show the new event page for admin side
+    getAschednewAcadCalendar: function(req, res){
+        res.render('a_sched_newAcadCalendar', {
+            title: 'New Event',
+        });
+    },
+    
+    // to show the edit event page for admin side
+    getAschededitAcadCalendar: function(req, res){
+        res.render('a_sched_editAcadCalendar', {
+            title: 'Edit Event',
+        });
+    },
+
+
 
     // to show all admins for admin side
     getAuserAdmin: function(req, res){
@@ -355,14 +399,14 @@ const indexFunctions = {
     // to show the profile of an admin for admin side
     getAuserAProf: function(req, res){
         res.render('a_users_AProfile', {
-            title: 'Admin',
+            title: 'Admin Profile',
         });
     },
 
     // to show all accounts of all of the parent's children for admin side
     getAuserPAcc: function(req, res){
         res.render('a_users_PAccount', {
-            title: 'Admin',
+            title: 'Parent Account',
         });
     },
 
@@ -376,14 +420,14 @@ const indexFunctions = {
     //to show the profile of a parent for admin side 
     getAuserPProf: function(req, res){
         res.render('a_users_PProfile', {
-            title: 'Parent',
+            title: 'Parent Profile',
         });
     },
 
     // to show a students account for admin side
     getAuserSAcc: function(req, res){
         res.render('a_users_SAccount', {
-            title: 'Student',
+            title: 'Student Account',
         });
     },
 
@@ -397,7 +441,28 @@ const indexFunctions = {
     // to show a students profile for admin side
     getAuserSProf: function(req, res){
         res.render('a_users_SProfile', {
-            title: 'Student',
+            title: 'Student Profile',
+        });
+    },
+
+    // to show a list of teachers for admin side
+    getAuserTeachers: function(req, res){
+        res.render('a_users_teachers', {
+            title: 'Teachers',
+        });
+    },
+
+    // to show the teachers profile page for admin side
+    getAuserTProf: function(req, res){
+        res.render('a_users_TProfile', {
+            title: 'Teacher Profile',
+        });
+    },
+    
+    // to show the edit teachers page for admin side
+    getAusereditTeachers: function(req, res){
+        res.render('a_users_editT', {
+            title: 'Edit Teacher',
         });
     },
 

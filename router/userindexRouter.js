@@ -22,7 +22,13 @@ router.get('/a/fees/misc', controller.getAfeeMisc);
 router.get('/a/fees/other', controller.getAfeeOthers);
 router.get('/a/fees/tuition', controller.getAfeeTuition);
 router.get('/a/fees/uponE', controller.getAfeeUponE);
-router.get('/a/user/SProfile', controller.getAuserSProf);
+router.get('/a/sched/CurSchoolYr', controller.getAschedCurSchoolYr);
+router.get('/a/sched/ClassSched', controller.getAschedClassSched);
+router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
+router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
+router.get('/a/sched/newAcadCalendar', controller.getAschednewAcadCalendar);
+router.get('/a/sched/editAcadCalendar', controller.getAschededitAcadCalendar);
+router.get('/a/users/SProfile', controller.getAuserSProf);
 router.get('/a/users/SEmail', controller.getAuserSEmail);
 router.get('/a/users/SAccount', controller.getAuserSAcc);
 router.get('/a/users/PProfile', controller.getAuserPProf);
@@ -31,6 +37,9 @@ router.get('/a/users/PAccount', controller.getAuserPAcc);
 router.get('/a/users/AProfile', controller.getAuserAProf);
 router.get('/a/users/admins', controller.getAuserAdmin);
 router.get('/a/users/students', controller.getAuserStudents);
+router.get('/a/users/teachers', controller.getAuserTeachers);
+router.get('/a/users/TProfile', controller.getAuserTProf);
+router.get('/a/users/editTeachers', controller.getAusereditTeachers);
 
 /*
     TEACHER
