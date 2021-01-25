@@ -12,7 +12,8 @@ const parentModel = require("../model/parentsdb");
 const studentModel = require("../model/studentdb");
 const sectionModel = require("../model/sectiondb");
 const schoolYearModel = require("../model/schoolYeardb");
-const studentDetailsModel = require("../model/studentDetailsdb")
+const studentDetailsModel = require("../model/studentDetailsdb");
+const ref_sectionModel = require("../model/ref_sectiondb");
 
 const bcrypt = require('bcrypt');
 const e = require('express');
@@ -202,43 +203,43 @@ const indexFunctions = {
             if (match) {
                 console.log('matching');
                 bcrypt.compare(pass, match.password, function (err, result) {
-                // var result = match.password == pass;
-                console.log('hi');
-                console.log(result);
-                if (result) {
-                    if (match.type == 'A') {
-                        //send 201 admin
-                        req.session.logUser = match;
-                        req.session.type = 'admin';
-                        res.send({
-                            status: 201
-                        });
-                    } else if (match.type == 'T') {
-                        //send 202 teacher
-                        req.session.logUser = match;
-                        req.session.type = 'teacher';
-                        res.send({
-                            status: 202
-                        });
-                    } else if (match.type == 'P') {
-                        //send 203 parent
-                        req.session.logUser = match;
-                        req.session.type = 'parent';
-                        res.send({
-                            status: 203
-                        });
-                    } else {
-                        //send 204 student
-                        req.session.logUser = match;
-                        req.session.type = 'student';
-                        res.send({
-                            status: 204
-                        });
-                    }
-                } else res.send({
-                    status: 401,
-                    msg: 'Incorrect password.'
-                });
+                    // var result = match.password == pass;
+                    console.log('hi');
+                    console.log(result);
+                    if (result) {
+                        if (match.type == 'A') {
+                            //send 201 admin
+                            req.session.logUser = match;
+                            req.session.type = 'admin';
+                            res.send({
+                                status: 201
+                            });
+                        } else if (match.type == 'T') {
+                            //send 202 teacher
+                            req.session.logUser = match;
+                            req.session.type = 'teacher';
+                            res.send({
+                                status: 202
+                            });
+                        } else if (match.type == 'P') {
+                            //send 203 parent
+                            req.session.logUser = match;
+                            req.session.type = 'parent';
+                            res.send({
+                                status: 203
+                            });
+                        } else {
+                            //send 204 student
+                            req.session.logUser = match;
+                            req.session.type = 'student';
+                            res.send({
+                                status: 204
+                            });
+                        }
+                    } else res.send({
+                        status: 401,
+                        msg: 'Incorrect password.'
+                    });
                 });
             } else res.send({
                 status: 401,
@@ -258,22 +259,54 @@ const indexFunctions = {
     */
     // to show the students from the admins side
     getAuserStudents: async function (req, res) {
-        var schoolYear = await schoolYearModel.aggregate(
-            [
-                {
-                  '$project': {
-                    'value': '$schoolYear', 
+        var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
+            [{
+                '$project': {
+                    'value': '$schoolYear',
                     'selected': '$isCurrent'
-                  }
                 }
-              ]
+            }]
         );
+        var gradeLvl = await ref_sectionModel.aggregate(
+            [{
+                '$sort': {
+                    'gradeLvl': 1
+                }
+            }, {
+                '$project': {
+                    'value': '$gradeLvl'
+                }
+            }]
+        );
+        // after grades have been set up: may have to merge student and another var grades instead of trying to aggregate for remarks
+        var student = await studentModel.aggregate([{
+            '$lookup': {
+                'from': 'users',
+                'localField': 'userID',
+                'foreignField': 'userID',
+                'as': 'userData'
+            }
+        }, {
+            '$unwind': {
+                'path': '$userData',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$project': {
+                'userID': 1,
+                'firstname': '$userData.firstName',
+                'middlename': '$userData.middleName',
+                'lastname': '$userData.lastName'
+            }
+        }]);
         res.render('a_users_students', {
             // firstname: req.session.logUser.firstName,
             // middlename: req.session.logUser.middleName,
             // lastname: req.session.logUser.lastName,
             title: 'Students',
             schoolYear: schoolYear,
+            gradeLvl: gradeLvl,
+            student: student,
         });
     },
 
@@ -483,7 +516,7 @@ const indexFunctions = {
     */
 
 
-    getEnrollmentNew: async function (req,res){
+    getEnrollmentNew: async function (req, res) {
         try {
             var sections = await getCurrentSections()
             console.log(sections);
