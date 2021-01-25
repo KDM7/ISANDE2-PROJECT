@@ -466,21 +466,18 @@ const indexFunctions = {
         });
     },
 
-<<<<<<< HEAD
     // to show the Statement of Accounts from the parents side
     getPtransSA: function (req, res) {
         res.render('p_trans_SA', {
             title: 'Statement of Accounts'
         });
     },
-=======
     getPaccNChild: function (req, res) {
         res.render('p_acc_NChild', {
             title: 'Register new Child'
         });
     },
 
->>>>>>> enrollOld
 
     /*
         STUDENT FUNCTIONS 
