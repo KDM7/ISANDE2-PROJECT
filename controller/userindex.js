@@ -1,8 +1,7 @@
 // 
-
 const fs = require('fs');
 const handlebars = require('handlebars');
-
+const generator = require('generate-password');
 // 
 
 const userModel = require("../model/usersdb");
@@ -105,8 +104,16 @@ function eduBackground(name, acadYear) {
     this.acadYear = acadYear;
 }
 
-function studentDetails(studentID, reason) {
+function studentDetails(studentID, familyRecords,reason) {
     this.studentID = studentID;
+    this.familyRecords = familyRecords;
+    this.reason = reason;
+}
+
+function studentDetails(studentID, familyRecords, eduBackground,reason) {
+    this.studentID = studentID;
+    this.familyRecords = familyRecords;
+    this.eduBackground = eduBackground;
     this.reason = reason;
 }
 
@@ -174,8 +181,55 @@ async function getCurrentSections() {
     return sections; //returns all sections in an array 
 }
 
+async function getNextStudentID(){
+    var schoolYear = await getCurrentSY();
+    var start = schoolYear.substr(2,3);
+    var nextStudent;
+    var leadingzeroes;
+    var studentNum;
+    var students = await studentModel.aggregate([
+        {
+          '$match': {
+            'userID': {
+              '$regex': new RegExp(start)
+            }
+          }
+        }, {
+          '$sort': {
+            'userID': -1
+          }
+        }, {
+          '$limit': 1
+        }, {
+          '$project': {
+            'userID': 1
+          }
+        }
+      ]);
+    //   console.log(start);
+    if(students.length == 0)
+      return  start + '000001'
+    else {
+        studentNum = students[0].userID.substring(3);
+        studentNum = parseInt(studentNum.toString());
+        studentNum++;
 
+        leadingzeroes = 6 - studentNum.toString().length;
+        // console.log(leadingzeroes);
 
+        nextStudent = '' + start;
+
+        for(var i = 0; i < leadingzeroes; i++)
+            nextStudent = nextStudent + '0';
+        
+        nextStudent = nextStudent + studentNum.toString();
+
+        return nextStudent;
+    }
+   // var highestID = students[0].userID;
+  //  console.log(highestID);
+    return true;
+}
 const indexFunctions = {
     /* 
         LOGIN FUNCTIONS    
@@ -492,7 +546,7 @@ const indexFunctions = {
     getEnrollmentNew: async function (req,res){
         try {
             var sections = await getCurrentSections()
-            console.log(sections);
+            // console.log(sections);
             res.render('s_enroll_new.hbs', {
                 title: 'Enrollment Page',
                 sections: sections
@@ -517,6 +571,35 @@ const indexFunctions = {
             title: 'Breakdown of details'
         });
     },
+    
+    // Function is used to create new students
+    postEnrollmentNew: async function (req,res){
+        var {
+            userInfo,
+            studentDetails,
+            studentData,
+            sectionID
+        } = req.body;
+        try{
+            var userID = await getNextStudentID();
+            var password = generator.generate({
+                length:12, numbers : true
+            });
+            var hash = await bcrypt.hash(password,saltRounds)
+            var user = new User(userID,hash,userInfo.firstName,userInfo.lastName,userInfo.middleName,'S',userInfo.gender);
+            var newUser = new userModel(user);
+            var result = await newUser.recordNewUser();
+            console.log(password)
+        }catch(e){
+            res.send({status : 500, msg : e});
+        }
+       
+
+        res.send({
+            status : 500,
+            msg : 'I made it back'
+        });
+    }
 }
 
 module.exports = indexFunctions;

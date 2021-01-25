@@ -55,7 +55,7 @@ router.get('/enroll', controller.getEnrollmentNew);
 router.get('/enroll/parent', controller.getEnrollmentParent);
 router.get('/s/trans/brkdwn', controller.getStransBD);
 
-
+router.post('/enroll', controller.postEnrollmentNew);
 
 
 module.exports = router;
