@@ -470,7 +470,42 @@ const indexFunctions = {
         TEACHER FUCNTIONS
     */
 
-    // to show the students from the teachers dis
+    // to show the students from the teachers side
+    getTschedacadCalendar: function (req, res) {
+        res.render('t_sched_acadCalendar', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    // to show the students from the teachers side
+    getTschedacadCalendar2: function (req, res) {
+        res.render('t_sched_acadCalendar2', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    // to show the students from the teachers side
+    getTschedclassSched: function (req, res) {
+        res.render('t_sched_classSched', {
+            title: 'Teacher Schedule'
+        });
+    },
+
+    // to show the students from the teachers side
+    getTuserSgrades: function (req, res) {
+        res.render('t_users_SGrades', {
+            title: 'Students grades'
+        });
+    },
+
+    // to show the students profile from the teachers side
+    getTuserSProf: function (req, res) {
+        res.render('t_users_SProfile', {
+            title: 'Student profile'
+        });
+    },
+
+    // to show the students from the teachers side
     getTuserStudents: function (req, res) {
         res.render('t_users_students', {
             title: 'Students'
