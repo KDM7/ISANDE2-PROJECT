@@ -466,12 +466,21 @@ const indexFunctions = {
         });
     },
 
+<<<<<<< HEAD
     // to show the Statement of Accounts from the parents side
     getPtransSA: function (req, res) {
         res.render('p_trans_SA', {
             title: 'Statement of Accounts'
         });
     },
+=======
+    getPaccNChild: function (req, res) {
+        res.render('p_acc_NChild', {
+            title: 'Register new Child'
+        });
+    },
+
+>>>>>>> enrollOld
 
     /*
         STUDENT FUNCTIONS 
@@ -496,9 +505,15 @@ const indexFunctions = {
         }
     },
 
-    getEnrollemtOld: async function (req, res) {
-        var oldStudent = await get
+    getEnrollmentParent: async function (req, res) {
+        res.render('s_enroll_parent', {
+            title: 'Register Parent'
+        });
     },
+
+    // getEnrollemtOld: async function (req, res) {
+    //     var oldStudent = await get
+    // }
 
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {

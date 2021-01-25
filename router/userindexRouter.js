@@ -45,12 +45,21 @@ router.get('/p/pay/BPlan', controller.getPpayBPlan);
 router.get('/p/pay/cc', controller.getPpaycc);
 router.get('/p/pay/CCPlan', controller.getPpayCCPlan);
 router.get('/p/trans/brkdwn', controller.getPtransBD);
+<<<<<<< HEAD
 router.get('/p/trans/SA', controller.getPtransSA);
+=======
+router.get('/p/acc/NChild', controller.getPaccNChild);
+>>>>>>> enrollOld
 
 /*
     STUDENT
 */
+<<<<<<< HEAD
 router.get('/enroll', controller.getEnrollmentNew);
+=======
+router.get('/enroll', controller.getEnrollment);
+router.get('/enroll/parent', controller.getEnrollmentParent);
+>>>>>>> enrollOld
 router.get('/s/trans/brkdwn', controller.getStransBD);
 
 

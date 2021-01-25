@@ -1,0 +1,146 @@
+<div>
+        <header class="container">
+            
+
+        </header>
+        
+            <div class="container bg-light">
+
+                <div class="row mb-2">
+                    
+                    <div class="col-12">
+                         <div class="list-group mt-2 shadow bg-light">
+                            <div class="shadow">
+                                <div class="container">
+                                    <div class="row mt-2">
+                                        <div class="col-12">
+                                            <h1 class="display-5 text-center font-weight-bold">Enroll in Regis-Grace Montessori School
+                                            </h1>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <div class="container">
+                                        <h5 class="display-5 text-left">Parent Registration</h5>
+                                            <hr style="border: 2px solid black;" />
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="GrdLvl">Is your parent/guardian registered?</label>
+                                                <br>
+                                                <select name="grade_level_id" id="if_exist" class="form-control valid" onchange="myFunction2()" required> 
+                                                    <option value="Yes"> Yes </option>
+                                                    <option value="No"> No </option>                      
+                                                </select>
+                                            </div>
+                                            <hr style="border: 2px solid black;" />
+                                            <h6 class="display-5 text-left">If yes please fill up the following</h6>
+                                            <hr style="border: 2px solid black;" />
+                                            <div class="form-group">
+                                                <label for="firstName">Parent First Name</label>
+                                                <input type="text" class="form-control" id="firstName" placeholder="" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lastName">Parent Last Name</label>
+                                                <input type="text" class="form-control" id="lastName" placeholder="" required>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="middleName">Parent Middle Name</label>
+                                                    <input type="text" class="form-control" id="middleName" placeholder="" required>
+                                                    
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="age">Parent ID</label>
+                                                    <input type="text" class="form-control " id="age" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <hr style="border: 2px solid black;" />
+                                            <h6 class="display-5 text-left">If no please fill up the following</h6>
+                                            <hr style="border: 2px solid black;" />
+                                            <div class="form-group">
+                                                <label for="firstName">First Name</label>
+                                                <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="firstName" placeholder="" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="lastName">Last Name</label>
+                                                <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="lastName" placeholder="" required>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="middleName">Middle Name</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="middleName" placeholder="" required>
+                                                    
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="age">Age</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="number" class="form-control " id="age" placeholder="" required>
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="gender">Gender</label>
+                                                    <span style="color:red">*</span>
+                                                    <select name="grade_level_id" id="gender" class="form-control valid" onchange="myFunction2()" required> 
+                                                        <option value="2">Male</option>
+                                                        <option value="3">Female</option>                           
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="mobileNum">Mobile Number</label>
+                                                    <span style="color:red">*</span>
+                                                    <input type="text" class="form-control" id="mobileNum" placeholder="" required>
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="teleNum">Telephone</label>
+                                                    <input type="text" class="form-control" id="teleNum" placeholder="">
+                                                </div>
+                                                <div class="form-group w-25 col-4">
+                                                    <label for="nationality">Nationality</label>
+                                                    <input type="text" class="form-control" id="nationality" placeholder="">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label for="birthDate" class="col-10 col-form-label">Birth Date</label>
+                                                    <span style="color:red">*</span>
+                                                    <div class="col-11">
+                                                        <input class="form-control" type="date" id="birthDate">
+                                                        <script>
+                                                            Date.prototype.toDateInputValue = (function() {
+                                                                var local = new Date(this);
+                                                                local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+                                                                return local.toJSON().slice(0, 10);
+                                                            });
+                                                            document.getElementById('dateSold').value = new Date().toDateInputValue();
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                                    <div class="form-group w-25 col-8">
+                                                        <label for="birthPlace">Birth Place</label>
+                                                        <span style="color:red">*</span>
+                                                        <input type="text" class="form-control" id="birthPlace" placeholder="" required>
+                                                    </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">Email</label>
+                                                <span style="color:red">*</span>
+                                                <input type="text" class="form-control" id="email" placeholder="" required>
+                                            </div>
+                                            <hr style="border: 2px solid black;" />
+                                        </form>
+                                    </div>
+                                    <div class="d-flex border justify-content-center">
+                                        <a href="enroll_new2.html" class="btn btn-outline-success btn-lg btn-block mt-5 mb-5 w-75">Next</a>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
