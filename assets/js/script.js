@@ -475,8 +475,32 @@ $(document).ready(function() {
             console.log(valid);
             
             if(valid && !validator.isEmpty(parentInfo.parentID))
-                alert('s');
-            
+            {
+                $.post('/enroll/parent/old', {
+                    parentInfo : parentInfo
+                }, function (result){
+                    switch (result.status) {
+                        case 201:
+                            {
+                                //admin
+                                
+                                alert('Link to student is successful. To pay, go to you parent account')
+                                window.location.href = '/';
+                                break;
+                            }
+                        case 401:
+                            {
+                                alert('case 401: ' + result.msg);
+                                break;
+                            }
+                        case 500:
+                            {
+                                alert('case 500: ' + result.msg);
+                                break;
+                            }
+                    }
+                })
+            }
             else if(valid && validator.isEmpty(parentInfo.parentID)) 
                 alert('ParentID is Empty');
         }
