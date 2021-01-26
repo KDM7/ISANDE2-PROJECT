@@ -1,0 +1,115 @@
+{{!-- This is for viewing the first page of the academic calendar (form), Parents --}}
+
+{{>p_navbar}}
+{{>p_sidebar}}
+
+                <div class="col-9">
+                     <div class="list-group mt-2 shadow bg-light">
+                        <div class="container">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <p class="display-5 text-center font-weight-bold">Academic Calendar
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <p>The Academic Calendar consists of the following</p>
+                            <form>
+                                <table class="table table-striped">
+                                    <thead class="thead-dark">
+                                        <th class="text-center" colspan="3"></th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th scope="col" class="text-left">Calendar</th>
+                                            <th scope="col" class="text-left">Description</th>
+                                            <th></th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Academic - primary Education</th>
+                                            <td class="text-left">Dates affecting faculty and students in preschool and elementary school in relation to studies</td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" value="" id="check1">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Academic - Secondary Education</th>
+                                            <td class="text-left">Dates affecting faculty and students in high school and senior high school in relation to studies</td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" value="" id="check3">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Regular Events</th>
+                                            <td class="text-left">Dates relating to school-wide events which are conducted regularly</td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" value="" id="check5">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-left">Holidays</th>
+                                            <td class="text-left">Dates scheduled as national or local non-working holidays</td>
+                                            <td>
+                                                <input class="form-check-input" type="checkbox" value="" id="check6">
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="container">
+                                    <label for="mySelect">Academic Year</label>
+                                    <select id="mySelect" onchange="myFunction()">
+                                        <option value="A.Y.2019-2020">A.Y.2020-2021</option>
+                                        <option value="A.Y.2019-2020">A.Y.2019-2020</option>
+                                        <option value="A.Y.2018-2019">A.Y.2018-2019</option>
+                                        <option value="A.Y.2017-2018">A.Y.2017-2018</option>
+                                        <option value="A.Y.2016-2017">A.Y.2016-2017</option>
+                                    </select>
+                                    <br>
+                                    <span class="font-weight-bold">Quarter:</span>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="fullYear" value="option1">
+                                        <label class="form-check-label" for="fullYr">
+                                        Full year
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="1stQt" value="option2">
+                                        <label class="form-check-label" for="1stQt">
+                                        First Quarter
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="2ndQt" value="option2">
+                                        <label class="form-check-label" for="2ndQt">
+                                        Second Quarter
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="3rdQt" value="option2">
+                                        <label class="form-check-label" for="3rdQt">
+                                        Third Quarter
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" id="4thQt" value="option2">
+                                        <label class="form-check-label" for="4thQt">
+                                        Fourth Quarter
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                            </form>
+                            
+                            <br><br>
+                            <div class="d-flex border justify-content-center">
+                                <a href="academicCalendar2.html" class="btn btn-primary btn-lg btn-block">Search</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>

@@ -1,0 +1,82 @@
+{{!-- This is for editting an event, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+                <div class="col-9">
+                    <div class="shadow">
+                         <div class="list-group mt-2 shadow bg-light">
+                            <div class="container">
+								<h1 class="display-4 text-center">Edit Event</h1>
+							</div>
+							<div class="container">
+								<form>
+									<div class="form-group">
+                                        <label for="formGroupExampleInput2">Category</label>
+                                        <br>
+                                        <select name="grade_level_id" id="search_category_id" class="form-control valid" onchange="myFunction2()" required disabled> 
+                                            <option value="2"> Academic - Primary Education </option>
+                                            <option value="3"> Academic - Secondary Education </option>
+                                            <option value="16"> Regular Events </option>
+                                            <option value="4"> Holidays </option>                          
+                                        </select>
+									</div>
+									<div class="form-group">
+                                        <label for="formGroupExampleInput2">Description</label>
+										<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="Hello World!"readonly>
+                                    </div>
+                                    <div class="form-group row">
+										<label for="example-date-input" class="col-2 col-form-label">Date</label>
+										<div class="col-10">
+											<input class="form-control" type="date" id="date">
+											<script>
+												Date.prototype.toDateInputValue = (function() {
+													var local = new Date(this);
+													local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+													return local.toJSON().slice(0, 10);
+												});
+												document.getElementById('date').value = new Date().toDateInputValue();
+											</script>
+										</div>
+									</div>
+                                    <div class="form-group ">
+                                        <div class="row">
+                                            <div class="col-6 mb-5 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-outline-primary mb-4" data-toggle="modal" data-target="#exampleModal">Submit</button>
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Editted Event Recorded
+                                                            
+                                                            
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <a href="sched_academicCalendar.html" class="btn btn-outline-secondary" style="margin-bottom: 71px;">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
