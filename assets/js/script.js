@@ -69,7 +69,7 @@ function checkStudentData(studentData){
             valid = false;
             inv_fields += '     Telephone Number is invalid\n';
         }
-    }
+    }else studentData.teleNum = '';
 
     if(validator.isEmpty(studentData.nationality))
     {
@@ -162,6 +162,7 @@ function checkStudentDetails(studentDetails){
             inv_fields += "     Mother's Email is invalid\n";
         }
     }
+    else studentDetails.familyRecords.mEmail = '';
 
     if(!validator.isEmpty(studentDetails.familyRecords.mNum))
     {
@@ -172,6 +173,9 @@ function checkStudentDetails(studentDetails){
             inv_fields += "     Mother's Contact Number is invalid\n";
         }
     }
+
+    if(validator.isEmpty(studentDetails.familyRecords.mWorkAddress))
+        studentDetails.familyRecords.mWorkAddress = '';
 
     if(validator.isEmpty(studentDetails.familyRecords.fName) || hasNumber(studentDetails.familyRecords.fName))
     {
@@ -192,7 +196,7 @@ function checkStudentDetails(studentDetails){
             valid = false;
             inv_fields += "     Father's Email is invalid\n";
         }
-    }
+    }else studentDetails.familyRecords.fEmail = '';
 
     if(!validator.isEmpty(studentDetails.familyRecords.fNum))
     {
@@ -204,11 +208,17 @@ function checkStudentDetails(studentDetails){
         }
     }
 
+    if(validator.isEmpty(studentDetails.familyRecords.fWorkAddress))
+        studentDetails.familyRecords.fWorkAddress = '';
+
     if(validator.isEmpty(studentDetails.familyRecords.cName) || hasNumber(studentDetails.familyRecords.cName))
     {
         valid = false;
         inv_fields += "     Contact Person's Name is empty or invalid\n";
     }
+
+    if(validator.isEmpty(studentDetails.familyRecords.relation))
+        studentDetails.familyRecords.relation = '';
 
     if(!validator.isEmpty(studentDetails.familyRecords.cEmail))
     {
@@ -217,7 +227,7 @@ function checkStudentDetails(studentDetails){
             valid = false;
             inv_fields += "     Contact Person's Email is invalid\n";
         }
-    }
+    }else studentDetails.familyRecords.cEmail = '';
 
     if(!validator.isEmpty(studentDetails.familyRecords.cNum))
     {
@@ -227,7 +237,7 @@ function checkStudentDetails(studentDetails){
             valid = false;
             inv_fields += "     Contact Persons's Phone Number is invalid\n";
         }
-    }
+    }else studentDetails.familyRecords.cNum = '';
 
     /* fetcher information cases 
             fetcher name invalid = automatic invalid
@@ -257,6 +267,9 @@ function checkStudentDetails(studentDetails){
     {
         valid = false;
         inv_fields += "     Fetcher's information is incomplete\n";
+    }else {
+        studentDetails.familyRecords.fetchNum = '';
+        studentDetails.familyRecords.fetcherName = '';
     }
 
     if(!valid)
@@ -404,7 +417,7 @@ $(document).ready(function() {
         {
             $.post('/enroll', {
                 userInfo : userInfo,
-                studentDetails : studentDetails,
+                studentDetail : studentDetails,
                 studentData : studentData,
                 sectionID : sectionID,
             }, function (result){
@@ -412,7 +425,10 @@ $(document).ready(function() {
                     case 201:
                         {
                             //admin
-                            window.location.href = '/a/users/students';
+                            
+                            alert('Thank you for applying, these are the user credentials \nUserID:'+ result.userID + 
+                                    '\nPassword: '+ result.password)
+                            // window.location.href = '/a/users/students';
                             break;
                         }
                     case 401:
@@ -428,11 +444,5 @@ $(document).ready(function() {
                 }
             })
         }
-        if(valid)
-            alert('Thank you for applying, these are the user credentials \nUserID:.....\nPassword:...')
-        console.log(sectionID);
-        console.log(studentDetails);
-        console.log(studentData);
-
     });
 });

@@ -11,7 +11,8 @@ const parentModel = require("../model/parentsdb");
 const studentModel = require("../model/studentdb");
 const sectionModel = require("../model/sectiondb");
 const schoolYearModel = require("../model/schoolYeardb");
-const studentDetailsModel = require("../model/studentDetailsdb")
+const studentDetailsModel = require("../model/studentDetailsdb");
+const sectionMemberModel = require("../model/sectionMembersdb");
 
 const bcrypt = require('bcrypt');
 const e = require('express');
@@ -48,13 +49,26 @@ function Parent(userID, mobileNum, nationality, birthDate, birthPlace) {
     this.birthPlace = birthPlace;
 }
 
-function Student(userID, parentID, mobileNum, teleNum, nationality, birthDate, birthPlace, email, religion, address) {
+function Student(userID, mobileNum, teleNum, nationality, birthDate, birthPlace, email, religion, address) {
+    this.userID = userID;
+    this.parentID = '';
+    this.mobileNum = mobileNum;
+    this.teleNum = teleNum;
+    this.nationality = nationality;
+    this.birthDate = birthDate;
+    this.birthPlace = birthPlace;
+    this.email = email;
+    this.religion = religion;
+    this.address = address;
+}
+
+function Student(userID, mobileNum, teleNum, nationality, birthDate, birthPlace, email, religion, address, parentID) {
     this.userID = userID;
     this.parentID = parentID;
     this.mobileNum = mobileNum;
     this.teleNum = teleNum;
     this.nationality = nationality;
-    this.birthDate = birthDate;
+    this.birthDate =new Date(birthDate);
     this.birthPlace = birthPlace;
     this.email = email;
     this.religion = religion;
@@ -108,13 +122,19 @@ function studentDetails(studentID, familyRecords,reason) {
     this.studentID = studentID;
     this.familyRecords = familyRecords;
     this.reason = reason;
+    this.eduBackground = [];
 }
 
-function studentDetails(studentID, familyRecords, eduBackground,reason) {
+function studentDetails(studentID, familyRecords, reason,eduBackground,) {
     this.studentID = studentID;
     this.familyRecords = familyRecords;
     this.eduBackground = eduBackground;
     this.reason = reason;
+}
+
+function sectionMembers(sectionID,studentID){
+    this.sectionID = sectionID;
+    this.studentID = studentID;
 }
 
 //functions
@@ -576,29 +596,84 @@ const indexFunctions = {
     postEnrollmentNew: async function (req,res){
         var {
             userInfo,
-            studentDetails,
+            studentDetail,
             studentData,
             sectionID
         } = req.body;
         try{
+            console.log(userInfo);
+            console.log(studentDetail);
+            console.log(studentData);
+
             var userID = await getNextStudentID();
             var password = generator.generate({
                 length:12, numbers : true
             });
+            console.log(password)
             var hash = await bcrypt.hash(password,saltRounds)
+
+            // create user
             var user = new User(userID,hash,userInfo.firstName,userInfo.lastName,userInfo.middleName,'S',userInfo.gender);
             var newUser = new userModel(user);
-            var result = await newUser.recordNewUser();
-            console.log(password)
-        }catch(e){
-            res.send({status : 500, msg : e});
-        }
-       
+            var userResult = await newUser.recordNewUser();
+            // console.log(userResult);
+            //create student
+            if(userResult){
+                var student = new Student(userID,studentData.mobileNum,studentData.teleNum,studentData.nationality,
+                    studentData.birthDate,studentData.birthPlace,studentData.email,studentData.religion,
+                    studentData.address);
+                // console.log(student);
+                var newStudent = new studentModel(student);
+                var studentResult = await newStudent.recordNewStudent();
+                // console.log(studentResult);
 
-        res.send({
-            status : 500,
-            msg : 'I made it back'
-        });
+                // create student details
+                // reminder to self, add siblings and education background
+                if(studentResult){
+                    var studentDetailsData = new studentDetails(userID, studentDetail.familyRecords,studentDetail.reason);
+                    var newStudentDetails = new studentDetailsModel(studentDetailsData);
+                    var studentDetailsResult = await newStudentDetails.recordNewStudentDetails();
+                    
+                    var sectionMemberData = new sectionMembers(sectionID,userID);
+                    console.log(sectionMemberData);
+                    var newSectionMember = new sectionMemberModel(sectionMemberData);
+                    var sectionMemberResult = await newSectionMember.recordNewSectionMember();
+                    console.log(sectionMemberResult)
+                    if(studentDetailsResult && sectionMemberResult)
+                    {
+                        req.session.studentID = userID;
+                        console.log(req.session);
+                        res.send({
+                            status : 201,
+                            userID : userID,
+                            password : password
+                        })
+                    }
+                    else{
+                        res.send({
+                            status : 401,
+                            msg : 'There is an error when adding user'
+                        });
+                    }
+                }
+                else{
+                    res.send({
+                        status : 401,
+                        msg : 'There is an error when adding user'
+                    })
+                }
+            }
+            else{
+                res.send({
+                    status : 401,
+                    msg : 'There is an error when adding user'
+                })
+            }
+            res.send({status :500, msg : 'Something went Wrong'});
+        }catch(e){
+            //res.send({status : 500, msg : e});
+            console.log('It entered the catch');
+        }
     }
 }
 

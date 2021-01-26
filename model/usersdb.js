@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
 }, { collection: "users" });
 
 userSchema.methods.recordNewUser = async function() {
-    var result = userModel.create(this);
+    var result = await userModel.create(this);
     console.log(JSON.stringify(result));
     return result;
 };

@@ -41,6 +41,11 @@ const studentDetailsSchema = new mongoose.Schema({
     reason : {type : String, required : true}
 }, { collection: "student_details" });
 
+studentDetailsSchema.methods.recordNewStudentDetails = async function() {
+    var result = await studentDetailsModel.create(this);
+    console.log(JSON.stringify(result));
+    return result;
+};
 
 const studentDetailsModel = db.model('student_details', studentDetailsSchema);
 
