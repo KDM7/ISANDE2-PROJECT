@@ -445,4 +445,34 @@ $(document).ready(function() {
             })
         }
     });
+
+    /*
+        Used to Link Parent and Student Accounts
+        If Parent Account Exists
+            - Enter Credentials to Verify
+                -firstName
+                -lastName
+                -middleName
+                -ParentID
+        If Parent does not have account
+            -Create Parent Account
+    */
+    $('#enroll_parent').click(function(){
+        var exists =     $('#if_exists').val();
+
+        if(exists == 'Yes')
+        {
+            var parentInfo = {
+                firstName :         $('#firstName_old').val(),
+                lastName :          $('#lastName_old').val(),
+                middleName :        $('#middleName_old').val(),
+                parentID :          $('#parentID').val()
+            };
+
+            var valid = checkUserInfo(parentInfo);
+        }
+        else{
+            console.log("This is for new Parents");
+        }
+    });
 });

@@ -578,6 +578,9 @@ const indexFunctions = {
     },
 
     getEnrollmentParent: async function (req, res) {
+        //for testing purposes
+        req.session.studentID = '20-000023';
+        console.log(req.session);
         res.render('s_enroll_parent', {
             title: 'Register Parent'
         });
