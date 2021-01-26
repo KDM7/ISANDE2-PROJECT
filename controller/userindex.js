@@ -516,15 +516,81 @@ const indexFunctions = {
         PARENT FUNCTIONS
     */
     // to show the breakdown of details from the parents side
-    getPtransBD: function (req, res) {
-        res.render('p_trans_BD', {
-            title: 'Breakdown of Details'
+    getPaccEChild: function (req, res) {
+        res.render('p_acc_enrollChild', {
+            title: 'Enroll Child'
         });
     },
 
-    getPaccNChild: function (req, res) {
+    getPaccSGrades: function (req, res) {
+        res.render('p_acc_grades', {
+            title: 'Student Grades'
+        });
+    },
+
+    getPaccNewChild: function (req, res) {
         res.render('p_acc_NChild', {
             title: 'Register new Child'
+        });
+    },
+
+    getPpaybank: function (req, res) {
+        res.render('p_pay_bank', {
+            title: 'Bank Statement'
+        });
+    },
+
+    getPpayBankPlan: function (req, res) {
+        res.render('p_pay_BPlan', {
+            title: 'Bank Statement'
+        });
+    },
+
+    getPpaycc: function (req, res) {
+        res.render('p_pay_cc', {
+            title: 'Online Payment'
+        });
+    },
+
+    getPpayCCOTP: function (req, res) {
+        res.render('p_pay_CCOTP', {
+            title: 'Online Payment'
+        });
+    },
+
+    getPpayCCPlan: function (req, res) {
+        res.render('p_pay_CCPlan', {
+            title: 'Online Payment'
+        });
+    },
+
+    getPschedacadCalendar: function (req, res) {
+        res.render('p_sched_acadCalendar', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    getPschedacadCalendar2: function (req, res) {
+        res.render('p_sched_acadCalendar2', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    getPschedclassSched: function (req, res) {
+        res.render('p_sched_classSched', {
+            title: 'Student Schedule'
+        });
+    },
+
+    getPtransBD: function (req, res) {
+        res.render('p_trans_BD', {
+            title: 'Breakdown Details'
+        });
+    },
+
+    getPtransSA: function (req, res) {
+        res.render('p_trans_SA', {
+            title: 'Statement of Account'
         });
     },
 
@@ -561,9 +627,45 @@ const indexFunctions = {
     //     var oldStudent = await get
     // }
 
+    getSaccgrades: function (req, res) {
+        res.render('s_acc_grades', {
+            title: 'Student Grades'
+        });
+    },
+
+    getEnrollemtOld: function (req, res) {
+        res.render('s_enroll_old', {
+            title: 'Update Personal Information'
+        });
+    },
+
+    getSschedacadCalendar: function (req, res) {
+        res.render('s_sched_acadCalendar', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    getSschedacadCalendar2: function (req, res) {
+        res.render('s_sched_acadCalendar2', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    getSschedclassSched: function (req, res) {
+        res.render('s_sched_classSched', {
+            title: 'Student Schedule'
+        });
+    },
+
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
-            title: 'Breakdown of details'
+            title: 'Breakdown details'
+        });
+    },
+
+    getStransSA: function (req, res) {
+        res.render('s_trans_SA', {
+            title: 'Statement of Account'
         });
     },
 }

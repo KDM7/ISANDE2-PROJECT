@@ -54,15 +54,33 @@ router.get('/t/users/students', controller.getTuserStudents);
 /*
     PARENT
 */
+router.get('/p/acc/EnrollChild', controller.getPaccEChild);
+router.get('/p/acc/studentGrades', controller.getPaccSGrades);
+router.get('/p/acc/NewChild', controller.getPaccNewChild);
+router.get('/p/pay/bank', controller.getPpaybank);
+router.get('/p/pay/bankPaymentPlan', controller.getPpayBankPlan);
+router.get('/p/pay/cc', controller.getPpaycc);
+router.get('/p/pay/ccOTP', controller.getPpayCCOTP);
+router.get('/p/pay/ccPaymentPlan', controller.getPpayCCPlan);
+router.get('/p/sched/acadCalendar', controller.getPschedacadCalendar);
+router.get('/p/sched/acadCalendar2', controller.getPschedacadCalendar2);
+router.get('/p/sched/classSched', controller.getPschedclassSched);
 router.get('/p/trans/brkdwn', controller.getPtransBD);
-router.get('/p/acc/NChild', controller.getPaccNChild);
+router.get('/p/trans/stmacc', controller.getPtransSA);
+
 
 /*
     STUDENT
 */
 router.get('/enroll', controller.getEnrollment);
 router.get('/enroll/parent', controller.getEnrollmentParent);
+router.get('/s/acc/grades', controller.getSaccgrades);
+router.get('/s/acc/updateInfo', controller.getEnrollemtOld);
+router.get('/s/sched/acadCalendar', controller.getSschedacadCalendar);
+router.get('/s/sched/acadCalendar2', controller.getSschedacadCalendar2);
+router.get('/s/sched/classSched', controller.getSschedclassSched);
 router.get('/s/trans/brkdwn', controller.getStransBD);
+router.get('/s/trans/stmacc', controller.getStransSA);
 
 
 
