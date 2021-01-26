@@ -553,11 +553,55 @@ const indexFunctions = {
     },
 
     // to show Upon Enrollment page for admin side
-    getAfeeUponE: function (req, res) {
-        res.render('a_fees_uponE', {
-            title: 'Upon Enrollment',
+    getAfeeUponE: function(req, res){
+        res.render('a_fees_edituponE', {
+            title: 'Edit Upon Enrollment',
         });
     },
+
+    // to show the set school year page for admin side
+    getAschedCurSchoolYr: function(req, res){
+        res.render('a_sched_CurSchoolYr', {
+            title: 'Set CUrrent School Year',
+        });
+    },    
+
+    // to show the class schedule page for admin side
+    getAschedClassSched: function(req, res){
+        res.render('a_sched_classSched', {
+            title: 'Class Schedules',
+        });
+    },
+
+    // to show the add class schedule page for admin side
+    getAschednewClassSched: function(req, res){
+        res.render('a_sched_newClassSched', {
+            title: 'New Class Schedules',
+        });
+    },
+
+    // to show the academic calendar page for admin side
+    getAschedAcadCalendar: function(req, res){
+        res.render('a_sched_acadCalendar', {
+            title: 'Academic Calendar',
+        });
+    },
+    
+    // to show the new event page for admin side
+    getAschednewAcadCalendar: function(req, res){
+        res.render('a_sched_newAcadCalendar', {
+            title: 'New Event',
+        });
+    },
+    
+    // to show the edit event page for admin side
+    getAschededitAcadCalendar: function(req, res){
+        res.render('a_sched_editAcadCalendar', {
+            title: 'Edit Event',
+        });
+    },
+
+
 
     // to show all admins for admin side
     getAuserAdmin: function (req, res) {
@@ -569,14 +613,14 @@ const indexFunctions = {
     // to show the profile of an admin for admin side
     getAuserAProf: function (req, res) {
         res.render('a_users_AProfile', {
-            title: 'Admin',
+            title: 'Admin Profile',
         });
     },
 
     // to show all accounts of all of the parent's children for admin side
     getAuserPAcc: function (req, res) {
         res.render('a_users_PAccount', {
-            title: 'Admin',
+            title: 'Parent Account',
         });
     },
 
@@ -590,14 +634,14 @@ const indexFunctions = {
     //to show the profile of a parent for admin side 
     getAuserPProf: function (req, res) {
         res.render('a_users_PProfile', {
-            title: 'Parent',
+            title: 'Parent Profile',
         });
     },
 
     // to show a students account for admin side
     getAuserSAcc: function (req, res) {
         res.render('a_users_SAccount', {
-            title: 'Student',
+            title: 'Student Account',
         });
     },
 
@@ -611,7 +655,28 @@ const indexFunctions = {
     // to show a students profile for admin side
     getAuserSProf: function (req, res) {
         res.render('a_users_SProfile', {
-            title: 'Student',
+            title: 'Student Profile',
+        });
+    },
+
+    // to show a list of teachers for admin side
+    getAuserTeachers: function(req, res){
+        res.render('a_users_teachers', {
+            title: 'Teachers',
+        });
+    },
+
+    // to show the teachers profile page for admin side
+    getAuserTProf: function(req, res){
+        res.render('a_users_TProfile', {
+            title: 'Teacher Profile',
+        });
+    },
+    
+    // to show the edit teachers page for admin side
+    getAusereditTeachers: function(req, res){
+        res.render('a_users_editT', {
+            title: 'Edit Teacher',
         });
     },
 
@@ -619,7 +684,42 @@ const indexFunctions = {
         TEACHER FUCNTIONS
     */
 
-    // to show the students from the teachers dis
+    // to show the students from the teachers side
+    getTschedacadCalendar: function (req, res) {
+        res.render('t_sched_acadCalendar', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    // to show the students from the teachers side
+    getTschedacadCalendar2: function (req, res) {
+        res.render('t_sched_acadCalendar2', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    // to show the students from the teachers side
+    getTschedclassSched: function (req, res) {
+        res.render('t_sched_classSched', {
+            title: 'Teacher Schedule'
+        });
+    },
+
+    // to show the students from the teachers side
+    getTuserSgrades: function (req, res) {
+        res.render('t_users_SGrades', {
+            title: 'Students grades'
+        });
+    },
+
+    // to show the students profile from the teachers side
+    getTuserSProf: function (req, res) {
+        res.render('t_users_SProfile', {
+            title: 'Student profile'
+        });
+    },
+
+    // to show the students from the teachers side
     getTuserStudents: function (req, res) {
         res.render('t_users_students', {
             title: 'Students'
@@ -658,9 +758,15 @@ const indexFunctions = {
     },
 
     // to show the breakdown of details from the parents side
-    getPtransBD: function (req, res) {
-        res.render('p_trans_BD', {
-            title: 'Breakdown of Details'
+    getPaccEChild: function (req, res) {
+        res.render('p_acc_enrollChild', {
+            title: 'Enroll Child'
+        });
+    },
+
+    getPaccSGrades: function (req, res) {
+        res.render('p_acc_grades', {
+            title: 'Student Grades'
         });
     },
 
@@ -670,9 +776,70 @@ const indexFunctions = {
             title: 'Statement of Accounts'
         });
     },
-    getPaccNChild: function (req, res) {
+    
+    getPaccNewChild: function (req, res) {
         res.render('p_acc_NChild', {
             title: 'Register new Child'
+        });
+    },
+
+    getPpaybank: function (req, res) {
+        res.render('p_pay_bank', {
+            title: 'Bank Statement'
+        });
+    },
+
+    getPpayBankPlan: function (req, res) {
+        res.render('p_pay_BPlan', {
+            title: 'Bank Statement'
+        });
+    },
+
+    getPpaycc: function (req, res) {
+        res.render('p_pay_cc', {
+            title: 'Online Payment'
+        });
+    },
+
+    getPpayCCOTP: function (req, res) {
+        res.render('p_pay_CCOTP', {
+            title: 'Online Payment'
+        });
+    },
+
+    getPpayCCPlan: function (req, res) {
+        res.render('p_pay_CCPlan', {
+            title: 'Online Payment'
+        });
+    },
+
+    getPschedacadCalendar: function (req, res) {
+        res.render('p_sched_acadCalendar', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    getPschedacadCalendar2: function (req, res) {
+        res.render('p_sched_acadCalendar2', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    getPschedclassSched: function (req, res) {
+        res.render('p_sched_classSched', {
+            title: 'Student Schedule'
+        });
+    },
+
+    getPtransBD: function (req, res) {
+        res.render('p_trans_BD', {
+            title: 'Breakdown Details'
+        });
+    },
+
+    getPtransSA: function (req, res) {
+        res.render('p_trans_SA', {
+            title: 'Statement of Account'
         });
     },
 
@@ -713,9 +880,45 @@ const indexFunctions = {
     //     var oldStudent = await get
     // }
 
+    getSaccgrades: function (req, res) {
+        res.render('s_acc_grades', {
+            title: 'Student Grades'
+        });
+    },
+
+    getEnrollemtOld: function (req, res) {
+        res.render('s_enroll_old', {
+            title: 'Update Personal Information'
+        });
+    },
+
+    getSschedacadCalendar: function (req, res) {
+        res.render('s_sched_acadCalendar', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    getSschedacadCalendar2: function (req, res) {
+        res.render('s_sched_acadCalendar2', {
+            title: 'Academic Calendar'
+        });
+    },
+
+    getSschedclassSched: function (req, res) {
+        res.render('s_sched_classSched', {
+            title: 'Student Schedule'
+        });
+    },
+
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
-            title: 'Breakdown of details'
+            title: 'Breakdown details'
+        });
+    },
+
+    getStransSA: function (req, res) {
+        res.render('s_trans_SA', {
+            title: 'Statement of Account'
         });
     },
     

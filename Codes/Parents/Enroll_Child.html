@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body class="bg-light">
+    <div>
+        <header class="container">
+            <div class="jumbotron p-0 mb-0 shadow">
+                <!-- <div class="row">
+                    <div class="col-2">
+                    </div>
+                    <div class="col-10">
+                        <div class="display-4">Regis-Grace Montessori School</div>
+                    </div>
+                </div>
+ -->
+ 			<img src="../img/banner.png" alt="" class="m-0" style="width: 100%;">
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="navbar-brand text-white">Login: Parent Name</div>
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="Login(ver1).html">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+        </header>
+
+        <div class="container">
+
+            <div class="row mb-2">
+                <!--SIDEBAR START-->
+                <div class="col-3">
+
+                    <div class="list-group mt-2 shadow bg-light">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Payment
+                        </p>
+                        <a href="enroll_payOnline.html" class="list-group-item list-group-item-action">Credit Card</a>
+                        <a href="enroll_payBank.html" class="list-group-item list-group-item-action">Upload Bank Receipt</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow bg-light">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Transactions
+                        </p>
+                        
+                        <a href="viewstatement.html" class="list-group-item list-group-item-action">Statement Of Accounts</a>
+                        <a href="viewbreakdown.html" class="list-group-item list-group-item-action">Breakdown Details</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow bg-light">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Schedule
+                        </p>
+                        <a href="academicCalendar.html" class="list-group-item list-group-item-action">View Academic Calendar</a>
+                        <a href="classSched.html" class="list-group-item list-group-item-action">View Student Schedule</a>
+                    </div>
+
+                    <div class="list-group mt-2 shadow bg-light">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            Grades
+                        </p>
+                        <a href="viewgrades.html" class="list-group-item list-group-item-action">View Grades</a> 
+                    </div>
+
+                    <div class="list-group mt-2 shadow bg-light">
+                        <p class="list-group-item list-group-item-action bg-primary text-white">
+                            My Account
+                        </p>
+                        <a href="newChild.html" class="list-group-item list-group-item-action">New Child</a>
+                        <a href="Enroll_Child.html" class="list-group-item list-group-item-action">Enroll Child (Old Students)</a>
+                        <a href="viewprofile.html" class="list-group-item list-group-item-action">My Profile</a>
+                        <a href="editpassword.html" class="list-group-item list-group-item-action">Change Password</a>
+                        <a href="Login(ver1).html" class="list-group-item list-group-item-action">Logout</a>
+                    </div>
+
+                </div>
+                <!--SIDEBAR END-->
+                <div class="col-9">
+                    <div class="shadow">
+                        <div class="container">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <h1 class="display-5 text-center font-weight-bold">Enroll in Regis-Grace Montessori School
+                                    </h1>
+                                    <div class="row justify-content-center">
+                                        <h5 class="display-5 text-center font-weight-light">Please kindly fill-out all the </h5>
+                                        <h5 class="display-5 text-center font-weight-light text-primary pl-2 pr-2">required fields(*) </h5>
+                                        <h5 class="display-5 text-center font-weight-light"> with your information.</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <div class="container">
+                                    <h5 class="display-5 text-left">Student Record</h6>
+                                    <hr style="border: 2px solid black;" />
+                                    <div class="form-group">
+                                        <label for="studentGrdLvl">Student Grade Level</label>
+                                        <select name="grade_level_id" id="studentGrdLvl" class="form-control valid" onchange="myFunction2()" required> 
+                                            <option value="2"> Junior Casa - Pre-School </option>
+                                            <option value="3"> Senior Casa - Pre-School </option>
+                                            <option value="16"> Advance Casa - Pre-School </option>
+                                            <option value="4"> Grade 1 - Grade School </option>
+                                            <option value="5"> Grade 2 - Grade School </option>
+                                            <option value="6"> Grade 3 - Grade School </option>
+                                            <option value="7"> Grade 4 - Grade School </option>
+                                            <option value="8"> Grade 5 - Grade School </option>
+                                            <option value="9"> Grade 6 - Grade School </option>
+                                            <option value="10"> Grade 7 - Junior High School </option>
+                                            <option value="11"> Grade 8 - Junior High School </option>
+                                            <option value="12"> Grade 9 - Junior High School </option>
+                                            <option value="13"> Grade 10 - Junior High School </option>
+                                            <option value="14"> Grade 11 - Senior High School </option>
+                                            <option value="15"> Grade 12 - Senior High School </option>                            
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="studentName">Student Name</label>
+                                        <input type="text" class="form-control" id="studentName" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="sel1">Academic Year:</label>
+                                        <select class="form-control" id="sel1">
+                                          <option>2019-2020</option>
+                                          <option>2018-2019</option>
+                                          <option>2017-2018</option>
+                                          <option>2016-2017</option>
+                                        </select>
+                                    </div>
+                            <div class="d-flex border justify-content-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg btn-block mt-5 mb-5 w-75">Next</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <hr>
+        <footer>
+        </footer>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
