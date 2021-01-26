@@ -1,5 +1,3 @@
-const { default: validator } = require("validator");
-
 //checks if the string has a number
 function hasNumber(myString) {
     return /\d/.test(myString);
