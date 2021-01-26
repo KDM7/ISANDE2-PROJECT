@@ -8,7 +8,6 @@ const indexMiddleware = {
         var lastName = req.body.parentInfo.lastName;
         var middleName = req.body.parentInfo.middleName;
         try {
-            console.log(studentID);
             console.log(parentID);
 
             var user = await userModel.findOne({
