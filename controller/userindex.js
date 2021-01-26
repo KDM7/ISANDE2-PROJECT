@@ -134,9 +134,10 @@ function studentDetails(studentID, familyRecords, reason,eduBackground,) {
     this.reason = reason;
 }
 
-function sectionMembers(sectionID,studentID){
+function sectionMembers(sectionID,studentID, remarks){
     this.sectionID = sectionID;
     this.studentID = studentID;
+    this.remarks = remarks
 }
 
 //functions
@@ -964,7 +965,7 @@ const indexFunctions = {
                     var newStudentDetails = new studentDetailsModel(studentDetailsData);
                     var studentDetailsResult = await newStudentDetails.recordNewStudentDetails();
                     
-                    var sectionMemberData = new sectionMembers(sectionID,userID);
+                    var sectionMemberData = new sectionMembers(sectionID,userID, 'FA');
                     console.log(sectionMemberData);
                     var newSectionMember = new sectionMemberModel(sectionMemberData);
                     var sectionMemberResult = await newSectionMember.recordNewSectionMember();
