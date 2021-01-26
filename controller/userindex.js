@@ -257,6 +257,7 @@ const indexFunctions = {
 
     // to show the login page
     getLogin: function (req, res) {
+        req.session.destrory();
         res.render('login', {
             title: 'Login'
         });

@@ -116,7 +116,7 @@
                                                                 local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
                                                                 return local.toJSON().slice(0, 10);
                                                             });
-                                                            document.getElementById('dateSold').value = new Date().toDateInputValue();
+                                                            document.getElementById('birthDate').value = new Date().toDateInputValue();
                                                         </script>
                                                     </div>
                                                 </div>
@@ -135,7 +135,7 @@
                                         </form>
                                     </div>
                                     <div class="d-flex border justify-content-center">
-                                        <a href="enroll_new2.html" class="btn btn-outline-success btn-lg btn-block mt-5 mb-5 w-75">Next</a>
+                                        <a id="enroll_Parent" class="btn btn-outline-success btn-lg btn-block mt-5 mb-5 w-75">Confirm</a>
                                     </div>
                             </div>
                         </div>

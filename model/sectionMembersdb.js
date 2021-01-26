@@ -11,7 +11,7 @@ var db = mongoose.connection;
 const sectionMemberSchema = new mongoose.Schema({
     sectionID : {type : Number, required : true},
     studentID : {type : String, required : true}
-}, { collection: "sectionMembers" });
+}, { collection: "studentMembers" });
 
 sectionMemberSchema.methods.recordNewSectionMember = async function() {
     var result = await sectionMemberModel.create(this);
@@ -19,6 +19,6 @@ sectionMemberSchema.methods.recordNewSectionMember = async function() {
     return result;
 };
 
-const sectionMemberModel = db.model('sectionMembers', sectionMemberSchema);
+const sectionMemberModel = db.model('studentMembers', sectionMemberSchema);
 
 module.exports = sectionMemberModel;

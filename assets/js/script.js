@@ -428,7 +428,7 @@ $(document).ready(function() {
                             
                             alert('Thank you for applying, these are the user credentials \nUserID:'+ result.userID + 
                                     '\nPassword: '+ result.password)
-                            // window.location.href = '/a/users/students';
+                            window.location.href = '/enroll/parent';
                             break;
                         }
                     case 401:
