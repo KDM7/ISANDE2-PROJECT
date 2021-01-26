@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express();
 const controller = require('../controller/userindex');
-// const indexMiddleware = require('../middlewares/indexMiddleware');
+const indexMiddleware = require('../middlewares/indexMiddleware');
 
 // GETS
 router.get('/', controller.getLogin);
@@ -56,6 +56,7 @@ router.get('/enroll/parent', controller.getEnrollmentParent);
 router.get('/s/trans/brkdwn', controller.getStransBD);
 
 router.post('/enroll', controller.postEnrollmentNew);
+router.post('/enroll/parent/old',indexMiddleware.validateEnrollOldParent, controller.postEnrollParentOld);
 
 
 module.exports = router;
