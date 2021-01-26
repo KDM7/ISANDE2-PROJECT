@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itisdev.uy0ui.mongodb.net/ISANDE?retryWrites=true&w=majority`, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => { console.log('user'); },
+    .then(() => { console.log('user: studentDetailsdb.js;4'); },
         err => {
-            console.log('theres problems');
+            console.log('theres problems: studentDetailsdb.js;6');
         });
 
 var db = mongoose.connection;
@@ -41,6 +41,11 @@ const studentDetailsSchema = new mongoose.Schema({
     reason : {type : String, required : true}
 }, { collection: "student_details" });
 
+studentDetailsSchema.methods.recordNewStudentDetails = async function() {
+    var result = await studentDetailsModel.create(this);
+    console.log(JSON.stringify(result));
+    return result;
+};
 
 const studentDetailsModel = db.model('student_details', studentDetailsSchema);
 

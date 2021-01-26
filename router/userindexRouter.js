@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express();
 const controller = require('../controller/userindex');
-// const indexMiddleware = require('../middlewares/indexMiddleware');
+const indexMiddleware = require('../middlewares/indexMiddleware');
 
 // GETS
 router.get('/', controller.getLogin);
 router.post('/', controller.postLogin);
+router.post('/logout', controller.postLogout);
 //
 /*
     ADMIN
@@ -72,7 +73,7 @@ router.get('/p/trans/stmacc', controller.getPtransSA);
 /*
     STUDENT
 */
-router.get('/enroll', controller.getEnrollment);
+router.get('/enroll', controller.getEnrollmentNew);
 router.get('/enroll/parent', controller.getEnrollmentParent);
 router.get('/s/acc/grades', controller.getSaccgrades);
 router.get('/s/acc/updateInfo', controller.getEnrollemtOld);
@@ -82,7 +83,8 @@ router.get('/s/sched/classSched', controller.getSschedclassSched);
 router.get('/s/trans/brkdwn', controller.getStransBD);
 router.get('/s/trans/stmacc', controller.getStransSA);
 
-
+router.post('/enroll', controller.postEnrollmentNew);
+router.post('/enroll/parent/old',indexMiddleware.validateEnrollOldParent, controller.postEnrollParentOld);
 
 
 module.exports = router;

@@ -8,17 +8,18 @@
                     </div>
                 </div>
  -->
- 			<img src="../../../../assets/img/banner.png" alt="" class="m-0" style="width: 100%;">
+                <img src="../../../../assets/img/banner.png" alt="" class="m-0" style="width: 100%;">
             </div>
             <nav class="navbar navbar-expand-lg navbar-light bg-primary shadow">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="navbar-brand text-white">Login: Admin Name</div>
+                    <div class="navbar-brand text-white">Login: {{firstname}} {{middlename}} {{lastname}}</div>
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="Login(ver1).html">Logout</a>
+                            <form action="/logout" method="post"><a class="nav-link text-white"
+                                    onclick="this.parentNode.submit();">Logout</a></form>
                         </li>
                     </ul>
                 </div>
