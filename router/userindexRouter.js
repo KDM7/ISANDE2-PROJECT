@@ -6,6 +6,7 @@ const indexMiddleware = require('../middlewares/indexMiddleware');
 // GETS
 router.get('/', controller.getLogin);
 router.post('/', controller.postLogin);
+router.post('/logout', controller.postLogout);
 //
 /*
     ADMIN

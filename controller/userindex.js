@@ -425,6 +425,10 @@ const indexFunctions = {
             });
         }
     },
+    postLogout: function (req, res) {
+        req.session.destroy();
+        res.redirect("/");
+    },
 
     /*      
         ADMIN FUNCTIONS
