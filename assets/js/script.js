@@ -477,7 +477,7 @@ $(document).ready(function() {
             if(valid && !validator.isEmpty(parentInfo.parentID))
             {
                 $.post('/enroll/parent/old', {
-                    parentInfo : parentInfo
+                    parentInfo : parentInfo,
                 }, function (result){
                     switch (result.status) {
                         case 201:
