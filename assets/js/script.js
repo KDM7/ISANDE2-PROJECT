@@ -351,7 +351,32 @@ $(document).ready(function() {
     /*
         ADMIN
     */
+    $('#submitNewEvent').click(function() {
+        var eventName = $('#eventName').val();
+        var eventDate = $('#eventDate').val();
 
+        console.log(eventName);
+        console.log(eventDate);
+
+        $.post('/newAcadCalendar', {
+            eventName: eventName,
+            eventDate: eventDate
+        }, function(result) {
+            switch(result.status){
+                case 201: 
+                    {
+                        alert(result.msg);
+                        window.location.href = '/a/sched/newAcadCalendar';
+                        break;
+                    }
+                case 500:
+                    {
+                        alert('case 500: ' + result.msg);
+                        break;
+                    }
+            }
+        });
+    });
     /*
         TEACHER
     */
