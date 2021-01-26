@@ -14,6 +14,7 @@ const sectionModel = require("../model/sectiondb");
 const schoolYearModel = require("../model/schoolYeardb");
 const studentDetailsModel = require("../model/studentDetailsdb");
 const ref_sectionModel = require("../model/ref_sectiondb");
+const studentMembersModel = require("../model/sectionMembersdb")
 
 const bcrypt = require('bcrypt');
 const e = require('express');
@@ -175,7 +176,101 @@ async function getCurrentSections() {
     return sections; //returns all sections in an array 
 }
 
+//get sections based on schoolYear and gradeLvl
+async function getSectionsSYGL(schoolYear, gradeLvl) {
+    var sectionIDs = await sectionModel.aggregate(
+        [{ //merge section and ref_section for schoolYear and gradeLvl be in same doc
+            '$lookup': {
+                'from': 'ref_section',
+                'localField': 'sectionName',
+                'foreignField': 'sectionName',
+                'as': 'section'
+            }
+        }, { //unwind section to be safe (this part doesnt seem to be important)
+            '$unwind': {
+                'path': '$section',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, { //get sections that are valid using the parameters
+            '$match': {
+                'schoolYear': schoolYear,
+                'section.gradeLvl': gradeLvl
+            }
+        }, { //group sections into an array
+            '$group': {
+                '_id': null,
+                'sectionID': {
+                    '$push': '$sectionID'
+                }
+            }
+        }, { //remove _id and project only the sectionID array which contains all valid section IDs based on parameters
+            '$project': {
+                '_id': false,
+                'sectionID': true
+            }
+        }]
+    );
+    return sectionIDs[0].sectionID;
+}
 
+//get list of students based on an array of section IDs
+async function getStudentsS(sectionIDs) {
+    var students = await studentMembersModel.aggregate([{
+        '$match': {
+            'sectionID': {
+                '$in': sectionIDs
+            }
+        }
+    }, {
+        '$group': {
+            '_id': null,
+            'students': {
+                '$push': '$studentID'
+            }
+        }
+    }, {
+        '$project': {
+            '_id': false,
+            'students': true
+        }
+    }]);
+    return students[0].students;
+}
+
+// get a list of students using 'schoolYear' an 'gradeLvl' as parameters
+async function getStudentListSYGL(schoolYear, gradeLvl) {
+    var sections = await getSectionsSYGL(schoolYear, gradeLvl);
+    var students = await getStudentsS(sections);
+    var studentList = await studentModel.aggregate(
+        [{
+            '$match': {
+                'userID': {
+                    '$in': students
+                }
+            }
+        }, {
+            '$lookup': {
+                'from': 'users',
+                'localField': 'userID',
+                'foreignField': 'userID',
+                'as': 'userData'
+            }
+        }, {
+            '$unwind': {
+                'path': '$userData',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$project': {
+                'userID': 1,
+                'firstname': '$userData.firstName',
+                'middlename': '$userData.middleName',
+                'lastname': '$userData.lastName'
+            }
+        }]
+    );
+    return studentList;
+}
 
 const indexFunctions = {
     /* 
@@ -259,6 +354,7 @@ const indexFunctions = {
     */
     // to show the students from the admins side
     getAuserStudents: async function (req, res) {
+        // after grades have been set up: may have to merge student and another var grades instead of trying to aggregate for remarks
         var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
             [{
                 '$project': {
@@ -267,6 +363,7 @@ const indexFunctions = {
                 }
             }]
         );
+
         var gradeLvl = await ref_sectionModel.aggregate(
             [{
                 '$sort': {
@@ -278,35 +375,22 @@ const indexFunctions = {
                 }
             }]
         );
-        // after grades have been set up: may have to merge student and another var grades instead of trying to aggregate for remarks
-        var student = await studentModel.aggregate([{
-            '$lookup': {
-                'from': 'users',
-                'localField': 'userID',
-                'foreignField': 'userID',
-                'as': 'userData'
-            }
-        }, {
-            '$unwind': {
-                'path': '$userData',
-                'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$project': {
-                'userID': 1,
-                'firstname': '$userData.firstName',
-                'middlename': '$userData.middleName',
-                'lastname': '$userData.lastName'
-            }
-        }]);
+
+        var students = await getStudentListSYGL(schoolYear[0].value, gradeLvl[0].value);
+        console.log(schoolYear[0].value);
+        console.log(gradeLvl[0].value);
+        // console.log('typeof sections:' + typeof sections);
+        // console.log("students: ");
+        // console.log(students);
         res.render('a_users_students', {
-            // firstname: req.session.logUser.firstName,
-            // middlename: req.session.logUser.middleName,
-            // lastname: req.session.logUser.lastName,
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Students',
             schoolYear: schoolYear,
             gradeLvl: gradeLvl,
-            student: student,
+            student: students
+
         });
     },
 
