@@ -1,3 +1,5 @@
+const { default: validator } = require("validator");
+
 //checks if the string has a number
 function hasNumber(myString) {
     return /\d/.test(myString);
@@ -457,11 +459,12 @@ $(document).ready(function() {
         If Parent does not have account
             -Create Parent Account
     */
-    $('#enroll_parent').click(function(){
-        var exists =     $('#if_exists').val();
-
+    $('#enroll_Parent').click(function(){
+        var exists = $('#if_exist').val();
+        console.log(exists);
         if(exists == 'Yes')
-        {
+        {   
+            console.log('I am in existing parent side')
             var parentInfo = {
                 firstName :         $('#firstName_old').val(),
                 lastName :          $('#lastName_old').val(),
@@ -469,7 +472,15 @@ $(document).ready(function() {
                 parentID :          $('#parentID').val()
             };
 
+            console.log(parentInfo);
             var valid = checkUserInfo(parentInfo);
+            console.log(valid);
+            
+            if(valid && !validator.isEmpty(parentInfo.parentID))
+                alert('s');
+            
+            else if(valid && validator.isEmpty(parentInfo.parentID)) 
+                alert('ParentID is Empty');
         }
         else{
             console.log("This is for new Parents");
