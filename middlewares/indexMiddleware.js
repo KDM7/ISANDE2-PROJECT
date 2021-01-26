@@ -7,8 +7,6 @@ const indexMiddleware = {
         var parentID = req.body.parentInfo.parentID;
         var lastName = req.body.parentInfo.lastName;
         var middleName = req.body.parentInfo.middleName;
-
-        var studentID = req.session.studentID;
         try {
             console.log(studentID);
             console.log(parentID);
