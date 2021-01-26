@@ -1,0 +1,61 @@
+{{>p_navbar}}
+{{>p_sidebar}}
+
+                <div class="col-9">
+                    <div class="shadow">
+                        <div class="container">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <h1 class="display-5 text-center font-weight-bold">Enroll in Regis-Grace Montessori School
+                                    </h1>
+                                    <div class="row justify-content-center">
+                                        <h5 class="display-5 text-center font-weight-light">Please kindly fill-out all the </h5>
+                                        <h5 class="display-5 text-center font-weight-light text-primary pl-2 pr-2">required fields(*) </h5>
+                                        <h5 class="display-5 text-center font-weight-light"> with your information.</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <div class="container">
+                                    <h5 class="display-5 text-left">Student Record</h6>
+                                    <hr style="border: 2px solid black;" />
+                                    <div class="form-group">
+                                        <label for="studentGrdLvl">Student Grade Level</label>
+                                        <select name="grade_level_id" id="studentGrdLvl" class="form-control valid" onchange="myFunction2()" required> 
+                                            <option value="2"> Junior Casa - Pre-School </option>
+                                            <option value="3"> Senior Casa - Pre-School </option>
+                                            <option value="16"> Advance Casa - Pre-School </option>
+                                            <option value="4"> Grade 1 - Grade School </option>
+                                            <option value="5"> Grade 2 - Grade School </option>
+                                            <option value="6"> Grade 3 - Grade School </option>
+                                            <option value="7"> Grade 4 - Grade School </option>
+                                            <option value="8"> Grade 5 - Grade School </option>
+                                            <option value="9"> Grade 6 - Grade School </option>
+                                            <option value="10"> Grade 7 - Junior High School </option>
+                                            <option value="11"> Grade 8 - Junior High School </option>
+                                            <option value="12"> Grade 9 - Junior High School </option>
+                                            <option value="13"> Grade 10 - Junior High School </option>
+                                            <option value="14"> Grade 11 - Senior High School </option>
+                                            <option value="15"> Grade 12 - Senior High School </option>                            
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="studentName">Student Name</label>
+                                        <input type="text" class="form-control" id="studentName" placeholder="">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-group w-25 col-4">
+                                            <label for="studentCode">Student Code</label>
+                                            <span style="color:red">*</span>
+                                            <input type="number" class="form-control " id="studentCode" placeholder="" required>
+                                        </div>
+                                    </div>
+                            <div class="d-flex border justify-content-center">
+                                <a href="#" class="btn btn-outline-primary btn-lg btn-block mt-5 mb-5 w-75">Next</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>

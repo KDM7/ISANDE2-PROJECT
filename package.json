@@ -27,6 +27,7 @@
     "express-handlebars": "^5.2.0",
     "express-session": "^1.17.1",
     "express-validator": "^6.9.1",
+    "generate-password": "^1.6.0",
     "jquery": "^3.5.1",
     "mongoose": "^5.11.9",
     "popper.js": "^1.16.1",

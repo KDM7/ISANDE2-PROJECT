@@ -1,8 +1,7 @@
 // 
-
 const fs = require('fs');
 const handlebars = require('handlebars');
-
+const generator = require('generate-password');
 // 
 
 const userModel = require("../model/usersdb");
@@ -13,6 +12,7 @@ const studentModel = require("../model/studentdb");
 const sectionModel = require("../model/sectiondb");
 const schoolYearModel = require("../model/schoolYeardb");
 const studentDetailsModel = require("../model/studentDetailsdb");
+const sectionMemberModel = require("../model/sectionMembersdb");
 const ref_sectionModel = require("../model/ref_sectiondb");
 const studentMembersModel = require("../model/sectionMembersdb")
 
@@ -51,13 +51,26 @@ function Parent(userID, mobileNum, nationality, birthDate, birthPlace) {
     this.birthPlace = birthPlace;
 }
 
-function Student(userID, parentID, mobileNum, teleNum, nationality, birthDate, birthPlace, email, religion, address) {
+function Student(userID, mobileNum, teleNum, nationality, birthDate, birthPlace, email, religion, address) {
+    this.userID = userID;
+    this.parentID = '';
+    this.mobileNum = mobileNum;
+    this.teleNum = teleNum;
+    this.nationality = nationality;
+    this.birthDate = birthDate;
+    this.birthPlace = birthPlace;
+    this.email = email;
+    this.religion = religion;
+    this.address = address;
+}
+
+function Student(userID, mobileNum, teleNum, nationality, birthDate, birthPlace, email, religion, address, parentID) {
     this.userID = userID;
     this.parentID = parentID;
     this.mobileNum = mobileNum;
     this.teleNum = teleNum;
     this.nationality = nationality;
-    this.birthDate = birthDate;
+    this.birthDate =new Date(birthDate);
     this.birthPlace = birthPlace;
     this.email = email;
     this.religion = religion;
@@ -107,9 +120,23 @@ function eduBackground(name, acadYear) {
     this.acadYear = acadYear;
 }
 
-function studentDetails(studentID, reason) {
+function studentDetails(studentID, familyRecords,reason) {
     this.studentID = studentID;
+    this.familyRecords = familyRecords;
     this.reason = reason;
+    this.eduBackground = [];
+}
+
+function studentDetails(studentID, familyRecords, reason,eduBackground,) {
+    this.studentID = studentID;
+    this.familyRecords = familyRecords;
+    this.eduBackground = eduBackground;
+    this.reason = reason;
+}
+
+function sectionMembers(sectionID,studentID){
+    this.sectionID = sectionID;
+    this.studentID = studentID;
 }
 
 //functions
@@ -272,6 +299,55 @@ async function getStudentListSYGL(schoolYear, gradeLvl) {
     return studentList;
 }
 
+async function getNextStudentID(){
+    var schoolYear = await getCurrentSY();
+    var start = schoolYear.substr(2,3);
+    var nextStudent;
+    var leadingzeroes;
+    var studentNum;
+    var students = await studentModel.aggregate([
+        {
+          '$match': {
+            'userID': {
+              '$regex': new RegExp(start)
+            }
+          }
+        }, {
+          '$sort': {
+            'userID': -1
+          }
+        }, {
+          '$limit': 1
+        }, {
+          '$project': {
+            'userID': 1
+          }
+        }
+      ]);
+    //   console.log(start);
+    if(students.length == 0)
+      return  start + '000001'
+    else {
+        studentNum = students[0].userID.substring(3);
+        studentNum = parseInt(studentNum.toString());
+        studentNum++;
+
+        leadingzeroes = 6 - studentNum.toString().length;
+        // console.log(leadingzeroes);
+
+        nextStudent = '' + start;
+
+        for(var i = 0; i < leadingzeroes; i++)
+            nextStudent = nextStudent + '0';
+        
+        nextStudent = nextStudent + studentNum.toString();
+
+        return nextStudent;
+    }
+   // var highestID = students[0].userID;
+  //  console.log(highestID);
+    return true;
+}
 const indexFunctions = {
     /* 
         LOGIN FUNCTIONS    
@@ -279,6 +355,7 @@ const indexFunctions = {
 
     // to show the login page
     getLogin: function (req, res) {
+        req.session.destrory();
         res.render('login', {
             title: 'Login'
         });
@@ -589,6 +666,12 @@ const indexFunctions = {
             title: 'Statement of Accounts'
         });
     },
+    getPaccNChild: function (req, res) {
+        res.render('p_acc_NChild', {
+            title: 'Register new Child'
+        });
+    },
+
 
     /*
         STUDENT FUNCTIONS 
@@ -603,7 +686,7 @@ const indexFunctions = {
     getEnrollmentNew: async function (req, res) {
         try {
             var sections = await getCurrentSections()
-            console.log(sections);
+            // console.log(sections);
             res.render('s_enroll_new.hbs', {
                 title: 'Enrollment Page',
                 sections: sections
@@ -613,15 +696,108 @@ const indexFunctions = {
         }
     },
 
-    getEnrollemtOld: async function (req, res) {
-        var oldStudent = await get
+    getEnrollmentParent: async function (req, res) {
+        //for testing purposes
+        req.session.studentID = '20-000023';
+        console.log(req.session);
+        res.render('s_enroll_parent', {
+            title: 'Register Parent'
+        });
     },
+
+    // getEnrollemtOld: async function (req, res) {
+    //     var oldStudent = await get
+    // }
 
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
             title: 'Breakdown of details'
         });
     },
+    
+    // Function is used to create new students
+    postEnrollmentNew: async function (req,res){
+        var {
+            userInfo,
+            studentDetail,
+            studentData,
+            sectionID
+        } = req.body;
+        try{
+            console.log(userInfo);
+            console.log(studentDetail);
+            console.log(studentData);
+
+            var userID = await getNextStudentID();
+            var password = generator.generate({
+                length:12, numbers : true
+            });
+            console.log(password)
+            var hash = await bcrypt.hash(password,saltRounds)
+
+            // create user
+            var user = new User(userID,hash,userInfo.firstName,userInfo.lastName,userInfo.middleName,'S',userInfo.gender);
+            var newUser = new userModel(user);
+            var userResult = await newUser.recordNewUser();
+            // console.log(userResult);
+            //create student
+            if(userResult){
+                var student = new Student(userID,studentData.mobileNum,studentData.teleNum,studentData.nationality,
+                    studentData.birthDate,studentData.birthPlace,studentData.email,studentData.religion,
+                    studentData.address);
+                // console.log(student);
+                var newStudent = new studentModel(student);
+                var studentResult = await newStudent.recordNewStudent();
+                // console.log(studentResult);
+
+                // create student details
+                // reminder to self, add siblings and education background
+                if(studentResult){
+                    var studentDetailsData = new studentDetails(userID, studentDetail.familyRecords,studentDetail.reason);
+                    var newStudentDetails = new studentDetailsModel(studentDetailsData);
+                    var studentDetailsResult = await newStudentDetails.recordNewStudentDetails();
+                    
+                    var sectionMemberData = new sectionMembers(sectionID,userID);
+                    console.log(sectionMemberData);
+                    var newSectionMember = new sectionMemberModel(sectionMemberData);
+                    var sectionMemberResult = await newSectionMember.recordNewSectionMember();
+                    console.log(sectionMemberResult)
+                    if(studentDetailsResult && sectionMemberResult)
+                    {
+                        req.session.studentID = userID;
+                        console.log(req.session);
+                        res.send({
+                            status : 201,
+                            userID : userID,
+                            password : password
+                        })
+                    }
+                    else{
+                        res.send({
+                            status : 401,
+                            msg : 'There is an error when adding user'
+                        });
+                    }
+                }
+                else{
+                    res.send({
+                        status : 401,
+                        msg : 'There is an error when adding user'
+                    })
+                }
+            }
+            else{
+                res.send({
+                    status : 401,
+                    msg : 'There is an error when adding user'
+                })
+            }
+            res.send({status :500, msg : 'Something went Wrong'});
+        }catch(e){
+            //res.send({status : 500, msg : e});
+            console.log('It entered the catch');
+        }
+    }
 }
 
 module.exports = indexFunctions;

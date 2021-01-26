@@ -46,14 +46,16 @@ router.get('/p/pay/cc', controller.getPpaycc);
 router.get('/p/pay/CCPlan', controller.getPpayCCPlan);
 router.get('/p/trans/brkdwn', controller.getPtransBD);
 router.get('/p/trans/SA', controller.getPtransSA);
+router.get('/p/acc/NChild', controller.getPaccNChild);
 
 /*
     STUDENT
 */
 router.get('/enroll', controller.getEnrollmentNew);
+router.get('/enroll/parent', controller.getEnrollmentParent);
 router.get('/s/trans/brkdwn', controller.getStransBD);
 
-
+router.post('/enroll', controller.postEnrollmentNew);
 
 
 module.exports = router;

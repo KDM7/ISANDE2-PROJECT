@@ -13,6 +13,11 @@ const sectionMemberSchema = new mongoose.Schema({
     studentID : {type : String, required : true}
 }, { collection: "studentMembers" });
 
+sectionMemberSchema.methods.recordNewSectionMember = async function() {
+    var result = await sectionMemberModel.create(this);
+    console.log(JSON.stringify(result));
+    return result;
+};
 
 const sectionMemberModel = db.model('studentMembers', sectionMemberSchema);
 
