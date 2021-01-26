@@ -355,7 +355,7 @@ const indexFunctions = {
 
     // to show the login page
     getLogin: function (req, res) {
-        req.session.destrory();
+        req.session.destroy();
         res.render('login', {
             title: 'Login'
         });
@@ -424,6 +424,10 @@ const indexFunctions = {
                 msg: e
             });
         }
+    },
+    postLogout: function (req, res) {
+        req.session.destroy();
+        res.redirect("/");
     },
 
     /*      
