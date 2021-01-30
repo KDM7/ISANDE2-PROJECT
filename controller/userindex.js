@@ -655,6 +655,8 @@ const indexFunctions = {
 
     // to show a students profile for admin side
     getAuserSProf: function (req, res) {
+        var userID = req.params.userID;
+        
         res.render('a_users_SProfile', {
             title: 'Student Profile',
         });

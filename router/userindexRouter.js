@@ -29,7 +29,7 @@ router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
 router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
 router.get('/a/sched/newAcadCalendar', controller.getAschednewAcadCalendar);
 router.get('/a/sched/editAcadCalendar', controller.getAschededitAcadCalendar);
-router.get('/a/users/SProfile', controller.getAuserSProf);
+router.get('/a/users/SProfile/:userID', controller.getAuserSProf);
 router.get('/a/users/SEmail', controller.getAuserSEmail);
 router.get('/a/users/SAccount', controller.getAuserSAcc);
 router.get('/a/users/PProfile', controller.getAuserPProf);

@@ -1,37 +1,34 @@
 //checks if the string has a number
 function hasNumber(myString) {
     return /\d/.test(myString);
-  }
+}
 
 // checks if the string only contains number
-function isNumber(myString){
+function isNumber(myString) {
     return /^\d+$/.test(myString);
 }
 
 // check user data to see if it is valid when creating any new user
-function checkUserInfo(userInfo){
+function checkUserInfo(userInfo) {
     var valid = true;
     var inv_fields = 'User info is invalid. Modify the following : \n';
-    
-    if (validator.isEmpty(userInfo.firstName) || hasNumber(userInfo.firstName))
-    {
+
+    if (validator.isEmpty(userInfo.firstName) || hasNumber(userInfo.firstName)) {
         valid = false;
         inv_fields += '     First Name is empty or invalid\n';
     }
 
-    if (validator.isEmpty(userInfo.lastName) || hasNumber(userInfo.lastName))
-    {
+    if (validator.isEmpty(userInfo.lastName) || hasNumber(userInfo.lastName)) {
         valid = false;
         inv_fields += '     Last Name is empty or invalid\n';
     }
 
-    if (validator.isEmpty(userInfo.middleName) || hasNumber(userInfo.middleName))
-    {
+    if (validator.isEmpty(userInfo.middleName) || hasNumber(userInfo.middleName)) {
         valid = false;
         inv_fields += '     Middle Name is empty or invalid\n';
     }
 
-    if(!valid)
+    if (!valid)
         alert(inv_fields);
 
     return valid;
@@ -49,65 +46,56 @@ function checkUserInfo(userInfo){
     address :       Not Empty
 
 */
-function checkStudentData(studentData){
+function checkStudentData(studentData) {
     var valid = true;
     var inv_fields = 'Student info is invalid. Modify the following : \n';
     var valid_date = new Date();
-    valid_date.setFullYear(valid_date.getFullYear()-2);
-    
+    valid_date.setFullYear(valid_date.getFullYear() - 2);
 
-    if(validator.isEmpty(studentData.mobileNum) || !isNumber(studentData.mobileNum) || studentData.mobileNum.length != 11)
-    {
+
+    if (validator.isEmpty(studentData.mobileNum) || !isNumber(studentData.mobileNum) || studentData.mobileNum.length != 11) {
         valid = false;
         inv_fields += '     Mobile Number is empty or invalid\n';
     }
 
-    if(!validator.isEmpty(studentData.teleNum))
-    {
-        if(!isNumber(studentData.teleNum) || studentData.teleNum.length != 7)
-        {
+    if (!validator.isEmpty(studentData.teleNum)) {
+        if (!isNumber(studentData.teleNum) || studentData.teleNum.length != 7) {
             valid = false;
             inv_fields += '     Telephone Number is invalid\n';
         }
-    }else studentData.teleNum = '';
+    } else studentData.teleNum = '';
 
-    if(validator.isEmpty(studentData.nationality))
-    {
+    if (validator.isEmpty(studentData.nationality)) {
         valid = false;
         inv_fields += '     Nationality is empty\n';
     }
 
-    if(validator.isAfter(studentData.birthDate,valid_date.toDateString()))
-    {
+    if (validator.isAfter(studentData.birthDate, valid_date.toDateString())) {
         valid = false;
         inv_fields += '     Birth Date is invalid\n';
     }
 
-    if(validator.isEmpty(studentData.birthPlace))
-    {
+    if (validator.isEmpty(studentData.birthPlace)) {
         valid = false;
         inv_fields += '     Birth Place is empty\n';
     }
 
-    if(!validator.isEmail(studentData.email))
-    {
+    if (!validator.isEmail(studentData.email)) {
         valid = false;
         inv_fields += '     Email is empty or invalid\n'
     }
 
-    if(validator.isEmpty(studentData.religion))
-    {
+    if (validator.isEmpty(studentData.religion)) {
         valid = false;
         inv_fields += '     Religion is empty\n';
     }
 
-    if(validator.isEmpty(studentData.address))
-    {
+    if (validator.isEmpty(studentData.address)) {
         valid = false;
         inv_fields += '     Address is empty\n';
     }
 
-    if(!valid)
+    if (!valid)
         alert(inv_fields);
 
     return valid;
@@ -138,106 +126,88 @@ function checkStudentData(studentData){
             //eduBackground :
             reason :                
 */
-function checkStudentDetails(studentDetails){
+function checkStudentDetails(studentDetails) {
     var valid = true;
     var inv_fields = 'Family Record is invalid. Modify the following : \n';
-    
-    if(validator.isEmpty(studentDetails.familyRecords.mName) || hasNumber(studentDetails.familyRecords.mName))
-    {
+
+    if (validator.isEmpty(studentDetails.familyRecords.mName) || hasNumber(studentDetails.familyRecords.mName)) {
         valid = false;
         inv_fields += "     Mother's Name is empty or invalid\n";
     }
 
-    if(validator.isEmpty(studentDetails.familyRecords.mOccu))
-    {
+    if (validator.isEmpty(studentDetails.familyRecords.mOccu)) {
         valid = false;
         inv_fields += "     Mother's Occupation is empty\n";
     }
 
-    if(!validator.isEmpty(studentDetails.familyRecords.mEmail))
-    {
-        if(!validator.isEmail(studentDetails.familyRecords.mEmail))
-        {
+    if (!validator.isEmpty(studentDetails.familyRecords.mEmail)) {
+        if (!validator.isEmail(studentDetails.familyRecords.mEmail)) {
             valid = false;
             inv_fields += "     Mother's Email is invalid\n";
         }
-    }
-    else studentDetails.familyRecords.mEmail = '';
+    } else studentDetails.familyRecords.mEmail = '';
 
-    if(!validator.isEmpty(studentDetails.familyRecords.mNum))
-    {
-        if(!(isNumber(studentDetails.familyRecords.mNum) && (studentDetails.familyRecords.mNum.length == 7 || 
-            studentDetails.familyRecords.mNum.length == 11)))
-        {
+    if (!validator.isEmpty(studentDetails.familyRecords.mNum)) {
+        if (!(isNumber(studentDetails.familyRecords.mNum) && (studentDetails.familyRecords.mNum.length == 7 ||
+                studentDetails.familyRecords.mNum.length == 11))) {
             valid = false;
             inv_fields += "     Mother's Contact Number is invalid\n";
         }
     }
 
-    if(validator.isEmpty(studentDetails.familyRecords.mWorkAddress))
+    if (validator.isEmpty(studentDetails.familyRecords.mWorkAddress))
         studentDetails.familyRecords.mWorkAddress = '';
 
-    if(validator.isEmpty(studentDetails.familyRecords.fName) || hasNumber(studentDetails.familyRecords.fName))
-    {
+    if (validator.isEmpty(studentDetails.familyRecords.fName) || hasNumber(studentDetails.familyRecords.fName)) {
         valid = false;
         inv_fields += "     Father's Name is empty or invalid\n";
     }
 
-    if(validator.isEmpty(studentDetails.familyRecords.fOccu))
-    {
+    if (validator.isEmpty(studentDetails.familyRecords.fOccu)) {
         valid = false;
         inv_fields += "     Father's Occupation is empty\n";
     }
 
-    if(!validator.isEmpty(studentDetails.familyRecords.fEmail))
-    {
-        if(!validator.isEmail(studentDetails.familyRecords.fEmail))
-        {
+    if (!validator.isEmpty(studentDetails.familyRecords.fEmail)) {
+        if (!validator.isEmail(studentDetails.familyRecords.fEmail)) {
             valid = false;
             inv_fields += "     Father's Email is invalid\n";
         }
-    }else studentDetails.familyRecords.fEmail = '';
+    } else studentDetails.familyRecords.fEmail = '';
 
-    if(!validator.isEmpty(studentDetails.familyRecords.fNum))
-    {
-        if(!(isNumber(studentDetails.familyRecords.fNum) && (studentDetails.familyRecords.fNum.length == 7 || 
-            studentDetails.familyRecords.fNum.length == 11)))
-        {
+    if (!validator.isEmpty(studentDetails.familyRecords.fNum)) {
+        if (!(isNumber(studentDetails.familyRecords.fNum) && (studentDetails.familyRecords.fNum.length == 7 ||
+                studentDetails.familyRecords.fNum.length == 11))) {
             valid = false;
             inv_fields += "     Father's Contact Number is invalid\n";
         }
     }
 
-    if(validator.isEmpty(studentDetails.familyRecords.fWorkAddress))
+    if (validator.isEmpty(studentDetails.familyRecords.fWorkAddress))
         studentDetails.familyRecords.fWorkAddress = '';
 
-    if(validator.isEmpty(studentDetails.familyRecords.cName) || hasNumber(studentDetails.familyRecords.cName))
-    {
+    if (validator.isEmpty(studentDetails.familyRecords.cName) || hasNumber(studentDetails.familyRecords.cName)) {
         valid = false;
         inv_fields += "     Contact Person's Name is empty or invalid\n";
     }
 
-    if(validator.isEmpty(studentDetails.familyRecords.relation))
+    if (validator.isEmpty(studentDetails.familyRecords.relation))
         studentDetails.familyRecords.relation = '';
 
-    if(!validator.isEmpty(studentDetails.familyRecords.cEmail))
-    {
-        if(!validator.isEmail(studentDetails.familyRecords.cEmail))
-        {
+    if (!validator.isEmpty(studentDetails.familyRecords.cEmail)) {
+        if (!validator.isEmail(studentDetails.familyRecords.cEmail)) {
             valid = false;
             inv_fields += "     Contact Person's Email is invalid\n";
         }
-    }else studentDetails.familyRecords.cEmail = '';
+    } else studentDetails.familyRecords.cEmail = '';
 
-    if(!validator.isEmpty(studentDetails.familyRecords.cNum))
-    {
-        if(!(isNumber(studentDetails.familyRecords.cNum) && (studentDetails.familyRecords.cNum.length == 7 || 
-            studentDetails.familyRecords.cNum.length == 11)))
-        {
+    if (!validator.isEmpty(studentDetails.familyRecords.cNum)) {
+        if (!(isNumber(studentDetails.familyRecords.cNum) && (studentDetails.familyRecords.cNum.length == 7 ||
+                studentDetails.familyRecords.cNum.length == 11))) {
             valid = false;
             inv_fields += "     Contact Persons's Phone Number is invalid\n";
         }
-    }else studentDetails.familyRecords.cNum = '';
+    } else studentDetails.familyRecords.cNum = '';
 
     /* fetcher information cases 
             fetcher name invalid = automatic invalid
@@ -246,51 +216,44 @@ function checkStudentDetails(studentDetails){
             fetcher name valid, contact number invalid = invalid
             fetcher name empty, contact number exists = invalid
     */
-    if(!validator.isEmpty(studentDetails.familyRecords.fetcherName))
-    {
-        if(hasNumber(studentDetails.familyRecords.fetcherName))
-        {
+    if (!validator.isEmpty(studentDetails.familyRecords.fetcherName)) {
+        if (hasNumber(studentDetails.familyRecords.fetcherName)) {
             valid = false;
             inv_fields += "     Fetcher's name is invalid\n";
-        }
-        else if(!validator.isEmpty(studentDetails.familyRecords.fetchNum))
-        {
-            if(!(isNumber(studentDetails.familyRecords.fetchNum) && (studentDetails.familyRecords.fetchNum.length == 7 || 
-                studentDetails.familyRecords.fetchNum.length == 11)))
-            {
+        } else if (!validator.isEmpty(studentDetails.familyRecords.fetchNum)) {
+            if (!(isNumber(studentDetails.familyRecords.fetchNum) && (studentDetails.familyRecords.fetchNum.length == 7 ||
+                    studentDetails.familyRecords.fetchNum.length == 11))) {
                 valid = false;
                 inv_fields += "     Fetcher's Contact Number is invalid\n";
             }
         }
-    }
-    else if(!validator.isEmpty(studentDetails.familyRecords.fetchNum))
-    {
+    } else if (!validator.isEmpty(studentDetails.familyRecords.fetchNum)) {
         valid = false;
         inv_fields += "     Fetcher's information is incomplete\n";
-    }else {
+    } else {
         studentDetails.familyRecords.fetchNum = '';
         studentDetails.familyRecords.fetcherName = '';
     }
 
-    if(!valid)
+    if (!valid)
         alert(inv_fields);
 
     return valid;
 }
 
-function checkEnrollmentData(userInfo, studentData, studentDetails){
-    var val1,val2,val3 = true;
-    
+function checkEnrollmentData(userInfo, studentData, studentDetails) {
+    var val1, val2, val3 = true;
+
     val1 = checkUserInfo(userInfo);
     val2 = checkStudentData(studentData);
     val3 = checkStudentDetails(studentDetails);
-    if(val1 && val2 && val3)
+    if (val1 && val2 && val3)
         return true;
     else return false;
 }
 
-$(document).ready(function() {
-    $('#submitLogin').click(function() {
+$(document).ready(function () {
+    $('#submitLogin').click(function () {
 
         var user = $('#id').val();
         var pass = $('#pword').val();
@@ -306,43 +269,37 @@ $(document).ready(function() {
             $.post('/', {
                 user: user,
                 pass: pass
-            }, function(result) {
+            }, function (result) {
                 console.log(result);
                 switch (result.status) {
-                    case 201:
-                        {
-                            //admin
-                            window.location.href = '/a/users/students';
-                            break;
-                        }
-                    case 202:
-                        {
-                            //teacher
-                            window.location.href = '/t/users/students';
-                            break;
-                        }
-                    case 203:
-                        {
-                            //parent
-                            window.location.href = '/p/trans/brkdwn';
-                            break;
-                        }
-                    case 204:
-                        {
-                            //student
-                            window.location.href = '/s/trans/brkdwn';
-                            break;
-                        }
-                    case 401:
-                        {
-                            alert('case 401: ' + result.msg);
-                            break;
-                        }
-                    case 500:
-                        {
-                            alert('case 500: ' + result.msg);
-                            break;
-                        }
+                    case 201: {
+                        //admin
+                        window.location.href = '/a/users/students';
+                        break;
+                    }
+                    case 202: {
+                        //teacher
+                        window.location.href = '/t/users/students';
+                        break;
+                    }
+                    case 203: {
+                        //parent
+                        window.location.href = '/p/trans/brkdwn';
+                        break;
+                    }
+                    case 204: {
+                        //student
+                        window.location.href = '/s/trans/brkdwn';
+                        break;
+                    }
+                    case 401: {
+                        alert('case 401: ' + result.msg);
+                        break;
+                    }
+                    case 500: {
+                        alert('case 500: ' + result.msg);
+                        break;
+                    }
                 }
             });
         }
@@ -365,82 +322,78 @@ $(document).ready(function() {
     */
 
     // sibling and educational background is not yet fixed
-    $('#submitEnrollNew').click(function(){
+    $('#submitEnrollNew').click(function () {
         var valid = false;
         var sectionID = $('#gradeLvl').val();
         var userInfo = {
-            firstName :         $('#firstName').val(),
-            lastName :          $('#lastName').val(),
-            middleName :        $('#middleName').val(),
-            gender :            $('#gender').val(),
+            firstName: $('#firstName').val(),
+            lastName: $('#lastName').val(),
+            middleName: $('#middleName').val(),
+            gender: $('#gender').val(),
         };
-        
-        var studentDetails ={
-            familyRecords : {
-                mName:          $('#mName').val(),
-                mOccu :         $('#mOccu').val(),
-                mEmail :        $('#mEmail').val(),
-                mWorkAddress :  $('#mWorkAddress').val(),
-                mNum :          $('#mNum').val(),
-                fName :         $('#fName').val(),
-                fOccu :         $('#fOccu').val(),
-                fEmail :        $('#fEmail').val(),
-                fWorkAddress :  $('#fWorkAddress').val(),
-                fNum :          $('#fNum').val(),
-                cName :         $('#cName').val(),
-                relation :      $('#relation').val(),
-                cEmail :        $('#cEmail').val(),
-                cNum :          $('#cNum').val(),
-                cWorkAddress :  $('#cWorkAddress').val(),
-                fetcherName :   $('#fetchName').val(),
-                fetchNum :      $('#fetchNum').val(),
+
+        var studentDetails = {
+            familyRecords: {
+                mName: $('#mName').val(),
+                mOccu: $('#mOccu').val(),
+                mEmail: $('#mEmail').val(),
+                mWorkAddress: $('#mWorkAddress').val(),
+                mNum: $('#mNum').val(),
+                fName: $('#fName').val(),
+                fOccu: $('#fOccu').val(),
+                fEmail: $('#fEmail').val(),
+                fWorkAddress: $('#fWorkAddress').val(),
+                fNum: $('#fNum').val(),
+                cName: $('#cName').val(),
+                relation: $('#relation').val(),
+                cEmail: $('#cEmail').val(),
+                cNum: $('#cNum').val(),
+                cWorkAddress: $('#cWorkAddress').val(),
+                fetcherName: $('#fetchName').val(),
+                fetchNum: $('#fetchNum').val(),
                 //siblings : 
             },
             //eduBackground :
-            reason :            $('#reason').val()
+            reason: $('#reason').val()
         };
 
-        var studentData ={
-            mobileNum :         $('#mobileNum').val(),
-            teleNum :           $('#teleNum').val(),
-            nationality :       $('#nationality').val(),
-            birthDate :         $('#birthDate').val(),
-            birthPlace:         $('#birthPlace').val(),
-            email :             $('#email').val(),
-            religion:           $('#religion').val(),
-            address :           $('#address').val()         
+        var studentData = {
+            mobileNum: $('#mobileNum').val(),
+            teleNum: $('#teleNum').val(),
+            nationality: $('#nationality').val(),
+            birthDate: $('#birthDate').val(),
+            birthPlace: $('#birthPlace').val(),
+            email: $('#email').val(),
+            religion: $('#religion').val(),
+            address: $('#address').val()
         }
 
-        var valid = checkEnrollmentData(userInfo,studentData,studentDetails);
+        var valid = checkEnrollmentData(userInfo, studentData, studentDetails);
         console.log(valid);
-        if(valid)
-        {
+        if (valid) {
             $.post('/enroll', {
-                userInfo : userInfo,
-                studentDetail : studentDetails,
-                studentData : studentData,
-                sectionID : sectionID,
-            }, function (result){
+                userInfo: userInfo,
+                studentDetail: studentDetails,
+                studentData: studentData,
+                sectionID: sectionID,
+            }, function (result) {
                 switch (result.status) {
-                    case 201:
-                        {
-                            //admin
-                            
-                            alert('Thank you for applying, these are the user credentials \nUserID:'+ result.userID + 
-                                    '\nPassword: '+ result.password)
-                            window.location.href = '/enroll/parent';
-                            break;
-                        }
-                    case 401:
-                        {
-                            alert('case 401: ' + result.msg);
-                            break;
-                        }
-                    case 500:
-                        {
-                            alert('case 500: ' + result.msg);
-                            break;
-                        }
+                    case 201: {
+                        //admin
+
+                        alert('Thank you for applying, these are the user credentials \nUserID:' + result.userID +
+                            '\nPassword: ' + result.password)
+                        window.location.href = '/enroll/parent';
+                        break;
+                    }
+                    case 401: {
+                        alert('case 401: ' + result.msg);
+                        break;
+                    }
+                    case 500: {
+                        alert('case 500: ' + result.msg);
+                        break;
+                    }
                 }
             })
         }
@@ -457,54 +410,48 @@ $(document).ready(function() {
         If Parent does not have account
             -Create Parent Account
     */
-    $('#enroll_Parent').click(function(){
+
+    $('#enroll_Parent').click(function () {
         var exists = $('#if_exist').val();
         console.log(exists);
-        if(exists == 'Yes')
-        {   
+        if (exists == 'Yes') {
             console.log('I am in existing parent side')
             var parentInfo = {
-                firstName :         $('#firstName_old').val(),
-                lastName :          $('#lastName_old').val(),
-                middleName :        $('#middleName_old').val(),
-                parentID :          $('#parentID').val()
+                firstName: $('#firstName_old').val(),
+                lastName: $('#lastName_old').val(),
+                middleName: $('#middleName_old').val(),
+                parentID: $('#parentID').val()
             };
 
             console.log(parentInfo);
             var valid = checkUserInfo(parentInfo);
             console.log(valid);
-            
-            if(valid && !validator.isEmpty(parentInfo.parentID))
-            {
+
+            if (valid && !validator.isEmpty(parentInfo.parentID)) {
                 $.post('/enroll/parent/old', {
-                    parentInfo : parentInfo
-                }, function (result){
+                    parentInfo: parentInfo
+                }, function (result) {
                     switch (result.status) {
-                        case 201:
-                            {
-                                //admin
-                                
-                                alert('Link to student is successful. To pay, go to you parent account')
-                                window.location.href = '/';
-                                break;
-                            }
-                        case 401:
-                            {
-                                alert('case 401: ' + result.msg);
-                                break;
-                            }
-                        case 500:
-                            {
-                                alert('case 500: ' + result.msg);
-                                break;
-                            }
+                        case 201: {
+                            //admin
+
+                            alert('Link to student is successful. To pay, go to you parent account')
+                            window.location.href = '/';
+                            break;
+                        }
+                        case 401: {
+                            alert('case 401: ' + result.msg);
+                            break;
+                        }
+                        case 500: {
+                            alert('case 500: ' + result.msg);
+                            break;
+                        }
                     }
                 })
-            }
-            else if(valid && validator.isEmpty(parentInfo.parentID)) 
+            } else if (valid && validator.isEmpty(parentInfo.parentID))
                 alert('ParentID is Empty');
-        }
-        else{
+        } else {
             console.log("This is for new Parents");
         }
     });
