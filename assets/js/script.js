@@ -454,8 +454,8 @@ $(document).ready(function () {
 
             if (valid && !validator.isEmpty(parentInfo.parentID)) {
                 $.post('/enroll/parent/old', {
-                    parentInfo: parentInfo
-                }, function (result) {
+                    parentInfo : parentInfo,
+                }, function (result){
                     switch (result.status) {
                         case 201: {
                             //admin

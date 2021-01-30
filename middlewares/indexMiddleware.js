@@ -8,7 +8,6 @@ const indexMiddleware = {
         var lastName = req.body.parentInfo.lastName;
         var middleName = req.body.parentInfo.middleName;
         try {
-            console.log(studentID);
             console.log(parentID);
 
             var user = await userModel.findOne({
@@ -21,8 +20,7 @@ const indexMiddleware = {
                     res.send({status: 401, msg: 'User is not a Parent'})
                  else if (user.firstName != firstName || user.middleName != middleName || user.lastName != lastName)
                     res.send({status : 401, msg : 'Credentials do not match'});
-                else
-                    res.send({status: 401,msg : 'Parent is valid'});
+                else return next();
              }
             else res.send({status: 401, msg : 'User not found'});
             console.log(user);

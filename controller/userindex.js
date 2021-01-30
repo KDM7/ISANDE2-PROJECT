@@ -1065,7 +1065,15 @@ const indexFunctions = {
     },
 
     postEnrollParentOld : async function (req,res){
-        
+        try {
+            var parentInfo = req.body;
+            console.log(req.session.studentID);
+            console.log(parentInfo);
+            
+            res.send({status : 401, msg: 'i made it'});
+        } catch (e) {
+            res.send({status : 500, msg : e});
+        }
     },
 }
 
