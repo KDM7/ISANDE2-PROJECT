@@ -27,7 +27,11 @@ router.get('/a/sched/CurSchoolYr', controller.getAschedCurSchoolYr);
 router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
 router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
+
+//New Event
 router.get('/a/sched/newAcadCalendar', controller.getAschednewAcadCalendar);
+router.post('/newAcadCalendar', controller.postNewAcadCalendar);
+
 router.get('/a/sched/editAcadCalendar', controller.getAschededitAcadCalendar);
 router.get('/a/users/SProfile/:userID', controller.getAuserSProf);
 router.get('/a/users/SEmail', controller.getAuserSEmail);

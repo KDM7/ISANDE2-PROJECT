@@ -1,0 +1,24 @@
+[{
+    "sectionName" : "Jupiter",
+    "schoolYear" : "2020-2021",
+    "tuition" : "23,153.00",
+    "misc" : "5,780.00",
+    "additional" : "0.00",
+    "other" : "0.00"
+  },
+  {
+    "sectionName" : "Saturn",
+    "schoolYear" : "2020-2021",
+    "tuition" : "23,730.00",
+    "misc" : "5,780.00",
+    "additional" : "0.00",
+    "other" : "0.00"
+  },
+  {
+    "sectionName" : "Venus",
+    "schoolYear" : "2020-2021",
+    "tuition" : "24,360.00",
+    "misc" : "5,950.00",
+    "additional" : "0.00",
+    "other" : "0.00"
+  }]

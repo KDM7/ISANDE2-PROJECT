@@ -14,7 +14,8 @@ const schoolYearModel = require("../model/schoolYeardb");
 const studentDetailsModel = require("../model/studentDetailsdb");
 const sectionMemberModel = require("../model/sectionMembersdb");
 const ref_sectionModel = require("../model/ref_sectiondb");
-const studentMembersModel = require("../model/sectionMembersdb")
+const studentMembersModel = require("../model/sectionMembersdb");
+const eventModel = require("../model/eventdb");
 
 const bcrypt = require('bcrypt');
 const e = require('express');
@@ -138,6 +139,13 @@ function sectionMembers(sectionID,studentID, remarks){
     this.sectionID = sectionID;
     this.studentID = studentID;
     this.remarks = remarks
+}
+
+function Event(eventID, eventName, eventDate, schoolYear) {
+    this.eventID = eventID;
+    this.eventName = eventName;
+    this.eventDate = new Date(eventDate);
+    this.schoolYear = schoolYear;
 }
 
 //functions
@@ -349,6 +357,22 @@ async function getNextStudentID(){
   //  console.log(highestID);
     return true;
 }
+
+async function getMinMaxEventID(sortby, offset) {
+    var highestID = await eventModel.aggregate([{
+        '$sort': {
+            'eventID': sortby
+        }
+    }, {
+        '$limit': 1
+    }, {
+        '$project': {
+            'deliveryID': 1
+        }
+    }]);
+    return highestID[0].eventID + offset;
+}
+
 const indexFunctions = {
     /* 
         LOGIN FUNCTIONS    
@@ -590,9 +614,40 @@ const indexFunctions = {
     
     // to show the new event page for admin side
     getAschednewAcadCalendar: function(req, res){
-        res.render('a_sched_newAcadCalendar', {
-            title: 'New Event',
-        });
+        try {
+            res.render('a_sched_newAcadCalendar', {
+                title: 'New Event',
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    },
+
+    // to post the new event to the system
+    postNewAcadCalendar: async function (req, res) {
+        if (req.session.logUser) {
+            let {
+                eventName,
+                eventDate
+            } = req.body;
+            var eventID = await getMinMaxEventID(-1, 1);
+            var schoolYear = await getCurrentSY();
+
+            var event = new Event(eventID, eventName, eventDate, schoolYear);
+            var newEvent = new eventModel(event);
+
+            newEvent.recordNewEvent();
+
+            res.send({
+                status: 201,
+                msg: 'Event Recorded'
+            });
+        } else {
+            res.send({
+                status: 500,
+                msg: ': User is not logged in'
+            });
+        }
     },
     
     // to show the edit event page for admin side

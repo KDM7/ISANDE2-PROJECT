@@ -12,23 +12,23 @@
 							<div class="container">
 								<form>
 									<div class="form-group">
-                                        <label for="formGroupExampleInput2">Category</label>
+                                        <label for="category">Category</label>
                                         <br>
-                                        <select name="grade_level_id" id="search_category_id" class="form-control valid" onchange="myFunction2()" required> 
-                                            <option value="2"> Academic - Primary Education </option>
-                                            <option value="3"> Academic - Secondary Education </option>
-                                            <option value="16"> Regular Events </option>
+                                        <select name="grade_level_id" id="category" class="form-control valid" onchange="myFunction2()" required> 
+                                            <option value="1"> Academic - Primary Education </option>
+                                            <option value="2"> Academic - Secondary Education </option>
+                                            <option value="3"> Regular Events </option>
                                             <option value="4"> Holidays </option>                          
                                         </select>
 									</div>
 									<div class="form-group">
-                                        <label for="formGroupExampleInput2">Description</label>
-										<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="">
+                                        <label for="eventName">Description</label>
+										<input type="text" class="form-control" id="eventName" placeholder="">
                                     </div>
                                     <div class="form-group row">
-										<label for="example-date-input" class="col-2 col-form-label">Date</label>
+										<label for="eventDate" class="col-2 col-form-label">Date</label>
 										<div class="col-10">
-											<input class="form-control" type="date" id="date">
+											<input class="form-control" type="date" id="eventDate">
 											<script>
 												Date.prototype.toDateInputValue = (function() {
 													var local = new Date(this);
