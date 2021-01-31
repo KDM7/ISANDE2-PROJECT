@@ -469,7 +469,7 @@ const indexFunctions = {
                 }
             }]
         );
-
+        var currentYear;
         var gradeLvl = await ref_sectionModel.aggregate(
             [{
                 '$sort': {
@@ -481,10 +481,11 @@ const indexFunctions = {
                 }
             }]
         );
-
-        var students = await getStudentListSYGL(schoolYear[0].value, gradeLvl[0].value);
-        console.log(schoolYear[0].value);
-        console.log(gradeLvl[0].value);
+        for(i=0; i<schoolYear.length; i++){
+            if(schoolYear[i].selected)
+                currentYear = schoolYear[i].value;
+        }
+        var students = await getStudentListSYGL(currentYear, gradeLvl[0].value);
         // console.log('typeof sections:' + typeof sections);
         // console.log("students: ");
         // console.log(students);
