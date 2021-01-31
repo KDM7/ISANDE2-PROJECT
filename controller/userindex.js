@@ -71,7 +71,7 @@ function Student(userID, mobileNum, teleNum, nationality, birthDate, birthPlace,
     this.mobileNum = mobileNum;
     this.teleNum = teleNum;
     this.nationality = nationality;
-    this.birthDate =new Date(birthDate);
+    this.birthDate = new Date(birthDate);
     this.birthPlace = birthPlace;
     this.email = email;
     this.religion = religion;
@@ -121,21 +121,21 @@ function eduBackground(name, acadYear) {
     this.acadYear = acadYear;
 }
 
-function studentDetails(studentID, familyRecords,reason) {
+function studentDetails(studentID, familyRecords, reason) {
     this.studentID = studentID;
     this.familyRecords = familyRecords;
     this.reason = reason;
     this.eduBackground = [];
 }
 
-function studentDetails(studentID, familyRecords, reason,eduBackground,) {
+function studentDetails(studentID, familyRecords, reason, eduBackground, ) {
     this.studentID = studentID;
     this.familyRecords = familyRecords;
     this.eduBackground = eduBackground;
     this.reason = reason;
 }
 
-function sectionMembers(sectionID,studentID, remarks){
+function sectionMembers(sectionID, studentID, remarks) {
     this.sectionID = sectionID;
     this.studentID = studentID;
     this.remarks = remarks
@@ -297,45 +297,62 @@ async function getStudentListSYGL(schoolYear, gradeLvl) {
                 'preserveNullAndEmptyArrays': true
             }
         }, {
+            '$lookup': {
+                'from': 'studentMembers',
+                'localField': 'userID',
+                'foreignField': 'studentID',
+                'as': 'memberData'
+            }
+        }, {
+            '$unwind': {
+                'path': '$memberData',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$match': {
+                'memberData.sectionID': {
+                    '$in': sections
+                }
+            }
+        }, {
             '$project': {
                 'userID': 1,
                 'firstname': '$userData.firstName',
                 'middlename': '$userData.middleName',
-                'lastname': '$userData.lastName'
+                'lastname': '$userData.lastName',
+                'remark': '$memberData.remarks'
             }
         }]
     );
     return studentList;
 }
 
-async function getNextStudentID(){
+async function getNextStudentID() {
     var schoolYear = await getCurrentSY();
-    var start = schoolYear.substr(2,3);
+    var start = schoolYear.substr(2, 3);
     var nextStudent;
     var leadingzeroes;
     var studentNum;
-    var students = await studentModel.aggregate([
-        {
-          '$match': {
+    var students = await studentModel.aggregate([{
+        '$match': {
             'userID': {
-              '$regex': new RegExp(start)
+                '$regex': new RegExp(start)
             }
-          }
-        }, {
-          '$sort': {
-            'userID': -1
-          }
-        }, {
-          '$limit': 1
-        }, {
-          '$project': {
-            'userID': 1
-          }
         }
-      ]);
+    }, {
+        '$sort': {
+            'userID': -1
+        }
+    }, {
+        '$limit': 1
+    }, {
+        '$project': {
+            'userID': 1
+        }
+    }]);
     //   console.log(start);
-    if(students.length == 0)
-      return  start + '000001'
+    if (students.length == 0)
+        return start + '000001'
     else {
         studentNum = students[0].userID.substring(3);
         studentNum = parseInt(studentNum.toString());
@@ -346,15 +363,15 @@ async function getNextStudentID(){
 
         nextStudent = '' + start;
 
-        for(var i = 0; i < leadingzeroes; i++)
+        for (var i = 0; i < leadingzeroes; i++)
             nextStudent = nextStudent + '0';
-        
+
         nextStudent = nextStudent + studentNum.toString();
 
         return nextStudent;
     }
-   // var highestID = students[0].userID;
-  //  console.log(highestID);
+    // var highestID = students[0].userID;
+    //  console.log(highestID);
     return true;
 }
 
@@ -481,8 +498,8 @@ const indexFunctions = {
                 }
             }]
         );
-        for(i=0; i<schoolYear.length; i++){
-            if(schoolYear[i].selected)
+        for (i = 0; i < schoolYear.length; i++) {
+            if (schoolYear[i].selected)
                 currentYear = schoolYear[i].value;
         }
         var students = await getStudentListSYGL(currentYear, gradeLvl[0].value);
@@ -579,42 +596,42 @@ const indexFunctions = {
     },
 
     // to show Upon Enrollment page for admin side
-    getAfeeUponE: function(req, res){
+    getAfeeUponE: function (req, res) {
         res.render('a_fees_edituponE', {
             title: 'Edit Upon Enrollment',
         });
     },
 
     // to show the set school year page for admin side
-    getAschedCurSchoolYr: function(req, res){
+    getAschedCurSchoolYr: function (req, res) {
         res.render('a_sched_CurSchoolYr', {
             title: 'Set CUrrent School Year',
         });
-    },    
+    },
 
     // to show the class schedule page for admin side
-    getAschedClassSched: function(req, res){
+    getAschedClassSched: function (req, res) {
         res.render('a_sched_classSched', {
             title: 'Class Schedules',
         });
     },
 
     // to show the add class schedule page for admin side
-    getAschednewClassSched: function(req, res){
+    getAschednewClassSched: function (req, res) {
         res.render('a_sched_newClassSched', {
             title: 'New Class Schedules',
         });
     },
 
     // to show the academic calendar page for admin side
-    getAschedAcadCalendar: function(req, res){
+    getAschedAcadCalendar: function (req, res) {
         res.render('a_sched_acadCalendar', {
             title: 'Academic Calendar',
         });
     },
-    
+
     // to show the new event page for admin side
-    getAschednewAcadCalendar: function(req, res){
+    getAschednewAcadCalendar: function (req, res) {
         try {
             res.render('a_sched_newAcadCalendar', {
                 title: 'New Event',
@@ -650,9 +667,9 @@ const indexFunctions = {
             });
         }
     },
-    
+
     // to show the edit event page for admin side
-    getAschededitAcadCalendar: function(req, res){
+    getAschededitAcadCalendar: function (req, res) {
         res.render('a_sched_editAcadCalendar', {
             title: 'Edit Event',
         });
@@ -712,28 +729,28 @@ const indexFunctions = {
     // to show a students profile for admin side
     getAuserSProf: function (req, res) {
         var userID = req.params.userID;
-        
+
         res.render('a_users_SProfile', {
             title: 'Student Profile',
         });
     },
 
     // to show a list of teachers for admin side
-    getAuserTeachers: function(req, res){
+    getAuserTeachers: function (req, res) {
         res.render('a_users_teachers', {
             title: 'Teachers',
         });
     },
 
     // to show the teachers profile page for admin side
-    getAuserTProf: function(req, res){
+    getAuserTProf: function (req, res) {
         res.render('a_users_TProfile', {
             title: 'Teacher Profile',
         });
     },
-    
+
     // to show the edit teachers page for admin side
-    getAusereditTeachers: function(req, res){
+    getAusereditTeachers: function (req, res) {
         res.render('a_users_editT', {
             title: 'Edit Teacher',
         });
@@ -835,7 +852,7 @@ const indexFunctions = {
             title: 'Statement of Accounts'
         });
     },
-    
+
     getPaccNewChild: function (req, res) {
         res.render('p_acc_NChild', {
             title: 'Register new Child'
@@ -980,36 +997,37 @@ const indexFunctions = {
             title: 'Statement of Account'
         });
     },
-    
+
     // Function is used to create new students
-    postEnrollmentNew: async function (req,res){
+    postEnrollmentNew: async function (req, res) {
         var {
             userInfo,
             studentDetail,
             studentData,
             sectionID
         } = req.body;
-        try{
+        try {
             console.log(userInfo);
             console.log(studentDetail);
             console.log(studentData);
 
             var userID = await getNextStudentID();
             var password = generator.generate({
-                length:12, numbers : true
+                length: 12,
+                numbers: true
             });
             console.log(password)
-            var hash = await bcrypt.hash(password,saltRounds)
+            var hash = await bcrypt.hash(password, saltRounds)
 
             // create user
-            var user = new User(userID,hash,userInfo.firstName,userInfo.lastName,userInfo.middleName,'S',userInfo.gender);
+            var user = new User(userID, hash, userInfo.firstName, userInfo.lastName, userInfo.middleName, 'S', userInfo.gender);
             var newUser = new userModel(user);
             var userResult = await newUser.recordNewUser();
             // console.log(userResult);
             //create student
-            if(userResult){
-                var student = new Student(userID,studentData.mobileNum,studentData.teleNum,studentData.nationality,
-                    studentData.birthDate,studentData.birthPlace,studentData.email,studentData.religion,
+            if (userResult) {
+                var student = new Student(userID, studentData.mobileNum, studentData.teleNum, studentData.nationality,
+                    studentData.birthDate, studentData.birthPlace, studentData.email, studentData.religion,
                     studentData.address);
                 // console.log(student);
                 var newStudent = new studentModel(student);
@@ -1018,62 +1036,67 @@ const indexFunctions = {
 
                 // create student details
                 // reminder to self, add siblings and education background
-                if(studentResult){
-                    var studentDetailsData = new studentDetails(userID, studentDetail.familyRecords,studentDetail.reason);
+                if (studentResult) {
+                    var studentDetailsData = new studentDetails(userID, studentDetail.familyRecords, studentDetail.reason);
                     var newStudentDetails = new studentDetailsModel(studentDetailsData);
                     var studentDetailsResult = await newStudentDetails.recordNewStudentDetails();
-                    
-                    var sectionMemberData = new sectionMembers(sectionID,userID, 'FA');
+
+                    var sectionMemberData = new sectionMembers(sectionID, userID, 'FA');
                     console.log(sectionMemberData);
                     var newSectionMember = new sectionMemberModel(sectionMemberData);
                     var sectionMemberResult = await newSectionMember.recordNewSectionMember();
                     console.log(sectionMemberResult)
-                    if(studentDetailsResult && sectionMemberResult)
-                    {
+                    if (studentDetailsResult && sectionMemberResult) {
                         req.session.studentID = userID;
                         console.log(req.session);
                         res.send({
-                            status : 201,
-                            userID : userID,
-                            password : password
+                            status: 201,
+                            userID: userID,
+                            password: password
                         })
-                    }
-                    else{
+                    } else {
                         res.send({
-                            status : 401,
-                            msg : 'There is an error when adding user'
+                            status: 401,
+                            msg: 'There is an error when adding user'
                         });
                     }
-                }
-                else{
+                } else {
                     res.send({
-                        status : 401,
-                        msg : 'There is an error when adding user'
+                        status: 401,
+                        msg: 'There is an error when adding user'
                     })
                 }
-            }
-            else{
+            } else {
                 res.send({
-                    status : 401,
-                    msg : 'There is an error when adding user'
+                    status: 401,
+                    msg: 'There is an error when adding user'
                 })
             }
-            res.send({status :500, msg : 'Something went Wrong'});
-        }catch(e){
+            res.send({
+                status: 500,
+                msg: 'Something went Wrong'
+            });
+        } catch (e) {
             //res.send({status : 500, msg : e});
             console.log('It entered the catch');
         }
     },
 
-    postEnrollParentOld : async function (req,res){
+    postEnrollParentOld: async function (req, res) {
         try {
             var parentInfo = req.body;
             console.log(req.session.studentID);
             console.log(parentInfo);
-            
-            res.send({status : 401, msg: 'i made it'});
+
+            res.send({
+                status: 401,
+                msg: 'i made it'
+            });
         } catch (e) {
-            res.send({status : 500, msg : e});
+            res.send({
+                status: 500,
+                msg: e
+            });
         }
     },
 }

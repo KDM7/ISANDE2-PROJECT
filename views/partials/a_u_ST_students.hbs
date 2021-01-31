@@ -1,6 +1,6 @@
 <tr id="{{userID}}">
     {{!-- use helper for line 3 --}}
-    <td class="text-secondary">N/A</td>
+    <td class="{{getRemarkColor remark}}">{{getRemark remark}}</td>
     <th scope="row">{{userID}}</th>
     <td>{{firstname}} {{middlename}} {{lastname}}</td>
     {{!-- suggestion: 
@@ -15,7 +15,7 @@
     </td>
     <td>
         <a href="/a/users/SProfile/{{userID}}" class="btn btn-outline-primary">View Profile <span
-                class="badge badge-danger">!</span></a>
+                class="badge badge-danger" {{notifyRemark remark}}>!</span></a>
     </td>
     <td>
         <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
