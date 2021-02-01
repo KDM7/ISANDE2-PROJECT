@@ -119,7 +119,7 @@ function checkStudentData(studentData) {
                 cEmail :            empty or valid email
                 cNum :              empty or valid phoneNumber
                 cWorkAddress :      No Requirement
-                fetcherName :       Empty or Valid String with no numbes
+                fetchName :       Empty or Valid String with no numbes
                 fetchNum :          Empty or PhoneNUm
                 //siblings : 
             },
@@ -216,8 +216,8 @@ function checkStudentDetails(studentDetails) {
             fetcher name valid, contact number invalid = invalid
             fetcher name empty, contact number exists = invalid
     */
-    if (!validator.isEmpty(studentDetails.familyRecords.fetcherName)) {
-        if (hasNumber(studentDetails.familyRecords.fetcherName)) {
+    if (!validator.isEmpty(studentDetails.familyRecords.fetchName)) {
+        if (hasNumber(studentDetails.familyRecords.fetchName)) {
             valid = false;
             inv_fields += "     Fetcher's name is invalid\n";
         } else if (!validator.isEmpty(studentDetails.familyRecords.fetchNum)) {
@@ -232,7 +232,7 @@ function checkStudentDetails(studentDetails) {
         inv_fields += "     Fetcher's information is incomplete\n";
     } else {
         studentDetails.familyRecords.fetchNum = '';
-        studentDetails.familyRecords.fetcherName = '';
+        studentDetails.familyRecords.fetchName = '';
     }
 
     if (!valid)
@@ -421,7 +421,7 @@ $(document).ready(function () {
                 cEmail: $('#cEmail').val(),
                 cNum: $('#cNum').val(),
                 cWorkAddress: $('#cWorkAddress').val(),
-                fetcherName: $('#fetchName').val(),
+                fetchName: $('#fetchName').val(),
                 fetchNum: $('#fetchNum').val(),
                 //siblings : 
             },
@@ -542,7 +542,6 @@ $(document).ready(function () {
             var valid = checkParentData(parentInfo, parentData);
 
             if (valid) {
-            alert('validData')
             $.post('/enroll/parent/new', {
                 userInfo: parentInfo,
                 parentData: parentData,
@@ -552,7 +551,8 @@ $(document).ready(function () {
                         //admin
 
                         alert('Thank you for applying, these are the user credentials \nUserID:' + result.userID +
-                            '\nPassword: ' + result.password)
+                            '\nPassword: ' + result.password);
+                        alert("To pay, please log into your parent account")
                         window.location.href = '/';
                         break;
                     }
