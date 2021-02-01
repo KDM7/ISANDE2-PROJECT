@@ -44,9 +44,9 @@ function Teacher(userID, dateCreated) {
     this.dateCreated = dateCreated;
 }
 
-function Parent(userID, mobileNum, nationality, birthDate, birthPlace) {
+function Parent(userID, phoneNum, nationality, birthDate, birthPlace) {
     this.userID = userID;
-    this.mobileNum = mobileNum;
+    this.phoneNum = phoneNum;
     this.nationality = nationality;
     this.birthDate = new Date(birthDate);
     this.birthPlace = birthPlace;
@@ -375,6 +375,63 @@ async function getNextStudentID() {
     return true;
 }
 
+async function getNextParentID() {
+    var schoolYear = await getCurrentSY();
+    var start = "PA-";
+    var nextParent;
+    var leadingzeroes;
+    var parentNum;
+    var students = await parentModel.aggregate([{
+        '$match': {
+            'userID': {
+                '$regex': new RegExp(start)
+            }
+        }
+    }, {
+        '$sort': {
+            'userID': -1
+        }
+    }, {
+        '$limit': 1
+    }, {
+        '$project': {
+            'userID': 1
+        }
+    }]);
+    //   console.log(start);
+    if (students.length == 0)
+        return start + '000001'
+    else {
+        studentNum = students[0].userID.substring(3);
+        studentNum = parseInt(studentNum.toString());
+        studentNum++;
+
+        leadingzeroes = 6 - studentNum.toString().length;
+        // console.log(leadingzeroes);
+
+        nextStudent = '' + start;
+
+        for (var i = 0; i < leadingzeroes; i++)
+            nextStudent = nextStudent + '0';
+
+        nextStudent = nextStudent + studentNum.toString();
+
+        return nextStudent;
+    }
+    // var highestID = students[0].userID;
+    //  console.log(highestID);
+    return true;
+}
+
+async function assignParent(parentID,studentID){
+    try{
+        var result = await studentModel.findOneAndUpdate({userID : studentID}, {parentID : parentID},{useFindAndModify: false});
+        console.log(result);
+        return result;
+    }catch(e){
+        res.send({status : 500, msg : e});
+    }
+}
 async function getMinMaxEventID(sortby, offset) {
     var highestID = await eventModel.aggregate([{
         '$sort': {
@@ -1084,14 +1141,19 @@ const indexFunctions = {
 
     postEnrollParentOld: async function (req, res) {
         try {
-            var parentInfo = req.body;
-            console.log(req.session.studentID);
-            console.log(parentInfo);
+            var parentID = req.body.parentInfo.parentID;
+            var studentID = req.session.studentID;
+            console.log(parentInfo.parentID);
+            var result = await assignParent(parentID,studentID);
 
-            res.send({
-                status: 401,
-                msg: 'i made it'
-            });
+            if(result)
+                res.send({status : 201});
+            else{
+                res.send({
+                    status: 401,
+                    msg: 'Something went wrong'
+                });
+            }    
         } catch (e) {
             res.send({
                 status: 500,
@@ -1099,6 +1161,87 @@ const indexFunctions = {
             });
         }
     },
+
+    postEnrollParentNew: async function(req,res){
+        var {
+            parentInfo,
+            parentData
+        } = req.body;
+        try {
+            console.log(userInfo);
+            console.log(studentDetail);
+            console.log(studentData);
+
+            var userID = await getNextStudentID();
+            var password = generator.generate({
+                length: 12,
+                numbers: true
+            });
+            console.log(password)
+            var hash = await bcrypt.hash(password, saltRounds)
+
+            // create user
+            var user = new User(userID, hash, userInfo.firstName, userInfo.lastName, userInfo.middleName, 'S', userInfo.gender);
+            var newUser = new userModel(user);
+            var userResult = await newUser.recordNewUser();
+            // console.log(userResult);
+            //create student
+            if (userResult) {
+                var student = new Student(userID, studentData.mobileNum, studentData.teleNum, studentData.nationality,
+                    studentData.birthDate, studentData.birthPlace, studentData.email, studentData.religion,
+                    studentData.address);
+                // console.log(student);
+                var newStudent = new studentModel(student);
+                var studentResult = await newStudent.recordNewStudent();
+                // console.log(studentResult);
+
+                // create student details
+                // reminder to self, add siblings and education background
+                if (studentResult) {
+                    var studentDetailsData = new studentDetails(userID, studentDetail.familyRecords, studentDetail.reason);
+                    var newStudentDetails = new studentDetailsModel(studentDetailsData);
+                    var studentDetailsResult = await newStudentDetails.recordNewStudentDetails();
+
+                    var sectionMemberData = new sectionMembers(sectionID, userID, 'FA');
+                    console.log(sectionMemberData);
+                    var newSectionMember = new sectionMemberModel(sectionMemberData);
+                    var sectionMemberResult = await newSectionMember.recordNewSectionMember();
+                    console.log(sectionMemberResult)
+                    if (studentDetailsResult && sectionMemberResult) {
+                        req.session.studentID = userID;
+                        console.log(req.session);
+                        res.send({
+                            status: 201,
+                            userID: userID,
+                            password: password
+                        })
+                    } else {
+                        res.send({
+                            status: 401,
+                            msg: 'There is an error when adding user'
+                        });
+                    }
+                } else {
+                    res.send({
+                        status: 401,
+                        msg: 'There is an error when adding user'
+                    })
+                }
+            } else {
+                res.send({
+                    status: 401,
+                    msg: 'There is an error when adding user'
+                })
+            }
+            res.send({
+                status: 500,
+                msg: 'Something went Wrong'
+            });
+        } catch (e) {
+            //res.send({status : 500, msg : e});
+            console.log('It entered the catch');
+        }
+    }
 }
 
 module.exports = indexFunctions;

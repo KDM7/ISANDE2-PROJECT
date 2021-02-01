@@ -28,7 +28,7 @@
                                             <div class="form-group">
                                                 <label for="GrdLvl">Is your parent/guardian registered?</label>
                                                 <br>
-                                                <select name="grade_level_id" id="if_exist" class="form-control valid" onchange="myFunction2()" required> 
+                                                <select name="grade_level_id" id="if_exist" class="form-control valid" required> 
                                                     <option value="Yes"> Yes </option>
                                                     <option value="No"> No </option>                      
                                                 </select>
@@ -83,23 +83,19 @@
                                                 <div class="form-group w-25 col-4">
                                                     <label for="gender">Gender</label>
                                                     <span style="color:red">*</span>
-                                                    <select name="grade_level_id" id="gender" class="form-control valid" onchange="myFunction2()" required> 
+                                                    <select name="grade_level_id" id="gender" class="form-control valid" required> 
                                                         <option value="2">Male</option>
                                                         <option value="3">Female</option>                           
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="form-group w-25 col-4">
-                                                    <label for="mobileNum">Mobile Number</label>
+                                                <div class="form-group w-50 col-6">
+                                                    <label for="phoneNum">Phone Number</label>
                                                     <span style="color:red">*</span>
-                                                    <input type="text" class="form-control" id="mobileNum" placeholder="" required>
+                                                    <input type="text" class="form-control" id="phoneNum" placeholder="" required>
                                                 </div>
-                                                <div class="form-group w-25 col-4">
-                                                    <label for="teleNum">Telephone</label>
-                                                    <input type="text" class="form-control" id="teleNum" placeholder="">
-                                                </div>
-                                                <div class="form-group w-25 col-4">
+                                                <div class="form-group w-50 col-6">
                                                     <label for="nationality">Nationality</label>
                                                     <input type="text" class="form-control" id="nationality" placeholder="">
                                                 </div>
@@ -125,11 +121,6 @@
                                                         <span style="color:red">*</span>
                                                         <input type="text" class="form-control" id="birthPlace" placeholder="" required>
                                                     </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="email">Email</label>
-                                                <span style="color:red">*</span>
-                                                <input type="text" class="form-control" id="email" placeholder="" required>
                                             </div>
                                             <hr style="border: 2px solid black;" />
                                         </form>

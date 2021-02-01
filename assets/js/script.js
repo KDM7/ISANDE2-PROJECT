@@ -252,6 +252,53 @@ function checkEnrollmentData(userInfo, studentData, studentDetails) {
     else return false;
 }
 
+/*
+    This function is used to check parent data
+*/
+
+function checkParentDetails(parentData) {
+    var valid = true;
+    var inv_fields = 'Parent info is invalid. Modify the following : \n';
+    var valid_date = new Date();
+    valid_date.setFullYear(valid_date.getFullYear() - 15);
+
+
+    if (validator.isEmpty(parentData.phoneNum) || !isNumber(parentData.phoneNum) || (parentData.phoneNum.length != 11 && 
+            parentData.phoneNum.length != 7)) {
+        valid = false;
+        inv_fields += '     Phone Number is empty or invalid\n';
+    }
+
+    if (validator.isEmpty(parentData.nationality)) {
+        valid = false;
+        inv_fields += '     Nationality is empty\n';
+    }
+
+    if (validator.isAfter(parentData.birthDate, valid_date.toDateString())) {
+        valid = false;
+        inv_fields += '     Birth Date is invalid\n';
+    }
+
+    if (validator.isEmpty(parentData.birthPlace)) {
+        valid = false;
+        inv_fields += '     Birth Place is empty\n';
+    }
+
+    if (!valid)
+        alert(inv_fields);
+
+    return valid;
+}
+
+function checkParentData(userInfo, parentData)
+{
+    var val1, val2 = true;
+    val1 = checkUserInfo(userInfo);
+    val2 = checkParentDetails(parentData);
+    if (val1 && val2)
+        return true;
+    else return false;
+}
 $(document).ready(function () {
     $('#submitLogin').click(function () {
 
@@ -459,7 +506,6 @@ $(document).ready(function () {
                     switch (result.status) {
                         case 201: {
                             //admin
-
                             alert('Link to student is successful. To pay, go to you parent account')
                             window.location.href = '/';
                             break;
@@ -476,8 +522,51 @@ $(document).ready(function () {
                 })
             } else if (valid && validator.isEmpty(parentInfo.parentID))
                 alert('ParentID is Empty');
+
+        //parent does not exist
         } else {
-            console.log("This is for new Parents");
+            var parentInfo = {
+                firstName: $('#firstName').val(),
+                lastName: $('#lastName').val(),
+                middleName: $('#middleName').val(),
+                gender: $('#gender').val(),
+            };
+
+            var parentData = {
+                phoneNum: $('#phoneNum').val(),
+                nationality: $('#nationality').val(),
+                birthDate: $('#birthDate').val(),
+                birthPlace: $('#birthPlace').val(),
+            }
+            
+            var valid = checkParentData(parentInfo, parentData);
+
+            if (valid) {
+            alert('validData')
+            $.post('/enroll/parent/new', {
+                userInfo: parentInfo,
+                parentData: parentData,
+            }, function (result) {
+                switch (result.status) {
+                    case 201: {
+                        //admin
+
+                        alert('Thank you for applying, these are the user credentials \nUserID:' + result.userID +
+                            '\nPassword: ' + result.password)
+                        window.location.href = '/';
+                        break;
+                    }
+                    case 401: {
+                        alert('case 401: ' + result.msg);
+                        break;
+                    }
+                    case 500: {
+                        alert('case 500: ' + result.msg);
+                        break;
+                    }
+                }
+            })
+        }
         }
     });
 });

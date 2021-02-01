@@ -14,6 +14,8 @@ const indexMiddleware = {
                userID: parentID
              });
 
+             console.log(user);
+             
             if(user != null)
              {
                 if(user.type != 'P')

@@ -89,6 +89,7 @@ router.get('/s/trans/stmacc', controller.getStransSA);
 
 router.post('/enroll', controller.postEnrollmentNew);
 router.post('/enroll/parent/old',indexMiddleware.validateEnrollOldParent, controller.postEnrollParentOld);
+router.post('/enroll/parent/new',controller.postEnrollParentNew);
 
 
 module.exports = router;
