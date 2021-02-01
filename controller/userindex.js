@@ -181,7 +181,11 @@ async function getCurrentSY() {
     }])
     return schoolYear[0].schoolYear; //returns string
 }
-
+//gets the prefix for most of the numerical ids
+async function getIDPrefix() {
+    var schoolYear = await getCurrentSY();
+    return schoolYear.substr(2, 3);
+}
 //gets a list of the current sections
 async function getCurrentSections() {
     var current = await getCurrentSY();
@@ -327,6 +331,72 @@ async function getStudentListSYGL(schoolYear, gradeLvl) {
     return studentList;
 }
 
+// gets the list of sections for the student
+async function getStudentMembership(studentID)
+{
+    var studentID = studentID;
+    var membersList = await studentMembersModel.aggregate([
+        {
+          '$match': {
+            'studentID': studentID
+          }
+        }, {
+          '$sort': {
+            'sectionID': -1
+          }
+        }
+      ]);
+    return membersList;
+}
+/*
+    Gets user information of students under a specific parentID
+*/
+async function getStudentListParentID(parentID)
+{
+    var parentID = parentID;
+    var studentList = await studentModel.aggregate([
+        {
+          '$match': {
+            'parentID': 'PA-000001'
+          }
+        }, {
+          '$lookup': {
+            'from': 'users', 
+            'localField': 'userID', 
+            'foreignField': 'userID', 
+            'as': 'userData'
+          }
+        }, {
+          '$unwind': {
+            'path': '$userData', 
+            'preserveNullAndEmptyArrays': false
+          }
+        }, {
+          '$sort': {
+            'userID': 1
+          }
+        }, {
+          '$project': {
+            'userID': 1, 
+            'firstName': '$userData.firstName', 
+            'middleName': '$userData.middleName', 
+            'lastName': '$userData.lastName'
+          }
+        }
+      ]);
+
+      return studentList;
+}
+
+//get unenrolled students
+// async function getUnenrolledStudentListParentID(parentID)
+// {
+//     var studentList = getStudentListParentID(parentID);
+//     var sections = getCurrentSections();
+    
+
+//     return studentList;
+// }
 async function getNextStudentID() {
     var schoolYear = await getCurrentSY();
     var start = schoolYear.substr(2, 3);
@@ -375,6 +445,9 @@ async function getNextStudentID() {
     return true;
 }
 
+async function getNextSection(sectionName){
+
+}
 async function getNextParentID() {
     var schoolYear = await getCurrentSY();
     var start = "PA-";
@@ -893,10 +966,23 @@ const indexFunctions = {
     },
 
     // to show the breakdown of details from the parents side
-    getPaccEChild: function (req, res) {
-        res.render('p_acc_enrollChild', {
-            title: 'Enroll Child'
-        });
+    getPaccEChild: async function (req, res) {
+        var parentID = req.session.logUser.userID;
+        try{
+            var studentList = await getStudentListParentID(parentID);
+            if(studentList)
+                res.render('p_acc_enrollChild', {
+                    title: 'Enroll Child',
+                    student:studentList
+                });
+            else
+                res.render('error', {
+                    title: 'Error',
+                    msg: 'something went wrong'
+                });
+        }catch(e){
+            console.log(e);
+        }
     },
 
     getPaccSGrades: function (req, res) {
@@ -976,6 +1062,46 @@ const indexFunctions = {
         res.render('p_trans_SA', {
             title: 'Statement of Account'
         });
+    },
+
+    postEnrollmentOld : async function(req,res){
+        var studentID = req.body.studentID;
+        try {
+            var i = 0; 
+            var valid = true;
+            var sections = await getCurrentSections();
+            var studentMembers = await getStudentMembership(studentID);
+            console.log(sections);
+            console.log(studentMembers);
+            console.log((await sections).length);
+            while(valid && i < sections.length)
+            {
+                console.log(studentMembers[0].sectionID);
+                console.log(sections[i]);
+                if(studentMembers[0].sectionID == sections[i].sectionID)
+                    valid = false;
+                i++;
+                console.log(valid);
+            }
+
+            if(valid)
+            {
+                //student repeats
+                if(studentMembers[0].remarks == "R")
+                {
+                    var newSection = ref_sectionModel.aggregate()
+                }
+                //student Passed
+                else if(studentMembers[0].remarks == "P")
+                {
+
+                }
+            }
+            else
+                res.send({status: 401, msg: "Student is already enrolled"});
+        } catch (e) {
+            res.send({status:500, msg: e});
+        }
     },
 
 

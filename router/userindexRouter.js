@@ -73,7 +73,7 @@ router.get('/p/sched/classSched', controller.getPschedclassSched);
 router.get('/p/trans/brkdwn', controller.getPtransBD);
 router.get('/p/trans/stmacc', controller.getPtransSA);
 
-
+router.post('/enrollold', controller.postEnrollmentOld);
 /*
     STUDENT
 */
