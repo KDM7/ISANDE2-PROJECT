@@ -425,6 +425,8 @@ async function getNextParentID() {
 
 async function assignParent(parentID,studentID){
     try{
+        console.log(parentID);
+        console.log(studentID);
         var result = await studentModel.findOneAndUpdate({userID : studentID}, {parentID : parentID},{useFindAndModify: false});
         console.log(result);
         return result;
@@ -1002,7 +1004,7 @@ const indexFunctions = {
 
     getEnrollmentParent: async function (req, res) {
         //for testing purposes
-        req.session.studentID = '20-000023';
+        // req.session.studentID = '20-000023';
         console.log(req.session);
         res.render('s_enroll_parent', {
             title: 'Register Parent'
@@ -1140,10 +1142,11 @@ const indexFunctions = {
     },
 
     postEnrollParentOld: async function (req, res) {
-        try {
+        
+        try { 
             var parentID = req.body.parentInfo.parentID;
             var studentID = req.session.studentID;
-            console.log(parentInfo.parentID);
+            console.log(parentID);
             var result = await assignParent(parentID,studentID);
 
             if(result)
@@ -1164,15 +1167,16 @@ const indexFunctions = {
 
     postEnrollParentNew: async function(req,res){
         var {
-            parentInfo,
+            userInfo,
             parentData
         } = req.body;
+        studentID = req.session.studentID;
         try {
             console.log(userInfo);
-            console.log(studentDetail);
-            console.log(studentData);
+            console.log(parentData);
 
-            var userID = await getNextStudentID();
+            var userID = await getNextParentID();
+            console.log(userID);
             var password = generator.generate({
                 length: 12,
                 numbers: true
@@ -1181,33 +1185,24 @@ const indexFunctions = {
             var hash = await bcrypt.hash(password, saltRounds)
 
             // create user
-            var user = new User(userID, hash, userInfo.firstName, userInfo.lastName, userInfo.middleName, 'S', userInfo.gender);
+            var user = new User(userID, hash, userInfo.firstName, userInfo.lastName, userInfo.middleName, 'P', userInfo.gender);
             var newUser = new userModel(user);
             var userResult = await newUser.recordNewUser();
-            // console.log(userResult);
-            //create student
+            console.log(userResult);
+            //create parent
             if (userResult) {
-                var student = new Student(userID, studentData.mobileNum, studentData.teleNum, studentData.nationality,
-                    studentData.birthDate, studentData.birthPlace, studentData.email, studentData.religion,
-                    studentData.address);
-                // console.log(student);
-                var newStudent = new studentModel(student);
-                var studentResult = await newStudent.recordNewStudent();
-                // console.log(studentResult);
+                var parent = new Parent(userID, parentData.phoneNum,parentData.nationality,
+                                        parentData.birthDate,parentData.birthPlace);
+                console.log(parent);
+                var newParent = new parentModel(parent);
+                var parentResult = await newParent.recordNewParent();
+                console.log(parentResult);
 
-                // create student details
+                // assign student
                 // reminder to self, add siblings and education background
-                if (studentResult) {
-                    var studentDetailsData = new studentDetails(userID, studentDetail.familyRecords, studentDetail.reason);
-                    var newStudentDetails = new studentDetailsModel(studentDetailsData);
-                    var studentDetailsResult = await newStudentDetails.recordNewStudentDetails();
-
-                    var sectionMemberData = new sectionMembers(sectionID, userID, 'FA');
-                    console.log(sectionMemberData);
-                    var newSectionMember = new sectionMemberModel(sectionMemberData);
-                    var sectionMemberResult = await newSectionMember.recordNewSectionMember();
-                    console.log(sectionMemberResult)
-                    if (studentDetailsResult && sectionMemberResult) {
+                if (parentResult) {
+                    var assignResult = await assignParent(userID,studentID);
+                    if (assignResult) {
                         req.session.studentID = userID;
                         console.log(req.session);
                         res.send({
@@ -1238,8 +1233,8 @@ const indexFunctions = {
                 msg: 'Something went Wrong'
             });
         } catch (e) {
-            //res.send({status : 500, msg : e});
-            console.log('It entered the catch');
+            res.send({status : 500, msg : e});
+            // console.log('It entered the catch');
         }
     }
 }

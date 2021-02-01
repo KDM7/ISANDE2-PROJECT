@@ -1,0 +1,55 @@
+[{
+  "_id": {
+    "$oid": "600fb664b8f92e5170944cb0"
+  },
+  "studentID": "20-000023",
+  "familyRecords": {
+    "mName": "Mom",
+    "mOccu": "Businesswoman",
+    "mEmail": "episki.garcia@gmail.com",
+    "mWorkAddress": "40 Basilio St.",
+    "mNum": "09178311218",
+    "fName": "Dad",
+    "fOccu": "Businessman",
+    "fEmail": "",
+    "fWorkAddress": "",
+    "fNum": "09178185551",
+    "cName": "Company A",
+    "relation": "",
+    "cEmail": "",
+    "cNum": "1234567",
+    "cWorkAddress": "Taft Avenue",
+    "fetchName": "",
+    "fetchNum": ""
+  },
+  "eduBackground": [],
+  "reason": "This is the test user",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "600fd0c743561a2660931560"
+  },
+  "studentID": "20-000024",
+  "familyRecords": {
+    "mName": "Daisy Garcia",
+    "mOccu": "Businesswoman",
+    "mEmail": "dsgarcia2002@yahoo.com",
+    "mWorkAddress": "40 Basilio St.",
+    "mNum": "09178185551",
+    "fName": "Benjamin Garcia",
+    "fOccu": "Businessman",
+    "fEmail": "",
+    "fWorkAddress": "",
+    "fNum": "7947551",
+    "cName": "Company A",
+    "relation": "Uncle",
+    "cEmail": "test@yahoo.com",
+    "cNum": "09178311218",
+    "cWorkAddress": "2401 Taft Ave",
+    "fetchName": "Jimmy",
+    "fetchNum": "1234567"
+  },
+  "eduBackground": [],
+  "reason": "Testing Enrollment",
+  "__v": 0
+}]

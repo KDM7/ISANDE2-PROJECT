@@ -25,7 +25,6 @@ const indexMiddleware = {
                 else return next();
              }
             else res.send({status: 401, msg : 'User not found'});
-            console.log(user);
         } catch (e) {
             res.send({status: 500, msg: e});
         }
