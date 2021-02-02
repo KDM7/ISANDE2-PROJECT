@@ -28,6 +28,9 @@ router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
 router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
 
+router.post('/enroll/approve', controller.postEnrollmentApproved);
+router.post('/enroll/deny', controller.postEnrollmentRejected);
+
 //New Event
 router.get('/a/sched/newAcadCalendar', controller.getAschednewAcadCalendar);
 router.post('/newAcadCalendar', controller.postNewAcadCalendar);

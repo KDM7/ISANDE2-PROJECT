@@ -423,15 +423,24 @@ async function getNextParentID() {
     return true;
 }
 
-async function assignParent(parentID,studentID){
-    try{
+async function assignParent(parentID, studentID) {
+    try {
         console.log(parentID);
         console.log(studentID);
-        var result = await studentModel.findOneAndUpdate({userID : studentID}, {parentID : parentID},{useFindAndModify: false});
+        var result = await studentModel.findOneAndUpdate({
+            userID: studentID
+        }, {
+            parentID: parentID
+        }, {
+            useFindAndModify: false
+        });
         console.log(result);
         return result;
-    }catch(e){
-        res.send({status : 500, msg : e});
+    } catch (e) {
+        res.send({
+            status: 500,
+            msg: e
+        });
     }
 }
 async function getMinMaxEventID(sortby, offset) {
@@ -689,6 +698,60 @@ const indexFunctions = {
         });
     },
 
+    // function to approve student enrollment
+    postEnrollmentApproved: async function (req, res) {
+        var {
+            id
+        } = req.body;
+        //find by id then update remark from FA to E
+        try {
+            await studentMembersModel.findOneAndUpdate({
+                studentID: id
+            }, {
+                remarks: 'E'
+            }, {
+                useFindAndModify: false
+            });
+            res.send({
+                status: 200,
+                msg: 'Enrollment Approved'
+            });
+        } catch (e) {
+            console.log(e); //for debug purposes 
+            res.send({
+                status: 500,
+                msg: 'An error has occured'
+            });
+        }
+    },
+
+    // function to approve student enrollment
+    postEnrollmentRejected: async function (req, res) {
+        var {
+            id
+        } = req.body;
+        //find by id then update remark from FA to E
+        try {
+            await studentMembersModel.findOneAndUpdate({
+                studentID: id
+            }, {
+                remarks: 'D'
+            }, {
+                useFindAndModify: false
+            });
+            res.send({
+                status: 200,
+                msg: 'Enrollment Denied'
+            });
+        } catch (e) {
+            console.log(e); //for debug purposes 
+            res.send({
+                status: 500,
+                msg: 'An error has occured'
+            });
+        }
+    },
+
     // to show the new event page for admin side
     getAschednewAcadCalendar: function (req, res) {
         try {
@@ -786,11 +849,13 @@ const indexFunctions = {
     },
 
     // to show a students profile for admin side
-    getAuserSProf: function (req, res) {
+    getAuserSProf: async function (req, res) {
         var userID = req.params.userID;
-
+        var student = await userModel.findOne({userID:userID});
         res.render('a_users_SProfile', {
             title: 'Student Profile',
+            studentID: userID,
+            student: student,
         });
     },
 
@@ -1142,21 +1207,23 @@ const indexFunctions = {
     },
 
     postEnrollParentOld: async function (req, res) {
-        
-        try { 
+
+        try {
             var parentID = req.body.parentInfo.parentID;
             var studentID = req.session.studentID;
             console.log(parentID);
-            var result = await assignParent(parentID,studentID);
+            var result = await assignParent(parentID, studentID);
 
-            if(result)
-                res.send({status : 201});
-            else{
+            if (result)
+                res.send({
+                    status: 201
+                });
+            else {
                 res.send({
                     status: 401,
                     msg: 'Something went wrong'
                 });
-            }    
+            }
         } catch (e) {
             res.send({
                 status: 500,
@@ -1165,7 +1232,7 @@ const indexFunctions = {
         }
     },
 
-    postEnrollParentNew: async function(req,res){
+    postEnrollParentNew: async function (req, res) {
         var {
             userInfo,
             parentData
@@ -1191,8 +1258,8 @@ const indexFunctions = {
             console.log(userResult);
             //create parent
             if (userResult) {
-                var parent = new Parent(userID, parentData.phoneNum,parentData.nationality,
-                                        parentData.birthDate,parentData.birthPlace);
+                var parent = new Parent(userID, parentData.phoneNum, parentData.nationality,
+                    parentData.birthDate, parentData.birthPlace);
                 console.log(parent);
                 var newParent = new parentModel(parent);
                 var parentResult = await newParent.recordNewParent();
@@ -1201,7 +1268,7 @@ const indexFunctions = {
                 // assign student
                 // reminder to self, add siblings and education background
                 if (parentResult) {
-                    var assignResult = await assignParent(userID,studentID);
+                    var assignResult = await assignParent(userID, studentID);
                     if (assignResult) {
                         req.session.studentID = userID;
                         console.log(req.session);
@@ -1233,7 +1300,10 @@ const indexFunctions = {
                 msg: 'Something went Wrong'
             });
         } catch (e) {
-            res.send({status : 500, msg : e});
+            res.send({
+                status: 500,
+                msg: e
+            });
             // console.log('It entered the catch');
         }
     }

@@ -263,7 +263,7 @@ function checkParentDetails(parentData) {
     valid_date.setFullYear(valid_date.getFullYear() - 15);
 
 
-    if (validator.isEmpty(parentData.phoneNum) || !isNumber(parentData.phoneNum) || (parentData.phoneNum.length != 11 && 
+    if (validator.isEmpty(parentData.phoneNum) || !isNumber(parentData.phoneNum) || (parentData.phoneNum.length != 11 &&
             parentData.phoneNum.length != 7)) {
         valid = false;
         inv_fields += '     Phone Number is empty or invalid\n';
@@ -290,8 +290,7 @@ function checkParentDetails(parentData) {
     return valid;
 }
 
-function checkParentData(userInfo, parentData)
-{
+function checkParentData(userInfo, parentData) {
     var val1, val2 = true;
     val1 = checkUserInfo(userInfo);
     val2 = checkParentDetails(parentData);
@@ -355,7 +354,7 @@ $(document).ready(function () {
     /*
         ADMIN
     */
-    $('#submitNewEvent').click(function() {
+    $('#submitNewEvent').click(function () {
         var eventName = $('#eventName').val();
         var eventDate = $('#eventDate').val();
 
@@ -365,19 +364,17 @@ $(document).ready(function () {
         $.post('/newAcadCalendar', {
             eventName: eventName,
             eventDate: eventDate
-        }, function(result) {
-            switch(result.status){
-                case 201: 
-                    {
-                        alert(result.msg);
-                        window.location.href = '/a/sched/newAcadCalendar';
-                        break;
-                    }
-                case 500:
-                    {
-                        alert('case 500: ' + result.msg);
-                        break;
-                    }
+        }, function (result) {
+            switch (result.status) {
+                case 201: {
+                    alert(result.msg);
+                    window.location.href = '/a/sched/newAcadCalendar';
+                    break;
+                }
+                case 500: {
+                    alert('case 500: ' + result.msg);
+                    break;
+                }
             }
         });
     });
@@ -482,6 +479,50 @@ $(document).ready(function () {
         If Parent does not have account
             -Create Parent Account
     */
+    $('#a_u_SP_accept').on('click', function () {
+        //    get the id from the parent of th e parent node
+        var id = $(this).parent().parent().attr('id');
+        //    post to approve enroll function
+        $.post('/enroll/approve', {
+            id: id
+        }, function (result) {
+            switch (result.status) {
+                case 200: {
+                    alert(result.msg);
+                    window.location.href = '/a/users/students';
+                    break;
+                }
+                case 500: {
+                    alert(result.msg);
+                    window.location.href = '/a/users/students';
+                    break;
+                }
+            }
+        });
+    });
+    
+    $('#a_u_SP_reject').on('click', function () {
+        //    get the id from the parent of th e parent node
+        var id = $(this).parent().parent().attr('id');
+        //    post to approve enroll function
+        $.post('/enroll/deny', {
+            id: id
+        }, function (result) {
+            switch (result.status) {
+                case 200: {
+                    alert(result.msg);
+                    window.location.href = '/a/users/students';
+                    break;
+                }
+                case 500: {
+                    alert(result.msg);
+                    window.location.href = '/a/users/students';
+                    break;
+                }
+            }
+        });
+    });
+
 
     $('#enroll_Parent').click(function () {
         var exists = $('#if_exist').val();
@@ -501,8 +542,8 @@ $(document).ready(function () {
 
             if (valid && !validator.isEmpty(parentInfo.parentID)) {
                 $.post('/enroll/parent/old', {
-                    parentInfo : parentInfo,
-                }, function (result){
+                    parentInfo: parentInfo,
+                }, function (result) {
                     switch (result.status) {
                         case 201: {
                             //admin
@@ -523,7 +564,7 @@ $(document).ready(function () {
             } else if (valid && validator.isEmpty(parentInfo.parentID))
                 alert('ParentID is Empty');
 
-        //parent does not exist
+            //parent does not exist
         } else {
             var parentInfo = {
                 firstName: $('#firstName').val(),
@@ -538,35 +579,35 @@ $(document).ready(function () {
                 birthDate: $('#birthDate').val(),
                 birthPlace: $('#birthPlace').val(),
             }
-            
+
             var valid = checkParentData(parentInfo, parentData);
 
             if (valid) {
-            $.post('/enroll/parent/new', {
-                userInfo: parentInfo,
-                parentData: parentData,
-            }, function (result) {
-                switch (result.status) {
-                    case 201: {
-                        //admin
+                $.post('/enroll/parent/new', {
+                    userInfo: parentInfo,
+                    parentData: parentData,
+                }, function (result) {
+                    switch (result.status) {
+                        case 201: {
+                            //admin
 
-                        alert('Thank you for applying, these are the user credentials \nUserID:' + result.userID +
-                            '\nPassword: ' + result.password);
-                        alert("To pay, please log into your parent account")
-                        window.location.href = '/';
-                        break;
+                            alert('Thank you for applying, these are the user credentials \nUserID:' + result.userID +
+                                '\nPassword: ' + result.password);
+                            alert("To pay, please log into your parent account")
+                            window.location.href = '/';
+                            break;
+                        }
+                        case 401: {
+                            alert('case 401: ' + result.msg);
+                            break;
+                        }
+                        case 500: {
+                            alert('case 500: ' + result.msg);
+                            break;
+                        }
                     }
-                    case 401: {
-                        alert('case 401: ' + result.msg);
-                        break;
-                    }
-                    case 500: {
-                        alert('case 500: ' + result.msg);
-                        break;
-                    }
-                }
-            })
-        }
+                })
+            }
         }
     });
 });

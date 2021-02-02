@@ -61,6 +61,10 @@ app.engine('hbs', exphbs.create({
                     remark = 'Enrolled';
                     break;
                 }
+                case 'D': {
+                    remark = 'Rejected';
+                    break;
+                }
                 case 'FA': {
                     remark = 'For Approval';
                     break;
@@ -86,6 +90,10 @@ app.engine('hbs', exphbs.create({
                 }
                 case 'E': {
                     color = 'text-primary';
+                    break;
+                }
+                case 'D': {
+                    color = 'text-warning';
                     break;
                 }
                 case 'FA': {
