@@ -9,7 +9,7 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itis
 var db = mongoose.connection;
 
 const feesSchema = new mongoose.Schema({
-    sectionName :{type : String, required : true},
+    sectionID :{type : String, required : true},
     schoolYear : {type : String, required : true},
     tuition : {type : Number, required : true},
     misc : {type : Number, required : true},

@@ -1,5 +1,6 @@
 const userModel = require('../model/usersdb');
 const studentModel = require('../model/studentdb');
+const sectionModel = require('../model/sectiondb');
 
 const indexMiddleware = {
     validateEnrollOldParent : async function (req,res,next){
@@ -29,7 +30,8 @@ const indexMiddleware = {
             res.send({status: 500, msg: e});
         }
         
-    }
+    },
+
 };
 
 module.exports = indexMiddleware;

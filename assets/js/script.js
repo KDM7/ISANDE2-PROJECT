@@ -386,6 +386,37 @@ $(document).ready(function () {
         PARENT
     */
 
+    $('#submitEnrollOld').click(function(){
+        var studentID = $("#studentID").val()
+        $.post('/enrollold', {
+            studentID : studentID
+        }, function (result) {
+            switch (result.status) {
+                case 201: {
+
+                    alert('You have successfully enrolled for the next School Year. \nTo pay, refer to the payments tab.')
+                    break;
+                }
+                case 401: {
+                    alert('case 401: ' + result.msg);
+                    break;
+                }
+                case 500: {
+                    alert('case 500: ' + result.msg);
+                    break;
+                }
+            }
+        })
+    });
+
+    $('#submitCCPlan').click(function() {
+        var paymentPlan = $('input[name="paymentPlan"]:checked').val();
+        var studentID = $('#studentID').val();
+
+        console.log(paymentPlan);
+        console.log(studentID);
+
+    })
     /*
         STUDENT
     */

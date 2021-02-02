@@ -10,7 +10,6 @@ var db = mongoose.connection;
 
 const upon_enrollmentSchema = new mongoose.Schema({
     sectionID : { type: Number, required: true},
-    sectionName : { type : String, required : true},
     fullPayment : { type: Number, required: true},
     semestralPayment : { type: Number, required: true},
     trimestralPayment : { type: Number, required: true},
