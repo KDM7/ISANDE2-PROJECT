@@ -531,7 +531,7 @@ $(document).ready(function () {
             }
         });
     });
-    
+
     $('#a_u_SP_reject').on('click', function () {
         //    get the id from the parent of th e parent node
         var id = $(this).parent().parent().attr('id');

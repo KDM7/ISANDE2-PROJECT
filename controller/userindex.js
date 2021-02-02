@@ -12,6 +12,7 @@ const studentModel = require("../model/studentdb");
 const sectionModel = require("../model/sectiondb");
 const schoolYearModel = require("../model/schoolYeardb");
 const studentDetailsModel = require("../model/studentDetailsdb");
+const subjectModel = require("../model/subjectdb");
 const sectionMemberModel = require("../model/sectionMembersdb");
 const ref_sectionModel = require("../model/ref_sectiondb");
 const studentMembersModel = require("../model/sectionMembersdb");
@@ -252,44 +253,42 @@ async function getSectionsSYGL(schoolYear, gradeLvl) {
     );
     return sectionIDs[0].sectionID;
 }
-async function getNextSectionEnrollment(sectionID, remark)
-{
+async function getNextSectionEnrollment(sectionID, remark) {
     var sectionID = sectionID;
     var remark = remark;
-    try{
-        var sectionData = await sectionModel.findOne({sectionID:sectionID});
-        var sectionName =sectionData.sectionName;
-        if(remark == "R")
-        {
-           
-         }
-        else if (remark == "P")
-        {
-            if(sectionName == "Jupiter")
+    try {
+        var sectionData = await sectionModel.findOne({
+            sectionID: sectionID
+        });
+        var sectionName = sectionData.sectionName;
+        if (remark == "R") {
+
+        } else if (remark == "P") {
+            if (sectionName == "Jupiter")
                 sectionName = "Saturn";
-            else if(sectionName == "Saturn")
+            else if (sectionName == "Saturn")
                 sectionName = "Venus";
         }
-        var nextSection = await sectionModel.aggregate([
-            {
-              '$match': {
+        var nextSection = await sectionModel.aggregate([{
+            '$match': {
                 'sectionName': sectionName
-              }
-            }, {
-              '$sort': {
-                'schoolYear': -1
-              }
-            }, {
-              '$project': {
-                'sectionID': 1, 
-                'sectionName': 1
-              }
             }
-          ]);
-          return nextSection[0].sectionID;
-    }catch(e)
-    {
-        res.send({status:500, msg:e});
+        }, {
+            '$sort': {
+                'schoolYear': -1
+            }
+        }, {
+            '$project': {
+                'sectionID': 1,
+                'sectionName': 1
+            }
+        }]);
+        return nextSection[0].sectionID;
+    } catch (e) {
+        res.send({
+            status: 500,
+            msg: e
+        });
     }
 }
 //get list of students based on an array of section IDs
@@ -316,101 +315,99 @@ async function getStudentsS(sectionIDs) {
     return students[0].students;
 }
 //get profile of student using studentID(to identify the student) and schoolYear(to identify which year so it will return only 1 record)
-async function getSProfile(studentID, schoolYear){
+async function getSProfile(studentID, schoolYear) {
     var profile = await userModel.aggregate(
-        [
-            {
-              '$match': {
+        [{
+            '$match': {
                 'userID': studentID.toString()
-              }
-            }, {
-              '$lookup': {
-                'from': 'students', 
-                'localField': 'userID', 
-                'foreignField': 'userID', 
+            }
+        }, {
+            '$lookup': {
+                'from': 'students',
+                'localField': 'userID',
+                'foreignField': 'userID',
                 'as': 'studentData'
-              }
-            }, {
-              '$unwind': {
-                'path': '$studentData', 
+            }
+        }, {
+            '$unwind': {
+                'path': '$studentData',
                 'preserveNullAndEmptyArrays': true
-              }
-            }, {
-              '$lookup': {
-                'from': 'studentMembers', 
-                'localField': 'userID', 
-                'foreignField': 'studentID', 
+            }
+        }, {
+            '$lookup': {
+                'from': 'studentMembers',
+                'localField': 'userID',
+                'foreignField': 'studentID',
                 'as': 'memberData'
-              }
-            }, {
-              '$unwind': {
-                'path': '$memberData', 
+            }
+        }, {
+            '$unwind': {
+                'path': '$memberData',
                 'preserveNullAndEmptyArrays': true
-              }
-            }, {
-              '$lookup': {
-                'from': 'sections', 
-                'localField': 'memberData.sectionID', 
-                'foreignField': 'sectionID', 
+            }
+        }, {
+            '$lookup': {
+                'from': 'sections',
+                'localField': 'memberData.sectionID',
+                'foreignField': 'sectionID',
                 'as': 'sectionData'
-              }
-            }, {
-              '$unwind': {
-                'path': '$sectionData', 
+            }
+        }, {
+            '$unwind': {
+                'path': '$sectionData',
                 'preserveNullAndEmptyArrays': true
-              }
-            }, {
-              '$match': {
+            }
+        }, {
+            '$match': {
                 'sectionData.schoolYear': schoolYear.toString()
-              }
-            }, {
-              '$lookup': {
-                'from': 'ref_section', 
-                'localField': 'sectionData.sectionName', 
-                'foreignField': 'sectionName', 
+            }
+        }, {
+            '$lookup': {
+                'from': 'ref_section',
+                'localField': 'sectionData.sectionName',
+                'foreignField': 'sectionName',
                 'as': 'ref_section'
-              }
-            }, {
-              '$unwind': {
-                'path': '$ref_section', 
+            }
+        }, {
+            '$unwind': {
+                'path': '$ref_section',
                 'preserveNullAndEmptyArrays': true
-              }
-            }, {
-              '$lookup': {
-                'from': 'student_details', 
-                'localField': 'userID', 
-                'foreignField': 'studentID', 
+            }
+        }, {
+            '$lookup': {
+                'from': 'student_details',
+                'localField': 'userID',
+                'foreignField': 'studentID',
                 'as': 'student_details'
-              }
-            }, {
-              '$unwind': {
-                'path': '$student_details', 
+            }
+        }, {
+            '$unwind': {
+                'path': '$student_details',
                 'preserveNullAndEmptyArrays': true
-              }
-            }, {
-              '$project': {
-                '_id': 0, 
-                'firstName': 1, 
-                'lastName': 1, 
-                'middleName': 1, 
-                'gradeLvl': '$ref_section.gradeLvl', 
-                'gender': 1, 
-                'birthDate': '$studentData.birthDate', 
-                'birthPlace': '$studentData.birthPlace', 
-                'nationality': '$studentData.nationality', 
-                'religion': '$studentData.religion', 
-                'telNo': '$studentData.teleNum', 
-                'cellNo': '$studentData.mobileNum', 
-                'email': '$studentData.email', 
-                'address': '$studentData.address', 
-                'familyRecords': '$student_details.familyRecords', 
+            }
+        }, {
+            '$project': {
+                '_id': 0,
+                'firstName': 1,
+                'lastName': 1,
+                'middleName': 1,
+                'gradeLvl': '$ref_section.gradeLvl',
+                'gender': 1,
+                'birthDate': '$studentData.birthDate',
+                'birthPlace': '$studentData.birthPlace',
+                'nationality': '$studentData.nationality',
+                'religion': '$studentData.religion',
+                'telNo': '$studentData.teleNum',
+                'cellNo': '$studentData.mobileNum',
+                'email': '$studentData.email',
+                'address': '$studentData.address',
+                'familyRecords': '$student_details.familyRecords',
                 'reason': '$student_details.reason',
                 'remark': '$memberData.remarks'
-              }
             }
-          ]
+        }]
     );
-    return profile[0];//returns the only object in the array
+    return profile[0]; //returns the only object in the array
 }
 
 // get a list of students using 'schoolYear' an 'gradeLvl' as parameters
@@ -456,86 +453,79 @@ async function getStudentListSYGL(schoolYear, gradeLvl) {
             }
         }, {
             '$lookup': {
-              'from': 'sections', 
-              'localField': 'memberData.sectionID', 
-              'foreignField': 'sectionID', 
-              'as': 'sectionData'
+                'from': 'sections',
+                'localField': 'memberData.sectionID',
+                'foreignField': 'sectionID',
+                'as': 'sectionData'
             }
-          }, {
+        }, {
             '$unwind': {
-              'path': '$sectionData', 
-              'preserveNullAndEmptyArrays': true
+                'path': '$sectionData',
+                'preserveNullAndEmptyArrays': true
             }
-          }, {
+        }, {
             '$project': {
-              'userID': 1, 
-              'firstname': '$userData.firstName', 
-              'middlename': '$userData.middleName', 
-              'lastname': '$userData.lastName', 
-              'remark': '$memberData.remarks', 
-              'schoolYear': '$sectionData.schoolYear'
+                'userID': 1,
+                'firstname': '$userData.firstName',
+                'middlename': '$userData.middleName',
+                'lastname': '$userData.lastName',
+                'remark': '$memberData.remarks',
+                'schoolYear': '$sectionData.schoolYear'
             }
-          }
-        ]
+        }]
     );
     return studentList;
 }
 
 // gets the list of sections for the student
-async function getStudentMembership(studentID)
-{
+async function getStudentMembership(studentID) {
     var studentID = studentID;
-    var membersList = await studentMembersModel.aggregate([
-        {
-          '$match': {
+    var membersList = await studentMembersModel.aggregate([{
+        '$match': {
             'studentID': studentID
-          }
-        }, {
-          '$sort': {
-            'sectionID': -1
-          }
         }
-      ]);
+    }, {
+        '$sort': {
+            'sectionID': -1
+        }
+    }]);
     return membersList;
 }
 /*
     Gets user information of students under a specific parentID
 */
-async function getStudentListParentID(parentID)
-{
+async function getStudentListParentID(parentID) {
     var parentID = parentID;
-    var studentList = await studentModel.aggregate([
-        {
-          '$match': {
+    var studentList = await studentModel.aggregate([{
+        '$match': {
             'parentID': 'PA-000001'
-          }
-        }, {
-          '$lookup': {
-            'from': 'users', 
-            'localField': 'userID', 
-            'foreignField': 'userID', 
-            'as': 'userData'
-          }
-        }, {
-          '$unwind': {
-            'path': '$userData', 
-            'preserveNullAndEmptyArrays': false
-          }
-        }, {
-          '$sort': {
-            'userID': 1
-          }
-        }, {
-          '$project': {
-            'userID': 1, 
-            'firstName': '$userData.firstName', 
-            'middleName': '$userData.middleName', 
-            'lastName': '$userData.lastName'
-          }
         }
-      ]);
+    }, {
+        '$lookup': {
+            'from': 'users',
+            'localField': 'userID',
+            'foreignField': 'userID',
+            'as': 'userData'
+        }
+    }, {
+        '$unwind': {
+            'path': '$userData',
+            'preserveNullAndEmptyArrays': false
+        }
+    }, {
+        '$sort': {
+            'userID': 1
+        }
+    }, {
+        '$project': {
+            'userID': 1,
+            'firstName': '$userData.firstName',
+            'middleName': '$userData.middleName',
+            'lastName': '$userData.lastName'
+        }
+    }]);
 
-      return studentList;
+    return studentList;
 }
 
 //get unenrolled students
@@ -543,7 +533,7 @@ async function getStudentListParentID(parentID)
 // {
 //     var studentList = getStudentListParentID(parentID);
 //     var sections = getCurrentSections();
-    
+
 
 //     return studentList;
 // }
@@ -890,6 +880,61 @@ const indexFunctions = {
         });
     },
 
+    // to show the interface to add classes for admin side
+    getAschedAddClasses: async function (req, res) {
+        var subject = await subjectModel.aggregate(
+            [{
+                '$project': {
+                    '_id': 0,
+                    'value': '$subjectCode',
+                    'name': '$subjectName'
+                }
+            }]
+        );
+        var section = await sectionModel.aggregate(
+            [{
+                '$match': {
+                    'schoolYear': await getCurrentSY()
+                }
+            }, {
+                '$project': {
+                    '_id': 0,
+                    'value': '$sectionID',
+                    'name': '$sectionName'
+                }
+            }]
+        );
+        var teacher = await teacherModel.aggregate(
+            [{
+                '$lookup': {
+                    'from': 'users',
+                    'localField': 'userID',
+                    'foreignField': 'userID',
+                    'as': 'userData'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$userData',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$project': {
+                    '_id': 0,
+                    'value': '$userID',
+                    'name1': '$userData.firstName',
+                    'name2': '$userData.middleName',
+                    'name3': '$userData.lastName'
+                }
+            }]
+        );
+        res.render('a_sched_AddClasses', {
+            title: 'Add Classes',
+            subject: subject,
+            section: section,
+            teacher: teacher,
+        });
+    },
+
     // to show the set school year page for admin side
     getAschedCurSchoolYr: function (req, res) {
         res.render('a_sched_CurSchoolYr', {
@@ -1073,7 +1118,9 @@ const indexFunctions = {
         var userID = req.params.userID;
         var schoolYear = req.params.schoolYear;
         var studentProfile = await getSProfile(userID, schoolYear);
-        var student = await userModel.findOne({userID:userID});
+        var student = await userModel.findOne({
+            userID: userID
+        });
         res.render('a_users_SProfile', {
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
@@ -1179,20 +1226,20 @@ const indexFunctions = {
     // to show selecting of payment plan for enrollment (credit card) from the parents side
     getPpayCCPlan: async function (req, res) {
         var parentID = req.session.logUser.userID;
-        try{
+        try {
             var studentList = await getStudentListParentID(parentID);
             console.log(studentList);
-            if(studentList)
+            if (studentList)
                 res.render('p_pay_CCPlan', {
                     title: 'Credit Card Payment',
-                    student:studentList
+                    student: studentList
                 });
             else
                 res.render('error', {
                     title: 'Error',
                     msg: 'something went wrong'
                 });
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     },
@@ -1200,19 +1247,19 @@ const indexFunctions = {
     // to show the breakdown of details from the parents side
     getPaccEChild: async function (req, res) {
         var parentID = req.session.logUser.userID;
-        try{
+        try {
             var studentList = await getStudentListParentID(parentID);
-            if(studentList)
+            if (studentList)
                 res.render('p_acc_enrollChild', {
                     title: 'Enroll Child',
-                    student:studentList
+                    student: studentList
                 });
             else
                 res.render('error', {
                     title: 'Error',
                     msg: 'something went wrong'
                 });
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     },
@@ -1278,26 +1325,24 @@ const indexFunctions = {
         });
     },
 
-    postEnrollmentOld : async function(req,res){
+    postEnrollmentOld: async function (req, res) {
         var studentID = req.body.studentID;
         try {
-            var i = 0; 
+            var i = 0;
             var valid = true;
             var sections = await getCurrentSections();
             var studentMembers = await getStudentMembership(studentID);
             console.log(sections);
             console.log(studentMembers);
             console.log((await sections).length);
-            while(valid && i < sections.length)
-            {
-                if(studentMembers[0].sectionID == sections[i].sectionID)
+            while (valid && i < sections.length) {
+                if (studentMembers[0].sectionID == sections[i].sectionID)
                     valid = false;
                 i++;
             }
 
-            if(valid)
-            {
-               var nextSectionID = await getNextSectionEnrollment(studentMembers[0].sectionID,studentMembers[0].remarks);
+            if (valid) {
+                var nextSectionID = await getNextSectionEnrollment(studentMembers[0].sectionID, studentMembers[0].remarks);
                 var sectionMemberData = new sectionMembers(nextSectionID, studentID, 'FA');
                 var newSectionMember = new sectionMemberModel(sectionMemberData);
                 var sectionMemberResult = await newSectionMember.recordNewSectionMember();
@@ -1311,11 +1356,16 @@ const indexFunctions = {
                         msg: 'There is an error when adding student to section'
                     });
                 }
-            }
-            else
-                res.send({status: 401, msg: "Student is already enrolled"});
+            } else
+                res.send({
+                    status: 401,
+                    msg: "Student is already enrolled"
+                });
         } catch (e) {
-            res.send({status:500, msg: e});
+            res.send({
+                status: 500,
+                msg: e
+            });
         }
     },
 

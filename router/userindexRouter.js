@@ -23,6 +23,7 @@ router.get('/a/fees/misc', controller.getAfeeMisc);
 router.get('/a/fees/other', controller.getAfeeOthers);
 router.get('/a/fees/tuition', controller.getAfeeTuition);
 router.get('/a/fees/uponE', controller.getAfeeUponE);
+router.get('/a/sched/AddClasses', controller.getAschedAddClasses);
 router.get('/a/sched/CurSchoolYr', controller.getAschedCurSchoolYr);
 router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
