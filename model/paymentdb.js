@@ -12,7 +12,7 @@ const paymentSchema = new mongoose.Schema({
     paymentNum: { type: Number, required: true},
     amountPaid : {type : Number, required : true},
     datePaid : {type : Date, required : true},
-    remarks : {type : String, required :true},
+    paymentPlan : {type : String, required :true},
     studentID : {type : String, required : true}
 }, { collection: "payments" });
 
