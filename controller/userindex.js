@@ -1178,11 +1178,8 @@ const indexFunctions = {
 
     // to show selecting of payment plan for enrollment (credit card) from the parents side
     getPpayCCPlan: async function (req, res) {
-        console.log("in payccPlan");
         var parentID = req.session.logUser.userID;
         try{
-            console.log('in payccplan');
-            console.log(parentID);
             var studentList = await getStudentListParentID(parentID);
             console.log(studentList);
             if(studentList)
