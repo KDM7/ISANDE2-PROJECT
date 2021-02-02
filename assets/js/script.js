@@ -407,8 +407,16 @@ $(document).ready(function () {
                 }
             }
         })
-    })
+    });
 
+    $('#submitCCPlan').click(function() {
+        var paymentPlan = $('input[name="paymentPlan"]:checked').val();
+        var studentID = $('#studentID').val();
+
+        console.log(paymentPlan);
+        console.log(studentID);
+
+    })
     /*
         STUDENT
     */

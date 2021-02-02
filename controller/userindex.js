@@ -1173,10 +1173,27 @@ const indexFunctions = {
     },
 
     // to show selecting of payment plan for enrollment (credit card) from the parents side
-    getPpayCCPlan: function (req, res) {
-        res.render('p_pay_CCPlan', {
-            title: 'Payment'
-        });
+    getPpayCCPlan: async function (req, res) {
+        console.log("in payccPlan");
+        var parentID = req.session.logUser.userID;
+        try{
+            console.log('in payccplan');
+            console.log(parentID);
+            var studentList = await getStudentListParentID(parentID);
+            console.log(studentList);
+            if(studentList)
+                res.render('p_pay_CCPlan', {
+                    title: 'Credit Card Payment',
+                    student:studentList
+                });
+            else
+                res.render('error', {
+                    title: 'Error',
+                    msg: 'something went wrong'
+                });
+        }catch(e){
+            console.log(e);
+        }
     },
 
     // to show the breakdown of details from the parents side
@@ -1227,24 +1244,6 @@ const indexFunctions = {
     getPpayBankPlan: function (req, res) {
         res.render('p_pay_BPlan', {
             title: 'Bank Statement'
-        });
-    },
-
-    getPpaycc: function (req, res) {
-        res.render('p_pay_cc', {
-            title: 'Online Payment'
-        });
-    },
-
-    getPpayCCOTP: function (req, res) {
-        res.render('p_pay_CCOTP', {
-            title: 'Online Payment'
-        });
-    },
-
-    getPpayCCPlan: function (req, res) {
-        res.render('p_pay_CCPlan', {
-            title: 'Online Payment'
         });
     },
 

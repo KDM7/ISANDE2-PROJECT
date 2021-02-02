@@ -22,48 +22,49 @@
                                 <div class="container">
                                     <form>
                                         <div class="form-group">
-                                            <label for="sel1">Student:</label>
-                                            <select class="form-control" id="sel1">
-                                              <option>JoJo</option>
-                                              <option>Bizare</option>
-                                              <option>Adventure</option>
-                                              <option>:)</option>
-                                            </select>
+                                            <label for="studentID">Student Name</label>
+                                                <span style="color:red">*</span>
+                                                <br>
+                                                <select name="studentID" id="studentID" class="form-control valid" required> 
+                                                   {{#each student}}
+                                                        <option value="{{this.userID}}">{{this.firstName}} {{this.middleName}} {{this.lastName}}</option>       
+                                                   {{/each}}                 
+                                                </select>
                                         </div>
                                         <p>Please Select a payment type:</p>
                                         <br>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                                            <label class="form-check-label" for="exampleRadios1">
+                                            <input class="form-check-input" type="radio" name="paymentPlan" id="fullPayment" value="fullPayment" checked>
+                                            <label class="form-check-label" for="fullPayment">
                                               Full
                                             </label>
                                           </div>
                                           <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                                            <label class="form-check-label" for="exampleRadios2">
+                                            <input class="form-check-input" type="radio" name="paymentPlan" id="semestralPayment" value="semestralPayment">
+                                            <label class="form-check-label" for="semestralPayment">
                                               Semestral
                                             </label>
                                           </div>
                                           <div class="form-check disabled">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" >
-                                            <label class="form-check-label" for="exampleRadios3">
+                                            <input class="form-check-input" type="radio" name="paymentPlan" id="trimestralPayment" value="trimestralPayment" >
+                                            <label class="form-check-label" for="trimestralPayment">
                                               Trimestral
                                             </label>
                                           </div>
                                           <div class="form-check disabled">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" >
-                                            <label class="form-check-label" for="exampleRadios3">
+                                            <input class="form-check-input" type="radio" name="paymentPlan" id="quarterlyPayment" value="quarterlyPayment" >
+                                            <label class="form-check-label" for="quarterlyPayment">
                                               Quarterly
                                             </label>
                                           </div>
                                           <div class="form-check disabled">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" >
-                                            <label class="form-check-label" for="exampleRadios3">
+                                            <input class="form-check-input" type="radio" name="paymentPlan" id="monthlyPayment" value="monthlyPayment" >
+                                            <label class="form-check-label" for="paymentPlan3">
                                               Monthly
                                             </label>
                                           </div>
                                           <br>
-                                          <a href="enroll_CC.html" class="btn btn-outline-primary mb-4">Next</a>
+                                          <a id="submitCCPlan" class="btn btn-outline-primary mb-4">Next</a>
                                     </form>
                                     <!-- <h5 class="display-5 text-left">Registrar</h5>
                                     <hr style="border: 2px solid black;" />

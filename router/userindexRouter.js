@@ -68,7 +68,7 @@ router.get('/p/acc/NewChild', controller.getPaccNewChild);
 router.get('/p/pay/bank', controller.getPpaybank);
 router.get('/p/pay/bankPaymentPlan', controller.getPpayBankPlan);
 router.get('/p/pay/cc', controller.getPpaycc);
-router.get('/p/pay/ccOTP', controller.getPpayCCOTP);
+//router.get('/p/pay/ccOTP', controller.getPpayCCOTP);
 router.get('/p/pay/ccPaymentPlan', controller.getPpayCCPlan);
 router.get('/p/sched/acadCalendar', controller.getPschedacadCalendar);
 router.get('/p/sched/acadCalendar2', controller.getPschedacadCalendar2);
