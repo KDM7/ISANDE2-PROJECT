@@ -510,6 +510,11 @@ $(document).ready(function () {
         If Parent does not have account
             -Create Parent Account
     */
+    $('#a_s_AC_AddClass').on('click', function(){
+        var section = $('#a_s_AC_Section').val();
+        var subject = $('#a_s_AC_Subject').val();
+        var teacher = $('#a_s_AC_Teacher').val();    
+    });
     $('#a_u_SP_accept').on('click', function () {
         //    get the id from the parent of th e parent node
         var id = $(this).parent().parent().attr('id');
