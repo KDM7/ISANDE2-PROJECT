@@ -315,6 +315,102 @@ async function getStudentsS(sectionIDs) {
     }]);
     return students[0].students;
 }
+//get profile of student using studentID(to identify the student) and schoolYear(to identify which year so it will return only 1 record)
+async function getSProfile(studentID, schoolYear){
+    var profile = await userModel.aggregate(
+        [
+            {
+              '$match': {
+                'userID': studentID.toString()
+              }
+            }, {
+              '$lookup': {
+                'from': 'students', 
+                'localField': 'userID', 
+                'foreignField': 'userID', 
+                'as': 'studentData'
+              }
+            }, {
+              '$unwind': {
+                'path': '$studentData', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$lookup': {
+                'from': 'studentMembers', 
+                'localField': 'userID', 
+                'foreignField': 'studentID', 
+                'as': 'memberData'
+              }
+            }, {
+              '$unwind': {
+                'path': '$memberData', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$lookup': {
+                'from': 'sections', 
+                'localField': 'memberData.sectionID', 
+                'foreignField': 'sectionID', 
+                'as': 'sectionData'
+              }
+            }, {
+              '$unwind': {
+                'path': '$sectionData', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$match': {
+                'sectionData.schoolYear': schoolYear.toString()
+              }
+            }, {
+              '$lookup': {
+                'from': 'ref_section', 
+                'localField': 'sectionData.sectionName', 
+                'foreignField': 'sectionName', 
+                'as': 'ref_section'
+              }
+            }, {
+              '$unwind': {
+                'path': '$ref_section', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$lookup': {
+                'from': 'student_details', 
+                'localField': 'userID', 
+                'foreignField': 'studentID', 
+                'as': 'student_details'
+              }
+            }, {
+              '$unwind': {
+                'path': '$student_details', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$project': {
+                '_id': 0, 
+                'firstName': 1, 
+                'lastName': 1, 
+                'middleName': 1, 
+                'gradeLvl': '$ref_section.gradeLvl', 
+                'gender': 1, 
+                'birthDate': '$studentData.birthDate', 
+                'birthPlace': '$studentData.birthPlace', 
+                'nationality': '$studentData.nationality', 
+                'religion': '$studentData.religion', 
+                'telNo': '$studentData.teleNum', 
+                'cellNo': '$studentData.mobileNum', 
+                'email': '$studentData.email', 
+                'address': '$studentData.address', 
+                'familyRecords': '$student_details.familyRecords', 
+                'reason': '$student_details.reason'
+              }
+            }
+          ]
+    );
+    return profile[0];//returns the only object in the array
+}
 
 // get a list of students using 'schoolYear' an 'gradeLvl' as parameters
 async function getStudentListSYGL(schoolYear, gradeLvl) {
@@ -358,14 +454,28 @@ async function getStudentListSYGL(schoolYear, gradeLvl) {
                 }
             }
         }, {
-            '$project': {
-                'userID': 1,
-                'firstname': '$userData.firstName',
-                'middlename': '$userData.middleName',
-                'lastname': '$userData.lastName',
-                'remark': '$memberData.remarks'
+            '$lookup': {
+              'from': 'sections', 
+              'localField': 'memberData.sectionID', 
+              'foreignField': 'sectionID', 
+              'as': 'sectionData'
             }
-        }]
+          }, {
+            '$unwind': {
+              'path': '$sectionData', 
+              'preserveNullAndEmptyArrays': true
+            }
+          }, {
+            '$project': {
+              'userID': 1, 
+              'firstname': '$userData.firstName', 
+              'middlename': '$userData.middleName', 
+              'lastname': '$userData.lastName', 
+              'remark': '$memberData.remarks', 
+              'schoolYear': '$sectionData.schoolYear'
+            }
+          }
+        ]
     );
     return studentList;
 }
@@ -532,15 +642,24 @@ async function getNextParentID() {
     return true;
 }
 
-async function assignParent(parentID,studentID){
-    try{
+async function assignParent(parentID, studentID) {
+    try {
         console.log(parentID);
         console.log(studentID);
-        var result = await studentModel.findOneAndUpdate({userID : studentID}, {parentID : parentID},{useFindAndModify: false});
+        var result = await studentModel.findOneAndUpdate({
+            userID: studentID
+        }, {
+            parentID: parentID
+        }, {
+            useFindAndModify: false
+        });
         console.log(result);
         return result;
-    }catch(e){
-        res.send({status : 500, msg : e});
+    } catch (e) {
+        res.send({
+            status: 500,
+            msg: e
+        });
     }
 }
 async function getMinMaxEventID(sortby, offset) {
@@ -798,6 +917,60 @@ const indexFunctions = {
         });
     },
 
+    // function to approve student enrollment
+    postEnrollmentApproved: async function (req, res) {
+        var {
+            id
+        } = req.body;
+        //find by id then update remark from FA to E
+        try {
+            await studentMembersModel.findOneAndUpdate({
+                studentID: id
+            }, {
+                remarks: 'E'
+            }, {
+                useFindAndModify: false
+            });
+            res.send({
+                status: 200,
+                msg: 'Enrollment Approved'
+            });
+        } catch (e) {
+            console.log(e); //for debug purposes 
+            res.send({
+                status: 500,
+                msg: 'An error has occured'
+            });
+        }
+    },
+
+    // function to approve student enrollment
+    postEnrollmentRejected: async function (req, res) {
+        var {
+            id
+        } = req.body;
+        //find by id then update remark from FA to E
+        try {
+            await studentMembersModel.findOneAndUpdate({
+                studentID: id
+            }, {
+                remarks: 'D'
+            }, {
+                useFindAndModify: false
+            });
+            res.send({
+                status: 200,
+                msg: 'Enrollment Denied'
+            });
+        } catch (e) {
+            console.log(e); //for debug purposes 
+            res.send({
+                status: 500,
+                msg: 'An error has occured'
+            });
+        }
+    },
+
     // to show the new event page for admin side
     getAschednewAcadCalendar: function (req, res) {
         try {
@@ -895,11 +1068,16 @@ const indexFunctions = {
     },
 
     // to show a students profile for admin side
-    getAuserSProf: function (req, res) {
+    getAuserSProf: async function (req, res) {
         var userID = req.params.userID;
-
+        var schoolYear = req.params.schoolYear;
+        var studentProfile = await getSProfile(userID, schoolYear);
+        var student = await userModel.findOne({userID:userID});
         res.render('a_users_SProfile', {
             title: 'Student Profile',
+            studentID: userID,
+            student: student,
+            profile: studentProfile,
         });
     },
 
@@ -1305,21 +1483,23 @@ const indexFunctions = {
     },
 
     postEnrollParentOld: async function (req, res) {
-        
-        try { 
+
+        try {
             var parentID = req.body.parentInfo.parentID;
             var studentID = req.session.studentID;
             console.log(parentID);
-            var result = await assignParent(parentID,studentID);
+            var result = await assignParent(parentID, studentID);
 
-            if(result)
-                res.send({status : 201});
-            else{
+            if (result)
+                res.send({
+                    status: 201
+                });
+            else {
                 res.send({
                     status: 401,
                     msg: 'Something went wrong'
                 });
-            }    
+            }
         } catch (e) {
             res.send({
                 status: 500,
@@ -1328,7 +1508,7 @@ const indexFunctions = {
         }
     },
 
-    postEnrollParentNew: async function(req,res){
+    postEnrollParentNew: async function (req, res) {
         var {
             userInfo,
             parentData
@@ -1354,8 +1534,8 @@ const indexFunctions = {
             console.log(userResult);
             //create parent
             if (userResult) {
-                var parent = new Parent(userID, parentData.phoneNum,parentData.nationality,
-                                        parentData.birthDate,parentData.birthPlace);
+                var parent = new Parent(userID, parentData.phoneNum, parentData.nationality,
+                    parentData.birthDate, parentData.birthPlace);
                 console.log(parent);
                 var newParent = new parentModel(parent);
                 var parentResult = await newParent.recordNewParent();
@@ -1364,7 +1544,7 @@ const indexFunctions = {
                 // assign student
                 // reminder to self, add siblings and education background
                 if (parentResult) {
-                    var assignResult = await assignParent(userID,studentID);
+                    var assignResult = await assignParent(userID, studentID);
                     if (assignResult) {
                         req.session.studentID = userID;
                         console.log(req.session);
@@ -1396,7 +1576,10 @@ const indexFunctions = {
                 msg: 'Something went Wrong'
             });
         } catch (e) {
-            res.send({status : 500, msg : e});
+            res.send({
+                status: 500,
+                msg: e
+            });
             // console.log('It entered the catch');
         }
     }

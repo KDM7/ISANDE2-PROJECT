@@ -28,12 +28,15 @@ router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
 router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
 
+router.post('/enroll/approve', controller.postEnrollmentApproved);
+router.post('/enroll/deny', controller.postEnrollmentRejected);
+
 //New Event
 router.get('/a/sched/newAcadCalendar', controller.getAschednewAcadCalendar);
 router.post('/newAcadCalendar', controller.postNewAcadCalendar);
 
 router.get('/a/sched/editAcadCalendar', controller.getAschededitAcadCalendar);
-router.get('/a/users/SProfile/:userID', controller.getAuserSProf);
+router.get('/a/users/SProfile/:userID/:schoolYear', controller.getAuserSProf);
 router.get('/a/users/SEmail', controller.getAuserSEmail);
 router.get('/a/users/SAccount', controller.getAuserSAcc);
 router.get('/a/users/PProfile', controller.getAuserPProf);

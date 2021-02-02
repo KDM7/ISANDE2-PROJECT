@@ -61,17 +61,26 @@ app.engine('hbs', exphbs.create({
                     remark = 'Enrolled';
                     break;
                 }
+                case 'D': {
+                    remark = 'Rejected';
+                    break;
+                }
                 case 'FA': {
                     remark = 'For Approval';
                     break;
                 }
-                default:{
+                default: {
                     remark = 'N/A'
                     break;
                 }
 
             }
             return remark;
+        },
+        getAge: function (birthday) {
+            var d = new Date();
+            var dob = new Date(birthday);
+            return Math.floor((d.getTime() - dob.getTime()) / 31536000000);
         },
         getRemarkColor: function (remarks) {
             var color;
@@ -88,11 +97,15 @@ app.engine('hbs', exphbs.create({
                     color = 'text-primary';
                     break;
                 }
+                case 'D': {
+                    color = 'text-warning';
+                    break;
+                }
                 case 'FA': {
                     color = 'text-info';
                     break;
                 }
-                default:{
+                default: {
                     color = 'text-secondary'
                     break;
                 }
@@ -100,9 +113,9 @@ app.engine('hbs', exphbs.create({
             }
             return color;
         },
-        notifyRemark: function(remark){
-            if(remark != 'FA')
-            return 'hidden';
+        notifyRemark: function (remark) {
+            if (remark != 'FA')
+                return 'hidden';
         },
     }
 }).engine);

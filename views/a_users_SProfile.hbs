@@ -6,7 +6,7 @@
 <div class="col-9">
     <div class="list-group mt-2 shadow bg-light">
 
-        <div class="mt-2">
+        <div class="mt-2" id="{{studentID}}">
             <div class="shadow">
                 <table class="table table-bordered">
                     <thead class="thead-primary">
@@ -18,56 +18,55 @@
                     <tbody>
                         <tr>
                             <th class="text-left">First Name</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.firstName}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Last Name</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.lastName}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Middle Name</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.middleName}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Grade Level</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.gradeLvl}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Gender</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.gender}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Birthday</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.birthDate}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Age</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{getAge profile.birthDate}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Birthplace</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.birthPlace}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Nationality</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.nationality}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Religion</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.religion}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
             <br><br>
             <div class="shadow">
                 <table class="table table-bordered">
@@ -80,30 +79,24 @@
                     <tbody>
                         <tr>
                             <th class="text-left">Tel No.</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.telNo}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Cell No.</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.cellNo}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Email</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.email}}</td>
                         </tr>
                         <tr>
-                            <th class="text-left">House# / Street / Subd. or Brngy</th>
-                            <td class="text-left"></td>
-                        </tr>
-                        <tr>
-                            <th class="text-left">Municipality|Province</th>
-                            <td class="text-left"></td>
+                            <th class="text-left">Address</th>
+                            <td class="text-left">{{profile.address}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
-
             <br><br>
             <div class="shadow">
                 <table class="table table-bordered">
@@ -117,50 +110,49 @@
                     <tbody>
                         <tr>
                             <th class="text-left">Mother's Name</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.mName}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Email</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.mEmail}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Occupation</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.mOccu}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Work Address</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.mWorkAddress}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Contact Info</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.mNum}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Father's Name</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.fName}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Email</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.fEmail}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Occupation</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.fOccu}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Work Address</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.fWorkAddress}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Contact Info</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.fNum}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
             <br><br>
             <div class="shadow">
                 <table class="table table-bordered">
@@ -203,7 +195,6 @@
                     </tbody>
                 </table>
             </div>
-
             <br><br>
             <div class="shadow">
                 <table class="table table-bordered">
@@ -216,43 +207,37 @@
 
                     <tbody>
                         <tr>
-                            <th class="text-left">Related to</th>
-                            <td class="text-left"></td>
-                        </tr>
-
-                        <tr>
                             <th class="text-left">Name</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.cName}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Relation</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.relation}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Email</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.cEmail}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Contact Info</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.cNum}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Work Address</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.cWorkAddress}}</td>
                         </tr>
 
                         <tr>
                             <th class="text-left">Fetcher's Name</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.fetchName}}</td>
                         </tr>
                         <tr>
                             <th class="text-left">Contact Info</th>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.familyRecords.fetchNum}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-
             <br><br>
             <div class="shadow">
                 <table class="table table-bordered">
@@ -303,14 +288,14 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-left"></td>
+                            <td class="text-left">{{profile.reason}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="d-flex justify-content-around">
-                <button type="button" class="p-3 btn btn-outline-success">Accept Enrollment</button>
-                <button type="button" class=" p-3 btn btn-outline-danger">Reject Enrollment</button>
+                <button type="button" class="p-3 btn btn-outline-success" id="a_u_SP_accept">Accept Enrollment</button>
+                <button type="button" class=" p-3 btn btn-outline-danger" id="a_u_SP_reject">Reject Enrollment</button>
             </div>
         </div>
     </div>
