@@ -404,7 +404,8 @@ async function getSProfile(studentID, schoolYear){
                 'email': '$studentData.email', 
                 'address': '$studentData.address', 
                 'familyRecords': '$student_details.familyRecords', 
-                'reason': '$student_details.reason'
+                'reason': '$student_details.reason',
+                'remark': '$memberData.remarks'
               }
             }
           ]
@@ -1074,6 +1075,9 @@ const indexFunctions = {
         var studentProfile = await getSProfile(userID, schoolYear);
         var student = await userModel.findOne({userID:userID});
         res.render('a_users_SProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Profile',
             studentID: userID,
             student: student,

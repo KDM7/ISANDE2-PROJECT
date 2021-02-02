@@ -293,10 +293,12 @@
                     </tbody>
                 </table>
             </div>
+            {{#if (notifyRemark profile.remark)}}
             <div class="d-flex justify-content-around">
                 <button type="button" class="p-3 btn btn-outline-success" id="a_u_SP_accept">Accept Enrollment</button>
                 <button type="button" class=" p-3 btn btn-outline-danger" id="a_u_SP_reject">Reject Enrollment</button>
             </div>
+            {{/if}}
         </div>
     </div>
 </div>
