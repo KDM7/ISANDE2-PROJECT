@@ -272,6 +272,102 @@ async function getStudentsS(sectionIDs) {
     }]);
     return students[0].students;
 }
+//get profile of student using studentID(to identify the student) and schoolYear(to identify which year so it will return only 1 record)
+async function getSProfile(studentID, schoolYear){
+    var profile = await userModel.aggregate(
+        [
+            {
+              '$match': {
+                'userID': studentID.toString()
+              }
+            }, {
+              '$lookup': {
+                'from': 'students', 
+                'localField': 'userID', 
+                'foreignField': 'userID', 
+                'as': 'studentData'
+              }
+            }, {
+              '$unwind': {
+                'path': '$studentData', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$lookup': {
+                'from': 'studentMembers', 
+                'localField': 'userID', 
+                'foreignField': 'studentID', 
+                'as': 'memberData'
+              }
+            }, {
+              '$unwind': {
+                'path': '$memberData', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$lookup': {
+                'from': 'sections', 
+                'localField': 'memberData.sectionID', 
+                'foreignField': 'sectionID', 
+                'as': 'sectionData'
+              }
+            }, {
+              '$unwind': {
+                'path': '$sectionData', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$match': {
+                'sectionData.schoolYear': schoolYear.toString()
+              }
+            }, {
+              '$lookup': {
+                'from': 'ref_section', 
+                'localField': 'sectionData.sectionName', 
+                'foreignField': 'sectionName', 
+                'as': 'ref_section'
+              }
+            }, {
+              '$unwind': {
+                'path': '$ref_section', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$lookup': {
+                'from': 'student_details', 
+                'localField': 'userID', 
+                'foreignField': 'studentID', 
+                'as': 'student_details'
+              }
+            }, {
+              '$unwind': {
+                'path': '$student_details', 
+                'preserveNullAndEmptyArrays': true
+              }
+            }, {
+              '$project': {
+                '_id': 0, 
+                'firstName': 1, 
+                'lastName': 1, 
+                'middleName': 1, 
+                'gradeLvl': '$ref_section.gradeLvl', 
+                'gender': 1, 
+                'birthDate': '$studentData.birthDate', 
+                'birthPlace': '$studentData.birthPlace', 
+                'nationality': '$studentData.nationality', 
+                'religion': '$studentData.religion', 
+                'telNo': '$studentData.teleNum', 
+                'cellNo': '$studentData.mobileNum', 
+                'email': '$studentData.email', 
+                'address': '$studentData.address', 
+                'familyRecords': '$student_details.familyRecords', 
+                'reason': '$student_details.reason'
+              }
+            }
+          ]
+    );
+    return profile[0];//returns the only object in the array
+}
 
 // get a list of students using 'schoolYear' an 'gradeLvl' as parameters
 async function getStudentListSYGL(schoolYear, gradeLvl) {
@@ -315,14 +411,28 @@ async function getStudentListSYGL(schoolYear, gradeLvl) {
                 }
             }
         }, {
-            '$project': {
-                'userID': 1,
-                'firstname': '$userData.firstName',
-                'middlename': '$userData.middleName',
-                'lastname': '$userData.lastName',
-                'remark': '$memberData.remarks'
+            '$lookup': {
+              'from': 'sections', 
+              'localField': 'memberData.sectionID', 
+              'foreignField': 'sectionID', 
+              'as': 'sectionData'
             }
-        }]
+          }, {
+            '$unwind': {
+              'path': '$sectionData', 
+              'preserveNullAndEmptyArrays': true
+            }
+          }, {
+            '$project': {
+              'userID': 1, 
+              'firstname': '$userData.firstName', 
+              'middlename': '$userData.middleName', 
+              'lastname': '$userData.lastName', 
+              'remark': '$memberData.remarks', 
+              'schoolYear': '$sectionData.schoolYear'
+            }
+          }
+        ]
     );
     return studentList;
 }
@@ -851,11 +961,14 @@ const indexFunctions = {
     // to show a students profile for admin side
     getAuserSProf: async function (req, res) {
         var userID = req.params.userID;
+        var schoolYear = req.params.schoolYear;
+        var studentProfile = await getSProfile(userID, schoolYear);
         var student = await userModel.findOne({userID:userID});
         res.render('a_users_SProfile', {
             title: 'Student Profile',
             studentID: userID,
             student: student,
+            profile: studentProfile,
         });
     },
 
