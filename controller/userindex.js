@@ -252,7 +252,46 @@ async function getSectionsSYGL(schoolYear, gradeLvl) {
     );
     return sectionIDs[0].sectionID;
 }
-
+async function getNextSectionEnrollment(sectionID, remark)
+{
+    var sectionID = sectionID;
+    var remark = remark;
+    try{
+        var sectionData = await sectionModel.findOne({sectionID:sectionID});
+        var sectionName =sectionData.sectionName;
+        if(remark == "R")
+        {
+           
+         }
+        else if (remark == "P")
+        {
+            if(sectionName == "Jupiter")
+                sectionName = "Saturn";
+            else if(sectionName == "Saturn")
+                sectionName = "Venus";
+        }
+        var nextSection = await sectionModel.aggregate([
+            {
+              '$match': {
+                'sectionName': sectionName
+              }
+            }, {
+              '$sort': {
+                'schoolYear': -1
+              }
+            }, {
+              '$project': {
+                'sectionID': 1, 
+                'sectionName': 1
+              }
+            }
+          ]);
+          return nextSection[0].sectionID;
+    }catch(e)
+    {
+        res.send({status:500, msg:e});
+    }
+}
 //get list of students based on an array of section IDs
 async function getStudentsS(sectionIDs) {
     var students = await studentMembersModel.aggregate([{
@@ -445,9 +484,6 @@ async function getNextStudentID() {
     return true;
 }
 
-async function getNextSection(sectionName){
-
-}
 async function getNextParentID() {
     var schoolYear = await getCurrentSY();
     var start = "PA-";
@@ -1076,25 +1112,26 @@ const indexFunctions = {
             console.log((await sections).length);
             while(valid && i < sections.length)
             {
-                console.log(studentMembers[0].sectionID);
-                console.log(sections[i]);
                 if(studentMembers[0].sectionID == sections[i].sectionID)
                     valid = false;
                 i++;
-                console.log(valid);
             }
 
             if(valid)
             {
-                //student repeats
-                if(studentMembers[0].remarks == "R")
-                {
-                    var newSection = ref_sectionModel.aggregate()
-                }
-                //student Passed
-                else if(studentMembers[0].remarks == "P")
-                {
-
+               var nextSectionID = await getNextSectionEnrollment(studentMembers[0].sectionID,studentMembers[0].remarks);
+                var sectionMemberData = new sectionMembers(nextSectionID, studentID, 'FA');
+                var newSectionMember = new sectionMemberModel(sectionMemberData);
+                var sectionMemberResult = await newSectionMember.recordNewSectionMember();
+                if (sectionMemberResult) {
+                    res.send({
+                        status: 201
+                    })
+                } else {
+                    res.send({
+                        status: 401,
+                        msg: 'There is an error when adding student to section'
+                    });
                 }
             }
             else

@@ -396,11 +396,8 @@ $(document).ready(function () {
         }, function (result) {
             switch (result.status) {
                 case 201: {
-                    //admin
 
-                    alert('Thank you for applying, these are the user credentials \nUserID:' + result.userID +
-                        '\nPassword: ' + result.password)
-                    window.location.href = '/enroll/parent';
+                    alert('You have successfully enrolled for the next School Year. \nTo pay, refer to the payments tab.')
                     break;
                 }
                 case 401: {
