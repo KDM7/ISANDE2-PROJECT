@@ -114,8 +114,8 @@ app.engine('hbs', exphbs.create({
             return color;
         },
         notifyRemark: function (remark) {
-            if (remark != 'FA')
-                return 'hidden';
+            if (remark == 'FA')
+                return true;
         },
     }
 }).engine);

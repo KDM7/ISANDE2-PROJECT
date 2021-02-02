@@ -14,8 +14,11 @@
         <a href="user_StudentAccount.html" class="btn btn-outline-primary">View Account</a>
     </td>
     <td>
-        <a href="/a/users/SProfile/{{userID}}/{{schoolYear}}" class="btn btn-outline-primary">View Profile <span
-                class="badge badge-danger" {{notifyRemark remark}}>!</span></a>
+        <a href="/a/users/SProfile/{{userID}}/{{schoolYear}}" class="btn btn-outline-primary">View Profile 
+        {{#if (notifyRemark remark)}}
+        <span class="badge badge-danger">!</span>
+        {{/if}}
+        </a>
     </td>
     <td>
         <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
