@@ -22,6 +22,9 @@ const classModel = require("../model/classdb");
 
 const bcrypt = require('bcrypt');
 const e = require('express');
+const {
+    aggregate
+} = require('../model/usersdb');
 const saltRounds = 10;
 
 /*
@@ -1283,9 +1286,117 @@ const indexFunctions = {
     },
 
     // to show a students account for admin side
-    getAuserSAcc: function (req, res) {
+    getAuserSAcc: async function (req, res) {
+        var studentID = req.params.userID;
+        var studentinfo = await studentModel.aggregate(
+            [{
+                '$match': {
+                    'userID': studentID
+                }
+            }, {
+                '$lookup': {
+                    'from': 'users',
+                    'localField': 'userID',
+                    'foreignField': 'userID',
+                    'as': 'usrDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$usrDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'studentMembers',
+                    'localField': 'userID',
+                    'foreignField': 'studentID',
+                    'as': 'mbrDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$mbrDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'sections',
+                    'localField': 'mbrDta.sectionID',
+                    'foreignField': 'sectionID',
+                    'as': 'secDta'
+                }
+            }, {
+                '$match': {
+                    'secDta.schoolYear': await getCurrentSY()
+                }
+            }, {
+                '$lookup': {
+                    'from': 'upon_enrollment',
+                    'localField': 'mbrDta.sectionID',
+                    'foreignField': 'sectionID',
+                    'as': 'erlDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$erlDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$unwind': {
+                    'path': '$secDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'ref_section',
+                    'localField': 'secDta.sectionName',
+                    'foreignField': 'sectionName',
+                    'as': 'refSec'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$refSec',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'payments',
+                    'localField': 'userID',
+                    'foreignField': 'studentID',
+                    'as': 'pmtDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$pmtDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$match': {
+                    '$expr': {
+                        '$eq': [
+                            '$pmtDta.sectionID', '$mbrDta.sectionID'
+                        ]
+                    }
+                }
+            }, {
+                '$project': {
+                    '_id': 0,
+                    'schoolYear': '$secDta.schoolYear',
+                    'gradeLvl': '$refSec.gradeLvl',
+                    'userID': 1,
+                    'name': {
+                        '$concat': [
+                            '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
+                        ]
+                    },
+                    'pmtType': '$pmtDta.paymentPlan',
+                    'begBal': '$erlDta.fullPayment'
+                }
+            }]
+        );
+        console.log(studentinfo[0]);
         res.render('a_users_SAccount', {
             title: 'Student Account',
+            info: studentinfo[0],
         });
     },
 
