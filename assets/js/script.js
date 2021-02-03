@@ -413,7 +413,7 @@ $(document).ready(function () {
         var paymentPlan = $('input[name="paymentPlan"]:checked').val();
         var studentID = $('#studentID').val();
 
-        
+        console.log(paymentPlan);
         $.post('/p/submitCCPlan', {
             studentID : studentID,
             paymentPlan : paymentPlan

@@ -16,6 +16,7 @@ const sectionMemberModel = require("../model/sectionMembersdb");
 const ref_sectionModel = require("../model/ref_sectiondb");
 const studentMembersModel = require("../model/sectionMembersdb");
 const eventModel = require("../model/eventdb");
+const paymentModel = require("../model/paymentdb");
 
 const bcrypt = require('bcrypt');
 const e = require('express');
@@ -148,7 +149,6 @@ function Event(eventID, eventName, eventDate, schoolYear) {
     this.schoolYear = schoolYear;
 }
 
-//functions
 async function findUser(userID) {
     var user = await userModel.aggregate([{
         '$match': {
@@ -592,9 +592,42 @@ async function getNextStudentID() {
     }
     // var highestID = students[0].userID;
     //  console.log(highestID);
-    return true;
 }
 
+async function getNextPaymentID(){
+    var startNum = 1;
+    var schoolYear = await getIDPrefix();
+        schoolYear = parseInt(schoolYear.substr(0,2));
+        
+        startNum = (startNum * 10000000) + (schoolYear * 100000) + 1;
+        var payments = await paymentModel.aggregate([
+        {
+          '$match': {
+            'paymentID': {
+              '$gte': startNum
+            }
+          }
+        }, {
+          '$sort': {
+            'paymentID': -1
+          }
+        }, {
+          '$limit': 1
+        }, {
+          '$project': {
+            'paymentID': 1
+          }
+        }
+      ]);
+
+    if(payments.length != 0)
+    {
+        return payments[0].paymentID + 1;
+    }
+    else{
+        return startNum;
+    }
+}
 async function getNextParentID() {
     var schoolYear = await getCurrentSY();
     var start = "PA-";
@@ -1284,9 +1317,7 @@ const indexFunctions = {
             var valid = true;
             var sections = await getCurrentSections();
             var studentMembers = await getStudentMembership(studentID);
-            console.log(sections);
-            console.log(studentMembers);
-            console.log((await sections).length);
+
             while(valid && i < sections.length)
             {
                 if(studentMembers[0].sectionID == sections[i].sectionID)
@@ -1297,7 +1328,7 @@ const indexFunctions = {
             if(valid)
             {
                var nextSectionID = await getNextSectionEnrollment(studentMembers[0].sectionID,studentMembers[0].remarks);
-                var sectionMemberData = new sectionMembers(nextSectionID, studentID, 'FA');
+                var sectionMemberData = new sectionMembers(nextSectionID, studentID, 'E');
                 var newSectionMember = new sectionMemberModel(sectionMemberData);
                 var sectionMemberResult = await newSectionMember.recordNewSectionMember();
                 if (sectionMemberResult) {
@@ -1328,9 +1359,35 @@ const indexFunctions = {
             paymentPlan
         } = req.body;
         try {
+            var i = 0;
+            var enrolled = false;
 
-            req.session.payment.studentID = studentID;
-            req.session.payment.paymentPlan = paymentPlan;
+            console.log(studentID);
+            console.log(paymentPlan);
+            var sections = await getCurrentSections();
+            var studentMembers = await getStudentMembership(studentID);
+            console.log(sections);
+            console.log(studentMembers);
+            
+            //checks if student has enrolled this school year
+            while(!enrolled && i < sections.length)
+            {
+                if(studentMembers[0].sectionID == sections[i].sectionID)
+                    enrolled = true;
+                i++;
+            }
+
+            if(enrolled)
+            {
+                if(studentMembers[0].remarks == "FA")
+                    res.send({status: 401, msg: 'Student is not yet allowed to pay\nPlease wait for admin approval'});
+                
+                var paymentID = await getNextPaymentID();
+                console.log(paymentID);
+                res.send({status:401, msg:'Student is enrolled'});
+            }else{
+                res.send({status: 401, msg:'Student is not yet enrolled'})
+            }
         } catch (e) {
             res.send({status:500,msg: e});
         }
