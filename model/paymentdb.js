@@ -9,7 +9,7 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itis
 var db = mongoose.connection;
 
 const paymentSchema = new mongoose.Schema({
-    paymentNum: { type: Number, required: true},
+    paymentID: { type: Number, required: true},
     amountPaid : {type : Number, required : true},
     datePaid : {type : Date, required : true},
     paymentPlan : {type : String, required :true},
