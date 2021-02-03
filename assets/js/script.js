@@ -528,6 +528,15 @@ $(document).ready(function () {
         If Parent does not have account
             -Create Parent Account
     */
+    $('#a_u_ST_Search').on('click', function(){
+        var schoolYear = $('#a_u_ST_schoolYear').val();
+        var gradeLvl = $('#a_u_ST_gradeLVL').val();
+        console.log(schoolYear);
+        console.log(gradeLvl);
+        $.get('/a/users/students/' + schoolYear + '/' + gradeLvl, function (res) {
+            location.reload();
+        });
+    });
     $('#a_s_AC_AddClass').on('click', function () {
         var section = $('#a_s_AC_Section').val();
         var subject = $('#a_s_AC_Subject').val();
@@ -587,7 +596,17 @@ $(document).ready(function () {
         });
     });
 
-
+    /*
+        Used to Link Parent and Student Accounts
+        If Parent Account Exists
+            - Enter Credentials to Verify
+                -firstName
+                -lastName
+                -middleName
+                -ParentID
+        If Parent does not have account
+            -Create Parent Account
+    */
     $('#enroll_Parent').click(function () {
         var exists = $('#if_exist').val();
         console.log(exists);

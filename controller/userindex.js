@@ -901,6 +901,8 @@ const indexFunctions = {
     // to show the students from the admins side
     getAuserStudents: async function (req, res) {
         // after grades have been set up: may have to merge student and another var grades instead of trying to aggregate for remarks
+        var SY = req.params.schoolYear;
+        var GL = req.params.gradeLvl;
         var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
             [{
                 '$project': {
@@ -909,7 +911,6 @@ const indexFunctions = {
                 }
             }]
         );
-        var currentYear;
         var gradeLvl = await ref_sectionModel.aggregate(
             [{
                 '$sort': {
@@ -921,14 +922,14 @@ const indexFunctions = {
                 }
             }]
         );
-        for (i = 0; i < schoolYear.length; i++) {
-            if (schoolYear[i].selected)
-                currentYear = schoolYear[i].value;
+        if (SY || GL) {
+            var students = await getStudentListSYGL(SY, GL);
+        } else {
+            var currentYear = await getCurrentSY();
+            var students = await getStudentListSYGL(currentYear, gradeLvl[0].value);
         }
-        var students = await getStudentListSYGL(currentYear, gradeLvl[0].value);
-        // console.log('typeof sections:' + typeof sections);
-        // console.log("students: ");
-        // console.log(students);
+        req.session.studentList = students;
+        console.log(req.session.studentList);
         res.render('a_users_students', {
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
@@ -936,11 +937,9 @@ const indexFunctions = {
             title: 'Students',
             schoolYear: schoolYear,
             gradeLvl: gradeLvl,
-            student: students
-
+            student: req.session.studentList
         });
     },
-
     // to show edit student agreements page for admins side
     getAdocEditSA: function (req, res) {
         res.render('a_doc_editSA', {
@@ -1194,6 +1193,13 @@ const indexFunctions = {
         }
     },
 
+    postAddClass: async function (req, res) {
+        var {
+            section,
+            subject,
+            teacher
+        } = req.body;
+    },
     // to show the new event page for admin side
     getAschednewAcadCalendar: function (req, res) {
         try {

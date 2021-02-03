@@ -20,11 +20,11 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <form class="form-inline justify-content-end">
+                        <div class="form-inline justify-content-end">
                             <input class="form-control mr-sm-2" type="search" placeholder="Search Users"
                                 aria-label="Search">
-                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                            <button class="btn btn-outline-primary my-2 my-sm-0" id="a_u_ST_Search">Search</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -40,8 +40,6 @@
                             </select>
                         </div>
                     </div>
-
-
 
                     <div class="col-6">
                         <div class="btn-group mt-4" style="margin-left: 69px;">
@@ -98,11 +96,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
+
                         {{#each student}}
                         {{>a_u_ST_students this}}
                         {{/each}}
-                        
+
                     </tbody>
                 </table>
             </div>
