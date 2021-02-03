@@ -18,6 +18,8 @@ const studentMembersModel = require("../model/sectionMembersdb");
 const eventModel = require("../model/eventdb");
 const paymentModel = require("../model/paymentdb");
 const upon_enrollmentModel = require("../model/upon_enrollmentdb");
+const cc_paymentModel = require("../model/cc_paymentdb");
+const bank_paymentModel = require("../model/bank_paymentdb");
 
 const bcrypt = require('bcrypt');
 const e = require('express');
@@ -87,16 +89,29 @@ function Section(sectionID, sectionName, schoolYear, sectionAdviser) {
     this.sectionAdviser = sectionAdviser;
 }
 
-function Payment(paymentID,amountPaid, datePaid, paymentPlan, studentID){
+function Payment(paymentID,amountPaid, datePaid, paymentPlan, studentID,sectionID){
     this.paymentID = paymentID;
     this.amountPaid = amountPaid;
     this.datePaid = new Date(datePaid);
     this.paymentPlan = paymentPlan;
     this.studentID = studentID;
+    this.sectionID = sectionID;
 }
 function schoolYear(schoolYear, isCurrent) {
     this.schoolYear = schoolYear;
     this.isCurrent = isCurrent;
+}
+function CC_Payment(paymentID, ccType,ccExp,ccHolderName)
+{
+    this.paymentID = paymentID;
+    this.ccType = ccType;
+    this.ccExp = ccExp;
+    this.ccHolderName = ccHolderName;
+}
+function Bank_Payment(paymentID,accountName,accountNumber){
+    this.paymentID = paymentID;
+    this.accountName = accountName;
+    this.accountNumber = accountNumber;
 }
 //the following 4 constructors are for the student details function
 function familyRecords(mName, mOccu, mEmail, mWorkAddress, mNum, fName, fOccu, fEmail, fWorkAddress, fNum, cName, relation, cEmail, cNum, cWorkAddress, fetchName, fetchNum) {
@@ -602,6 +617,32 @@ async function getNextStudentID() {
     //  console.log(highestID);
 }
 
+function renamePaymentPlan(string)
+{
+    switch(string){
+        case "nextPayment":
+            return "Next"
+                break;
+        case "fullPayment":
+            return "Full";
+            break;
+        case "remainingPayment":
+            return "Remaining";
+            break;
+        case "semestralPayment":
+            return "Semestral";
+            break;
+        case "trimestralPayment":
+            return "Trimestral";
+            break;
+        case "quarterlyPayment":
+            return "Quarterly";
+            break;
+        case "monthlyPayment":
+            return "Monthly";
+            break;
+        }
+}   
 async function getNextPaymentID(){
     var startNum = 1;
     var schoolYear = await getIDPrefix();
@@ -1322,7 +1363,8 @@ const indexFunctions = {
 
     // to show paying for enrollment (credit card) from the parents side
     getPpaycc: function (req, res) {
-        var amountDue = req.session.payment.amountDue;
+        var amountDue = req.session.amountDue;
+        //console.log(amountDue);
         res.render('p_pay_cc', {
             title: 'Payment',
             amountDue:amountDue
@@ -1350,6 +1392,12 @@ const indexFunctions = {
         }
     },
 
+    getPpayCCOTP : async function(req,res){
+        res.render('p_pay_CCOTP',{
+            title:'Confirm Payment',
+            amountDue : req.session.amountDue
+        })
+    },
     // to show the breakdown of details from the parents side
     getPaccEChild: async function (req, res) {
         var parentID = req.session.logUser.userID;
@@ -1390,15 +1438,31 @@ const indexFunctions = {
     },
 
     getPpaybank: function (req, res) {
+        var amountDue = req.session.amountDue;
         res.render('p_pay_bank', {
-            title: 'Bank Statement'
+            title: 'Bank Statement',
+            amountDue:amountDue
         });
     },
 
-    getPpayBankPlan: function (req, res) {
-        res.render('p_pay_BPlan', {
-            title: 'Bank Statement'
-        });
+    getPpayBankPlan: async function (req, res) {
+        var parentID = req.session.logUser.userID;
+        try{
+            var studentList = await getStudentListParentID(parentID);
+            console.log(studentList);
+            if(studentList)
+                res.render('p_pay_BPlan', {
+                    title: 'Bank Payment',
+                    student:studentList
+                });
+            else
+                res.render('error', {
+                    title: 'Error',
+                    msg: 'something went wrong'
+                });
+        }catch(e){
+            console.log(e);
+        }
     },
 
     getPschedacadCalendar: function (req, res) {
@@ -1455,7 +1519,7 @@ const indexFunctions = {
                 if (sectionMemberResult) {
                     res.send({
                         status: 201
-                    })
+                    });
                 } else {
                     res.send({
                         status: 401,
@@ -1515,9 +1579,13 @@ const indexFunctions = {
                     default :
                         console.log(amountDue);
                         console.log(studentID);
-                        req.session.payment.studentID = studentID;
-                        req.session.payment.amountDue = amountDue;
-                        req.session.payment.paymentPlan = paymentPlan;
+                    
+                        req.session.studentID = studentID;
+                        req.session.amountDue = amountDue;
+                        req.session.paymentPlan = paymentPlan;
+                        req.session.sectionID = studentMembers[0].sectionID;
+                        console.log(req.session);
+                        
                         res.send({status:201});
                 }
                // res.send({status:401, msg:'Student is enrolled'});
@@ -1529,6 +1597,112 @@ const indexFunctions = {
             //res.send({status:500,msg: e});
         }
     },
+
+    // This function saves data from CCInfo page to session, to be used after approval of OTP
+    postPpayCCInfo: async function(req,res){
+        var {
+            ccHolderName,
+            ccNo,
+            ccExp,
+            ccType
+        } = req.body;
+        
+        try{
+            req.session.ccHolderName = ccHolderName;
+            req.session.ccNo = ccNo;
+            req.session.ccExp = ccExp;
+            req.session.ccType = ccType;
+            var OTP = Math.random().toString().slice(2,10);;
+            req.session.otp = OTP;
+            res.send({status:201, otp:OTP});
+        }catch(e){
+            res.send({status:500,msg:e});
+        }
+    },
+
+    /**
+     *      This function is used to post the payment information once otp is confirmed to match
+     */
+
+     postPpayCCOTP : async function(req,res){
+         var otp = req.body.otp;
+         try {
+             if(otp != req.session.otp)
+                res.send({status:401, msg:'OTP does not match'});
+            else
+            {
+                var sectionID = req.session.sectionID;
+                var paymentID = await getNextPaymentID();
+
+                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),req.session.paymentPlan,req.session.studentID,sectionID);
+                var newPayment = new paymentModel(paymentData);
+                var paymentResult = await newPayment.recordNewPayment();
+                
+
+                if (paymentResult) {
+                    var cc_payment = new CC_Payment(paymentID, req.session.ccType,req.session.ccExp,req.session.ccHolderName);
+                    var newcc_payment = new cc_paymentModel(cc_payment);
+                    var newcc_paymentResult = await newcc_payment.recordNewCCPayment();
+                    if(newcc_paymentResult)
+                        res.send({
+                            status: 201
+                        });
+                    else
+                        res.send({
+                            status: 401,
+                            msg: 'There is an error when payment'
+                        });
+                } else {
+                    res.send({
+                        status: 401,
+                        msg: 'There is an error when payment'
+                    });
+                }
+            }
+         } catch (e) {
+             res.send({status:500, msg:e});
+         }
+     },
+
+     // this function is used to post bank payments
+     
+    postPpayBank:async function(req,res){
+        var {
+            accountNumber,
+            accountName
+        } = req.body;
+        accountNumber = parseInt(accountNumber);
+         try {
+                var paymentID = await getNextPaymentID();
+                var sectionID = req.session.sectionID;
+                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),req.session.paymentPlan,req.session.studentID,sectionID);
+                var newPayment = new paymentModel(paymentData);
+                var paymentResult = await newPayment.recordNewPayment();                
+
+                if (paymentResult) {
+                    var bank_payment = new Bank_Payment(paymentID,accountName,accountNumber);
+                    var newbank_payment = new bank_paymentModel(bank_payment);
+                    var newbank_paymentResult = await newbank_payment.recordNewBankPayment();
+                    if(newbank_paymentResult)
+                        res.send({
+                            status: 201
+                        });
+                    else
+                        res.send({
+                            status: 401,
+                            msg: 'There is an error when adding payment'
+                        });
+                } else {
+                    res.send({
+                        status: 401,
+                        msg: 'There is an error when adding payment'
+                    });
+                }
+         }catch(e) {
+             res.send({status:500, msg:e});
+         }
+    },
+
     /*
         STUDENT FUNCTIONS 
     */

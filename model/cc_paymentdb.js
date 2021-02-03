@@ -15,6 +15,12 @@ const cc_paymentSchema = new mongoose.Schema({
     ccHolderName: {type:String,required:true}
 }, { collection: "cc_payment" });
 
+cc_paymentSchema.methods.recordNewCCPayment = async function() {
+    var result = await cc_paymentModel.create(this);
+    console.log(JSON.stringify(result));
+    return result;
+};
+
 const cc_paymentModel = db.model('cc_payment', cc_paymentSchema);
 
 module.exports = cc_paymentModel;

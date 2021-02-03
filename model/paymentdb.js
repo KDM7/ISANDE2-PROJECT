@@ -13,9 +13,15 @@ const paymentSchema = new mongoose.Schema({
     amountPaid : {type : Number, required : true},
     datePaid : {type : Date, required : true},
     paymentPlan : {type : String, required :true},
-    studentID : {type : String, required : true}
+    studentID : {type : String, required : true},
+    sectionID :{type:Number,required:true}
 }, { collection: "payments" });
 
+paymentSchema.methods.recordNewPayment = async function() {
+    var result = await paymentModel.create(this);
+    console.log(JSON.stringify(result));
+    return result;
+};
 
 const paymentModel = db.model('payments', paymentSchema);
 

@@ -68,7 +68,7 @@ router.get('/p/acc/NewChild', controller.getPaccNewChild);
 router.get('/p/pay/bank', controller.getPpaybank);
 router.get('/p/pay/bankPaymentPlan', controller.getPpayBankPlan);
 router.get('/p/pay/cc', controller.getPpaycc);
-//router.get('/p/pay/ccOTP', controller.getPpayCCOTP);
+router.get('/p/pay/ccOTP', controller.getPpayCCOTP);
 router.get('/p/pay/ccPaymentPlan', controller.getPpayCCPlan);
 router.get('/p/sched/acadCalendar', controller.getPschedacadCalendar);
 router.get('/p/sched/acadCalendar2', controller.getPschedacadCalendar2);
@@ -78,6 +78,9 @@ router.get('/p/trans/stmacc', controller.getPtransSA);
 
 router.post('/enrollold', controller.postEnrollmentOld);
 router.post('/p/submitCCPlan',controller.postPpayCCPlan);
+router.post('/p/submitCCInfo',controller.postPpayCCInfo);
+router.post('/p/submitCCOTP',controller.postPpayCCOTP);
+router.post('/p/submitBankPayment',controller.postPpayBank);
 /*
     STUDENT
 */
