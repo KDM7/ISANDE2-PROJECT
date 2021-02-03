@@ -749,7 +749,6 @@ const indexFunctions = {
         req.session.destroy();
         res.redirect("/");
     },
-
     /*      
         ADMIN FUNCTIONS
     */
@@ -1369,7 +1368,23 @@ const indexFunctions = {
         }
     },
 
+    /*
+        This function checks if the student can pay, it also gets the required
+        amount to pay based on the payment plan chosen for the credit card
+    */
+    postPpayCCPlan : async function(req,res){
+        var {
+            studentID,
+            paymentPlan
+        } = req.body;
+        try {
 
+            req.session.payment.studentID = studentID;
+            req.session.payment.paymentPlan = paymentPlan;
+        } catch (e) {
+            res.send({status:500,msg: e});
+        }
+    },
     /*
         STUDENT FUNCTIONS 
     */
