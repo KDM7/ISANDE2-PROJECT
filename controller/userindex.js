@@ -1322,8 +1322,10 @@ const indexFunctions = {
 
     // to show paying for enrollment (credit card) from the parents side
     getPpaycc: function (req, res) {
+        var amountDue = req.session.payment.amountDue;
         res.render('p_pay_cc', {
-            title: 'Payment'
+            title: 'Payment',
+            amountDue:amountDue
         });
     },
 
@@ -1512,6 +1514,11 @@ const indexFunctions = {
                         break;
                     default :
                         console.log(amountDue);
+                        console.log(studentID);
+                        req.session.payment.studentID = studentID;
+                        req.session.payment.amountDue = amountDue;
+                        req.session.payment.paymentPlan = paymentPlan;
+                        res.send({status:201});
                 }
                // res.send({status:401, msg:'Student is enrolled'});
             }else{

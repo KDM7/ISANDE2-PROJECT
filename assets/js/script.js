@@ -420,8 +420,7 @@ $(document).ready(function () {
         }, function (result) {
             switch (result.status) {
                 case 201: {
-
-                    alert('You have successfully enrolled for the next School Year. \nTo pay, refer to the payments tab.')
+                    window.location.href = '/p/pay/cc'
                     break;
                 }
                 case 401: {
