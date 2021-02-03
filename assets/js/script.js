@@ -386,10 +386,10 @@ $(document).ready(function () {
         PARENT
     */
 
-    $('#submitEnrollOld').click(function(){
+    $('#submitEnrollOld').click(function () {
         var studentID = $("#studentID").val()
         $.post('/enrollold', {
-            studentID : studentID
+            studentID: studentID
         }, function (result) {
             switch (result.status) {
                 case 201: {
@@ -409,14 +409,14 @@ $(document).ready(function () {
         })
     });
 
-    $('#submitCCPlan').click(function() {
+    $('#submitCCPlan').click(function () {
         var paymentPlan = $('input[name="paymentPlan"]:checked').val();
         var studentID = $('#studentID').val();
 
         console.log(paymentPlan);
         $.post('/p/submitCCPlan', {
-            studentID : studentID,
-            paymentPlan : paymentPlan
+            studentID: studentID,
+            paymentPlan: paymentPlan
         }, function (result) {
             switch (result.status) {
                 case 201: {
@@ -528,10 +528,20 @@ $(document).ready(function () {
         If Parent does not have account
             -Create Parent Account
     */
-    $('#a_s_AC_AddClass').on('click', function(){
+    $('#a_s_AC_AddClass').on('click', function () {
         var section = $('#a_s_AC_Section').val();
         var subject = $('#a_s_AC_Subject').val();
-        var teacher = $('#a_s_AC_Teacher').val();    
+        var teacher = $('#a_s_AC_Teacher').val();
+        $.post('/addClass', {
+            sec: section,
+            sub: subject,
+            tch: teacher
+        }, function (result) {
+            switch(result.status){
+                case 200: alert(result.msg);
+                break;
+            }
+        });
     });
     $('#a_u_SP_accept').on('click', function () {
         //    get the id from the parent of th e parent node
