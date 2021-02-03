@@ -19,6 +19,7 @@ const studentMembersModel = require("../model/sectionMembersdb");
 const eventModel = require("../model/eventdb");
 const paymentModel = require("../model/paymentdb");
 const classModel = require("../model/classdb");
+const upon_enrollmentModel = require("../model/upon_enrollmentdb");
 
 const bcrypt = require('bcrypt');
 const e = require('express');
@@ -89,6 +90,14 @@ function Section(sectionID, sectionName, schoolYear, sectionAdviser) {
     this.sectionName = sectionName;
     this.schoolYear = schoolYear;
     this.sectionAdviser = sectionAdviser;
+}
+
+function Payment(paymentID, amountPaid, datePaid, paymentPlan, studentID) {
+    this.paymentID = paymentID;
+    this.amountPaid = amountPaid;
+    this.datePaid = new Date(datePaid);
+    this.paymentPlan = paymentPlan;
+    this.studentID = studentID;
 }
 
 function schoolYear(schoolYear, isCurrent) {
@@ -732,6 +741,108 @@ async function getClassList(schoolYear) {
             }
         ]
     );
+}
+// gets the amount the student already paid, as well as the payment plan
+async function getStudentPaymentsSummary(studentID, sectionID) {
+    return await paymentModel.aggregate([{
+        '$match': {
+            'studentID': studentID,
+            'sectionID': {
+                '$eq': sectionID
+            }
+        }
+    }, {
+        '$sort': {
+            'paymentID': 1
+        }
+    }, {
+        '$group': {
+            '_id': '$sectionID',
+            'totalAmountPaid': {
+                '$sum': '$amountPaid'
+            },
+            'paymentPlan': {
+                '$first': '$paymentPlan'
+            }
+        }
+    }]);
+}
+
+function getNextInstallment(totalPayment, initialPayment, numberOfInstallments) {
+    return (totalPayment - initialPayment) / numberOfInstallments;
+}
+
+/*
+    Returns amount owed on payment screen
+    Error Results : 
+    -1  =   User is already fully paid
+    -2  =   User attempted to pay another installment
+            without having an initial payment
+    -3  =   User Does not select next payment when paying for their next installment
+*/
+async function getAmountOwed(studentID, sectionID, paymentPlan) {
+    //gets amounts for upon_enrollment
+    var upon_enrollment = await upon_enrollmentModel.findOne({
+        sectionID: {
+            $eq: sectionID
+        }
+    });
+    console.log(upon_enrollment);
+    var amountPrevPaid = await getStudentPaymentsSummary(studentID, sectionID);
+    var amountDue = 0;
+    //this is student's first payment
+    if (amountPrevPaid.length == 0) {
+        switch (paymentPlan) {
+            case "nextPayment":
+                amountDue = -2;
+                break;
+            case "fullPayment":
+            case "remainingPayment":
+                amountDue = upon_enrollment.fullPayment;
+                break;
+            case "semestralPayment":
+                amountDue = upon_enrollment.semestralPayment;
+                break;
+            case "trimestralPayment":
+                amountDue = upon_enrollment.trimestralPayment;
+                break;
+            case "quarterlyPayment":
+                amountDue = upon_enrollment.quarterlyPayment;
+                break;
+            case "monthlyPayment":
+                amountDue = upon_enrollment.monthlyPayment;
+                break;
+        }
+    }
+    //they have selected a payment plan in the past
+    else {
+        console.log(amountPrevPaid);
+        if (upon_enrollment.fullPayment == amountPrevPaid[0].totalAmountPaid)
+            amountDue = -1;
+        else if (paymentPlan == "remainingPayment" || paymentPlan == "fullPayment") {
+            amountDue = upon_enrollment.fullPayment - amountPrevPaid[0].totalAmountPaid;
+        } else if (paymentPlan == "nextPayment") {
+            switch (amountPrevPaid[0].paymentPlan) {
+                case "Semestral":
+                    amountDue = getNextInstallment(upon_enrollment.fullPayment, upon_enrollment.semestralPayment, 2);
+                    break;
+                case "Trimestral":
+                    amountDue = getNextInstallment(upon_enrollment.fullPayment, upon_enrollment.trimestralPayment, 3);
+                    break;
+                case "Quarterly":
+                    amountDue = getNextInstallment(upon_enrollment.fullPayment, upon_enrollment.quarterlyPayment, 4);
+                    break;
+                case "Monthly":
+                    amountDue = getNextInstallment(upon_enrollment.fullPayment, upon_enrollment.semestralPayment, 10);
+                    break;
+                default:
+                    amountDue = -3;
+            }
+        } else {
+            amountDue = -3;
+        }
+    }
+    return amountDue;
 }
 
 async function getNextParentID() {
@@ -1529,8 +1640,10 @@ const indexFunctions = {
 
     // to show paying for enrollment (credit card) from the parents side
     getPpaycc: function (req, res) {
+        var amountDue = req.session.payment.amountDue;
         res.render('p_pay_cc', {
-            title: 'Payment'
+            title: 'Payment',
+            amountDue: amountDue
         });
     },
 
@@ -1691,12 +1804,8 @@ const indexFunctions = {
             var i = 0;
             var enrolled = false;
 
-            console.log(studentID);
-            console.log(paymentPlan);
             var sections = await getCurrentSections();
             var studentMembers = await getStudentMembership(studentID);
-            console.log(sections);
-            console.log(studentMembers);
 
             //checks if student has enrolled this school year
             while (!enrolled && i < sections.length) {
@@ -1712,12 +1821,38 @@ const indexFunctions = {
                         msg: 'Student is not yet allowed to pay\nPlease wait for admin approval'
                     });
 
-                var paymentID = await getNextPaymentID();
-                console.log(paymentID);
-                res.send({
-                    status: 401,
-                    msg: 'Student is enrolled'
-                });
+                var amountDue = await getAmountOwed(studentID, studentMembers[0].sectionID, paymentPlan);
+                console.log(amountDue);
+                switch (amountDue) {
+                    case -1:
+                        res.send({
+                            status: 401,
+                            msg: 'Student is already fully paid'
+                        });
+                        break;
+                    case -2:
+                        res.send({
+                            status: 401,
+                            msg: 'User has not chosen a payment plan\nPlease select a payment plan before you continue'
+                        });
+                        break;
+                    case -3:
+                        res.send({
+                            status: 401,
+                            msg: 'User has already chosen a payment plan\n Select Next Installment or Remaining Balance to contiue'
+                        });
+                        break;
+                    default:
+                        console.log(amountDue);
+                        console.log(studentID);
+                        req.session.payment.studentID = studentID;
+                        req.session.payment.amountDue = amountDue;
+                        req.session.payment.paymentPlan = paymentPlan;
+                        res.send({
+                            status: 201
+                        });
+                }
+                // res.send({status:401, msg:'Student is enrolled'});
             } else {
                 res.send({
                     status: 401,
@@ -1725,10 +1860,8 @@ const indexFunctions = {
                 })
             }
         } catch (e) {
-            res.send({
-                status: 500,
-                msg: e
-            });
+            console.log(e);
+            //res.send({status:500,msg: e});
         }
     },
     /*
@@ -1997,5 +2130,4 @@ const indexFunctions = {
 
 
 }
-
 module.exports = indexFunctions;

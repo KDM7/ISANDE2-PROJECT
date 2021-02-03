@@ -10,8 +10,8 @@ var db = mongoose.connection;
 
 const cc_paymentSchema = new mongoose.Schema({
     paymentID: { type: Number, required: true},
-    ccNum : {type:Number,required:true},
-    ccType: {type:String, required:true},
+    ccType : {type : String, required:true},
+    ccExp: {type:String,required:true},
     ccHolderName: {type:String,required:true}
 }, { collection: "cc_payment" });
 
