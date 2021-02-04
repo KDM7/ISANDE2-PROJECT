@@ -1296,17 +1296,12 @@ const indexFunctions = {
             schoolYear: await getCurrentSY(),
             gradeLvl: 'Grade 1'
         }
-        
-        console.log(student);
         try {
-            
             var match = await findUser(user);
             if (match) {
-                console.log('matching');
                 try {
                     var student = await getParentChildren(user);
                 } catch (e) {
-                    console.log("HI");
                 }
                 bcrypt.compare(pass, match.password, function (err, result) {
                     // var result = match.password == pass;
