@@ -1634,8 +1634,10 @@ const indexFunctions = {
         var schoolYear = req.session.reportschoolYear;
         var reportData = await getBalanceReportData(schoolYear);
         console.log(reportData);
-        res.render('a_report_OutstandingBalTable', {
-            title: "Outstanding Balance Report",
+        res.render('a_report_OutstandingBalTable',{
+            title : "Outstanding Balance Report",
+            schoolYear:schoolYear,
+            reportData:reportData
         })
     },
     // function to approve student enrollment

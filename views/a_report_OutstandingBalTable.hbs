@@ -8,32 +8,28 @@
         <div class="list-group mt-2 shadow bg-light">
             <div class="container">
                 <h1 class="display-4 text-center">Outstanding Balance Report</h1>
+                <h1 class="display-4 text-center">SY {{schoolYear}}</h1>
             </div>
             <div class="mt-2">
                 <div class="container">
                     <table class="table table-bordered mb-0 table-striped">
                         <thead class="thead-dark">
                             <tr>
+                                <th scope="col">Section Name</th>
                                 <th scope="col">Student ID</th>
                                 <th scope="col">Student Name</th>
-                                <th scope="col">Section Name</th>
                                 <th scope="col">Remaining Balance</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {{#each balReport}}
-                            <tr>
-                                <td class="text-center">{{studentID}}</td>
-                                <td>{{studentName}}</td>
-                                <td>{{sectionName}}</td>
-                                <td class="text-right">Php {{getPrice remBal}}</td>
-                            </tr>
+                            {{#each reportData}}
+                                {{>a_report_balRow this}}
                             {{/each}}
                         </tbody>
                     </table>
                     <form>
                         <br>
-                        <div class="form-group row m-5">
+                        {{!-- <div class="form-group row m-5">
                             <label for="a_r_OB_schoolYear"
                                 class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
                             <select class="form-control col-9 p-0 m-0 dropdown-schoolYear" id="a_u_ST_schoolYear">
@@ -46,7 +42,7 @@
                                 <option value="">--School Year--</option>
                                 {{/if}}
                             </select>
-                        </div>
+                        </div> --}}
                         <br><br>
                         <div class="form-group ">
                             <div class="row">
