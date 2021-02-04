@@ -107,6 +107,7 @@ router.post('/enroll/parent/new', controller.postEnrollParentNew);
 /*
     USER SETTINGS
 */
+
 router.post('/userSettings/schoolYear/:SY', controller.postUserSettingsSY);
 router.post('/userSettings/gradeLvl/:GL', controller.postUserSettingsGL);
 
