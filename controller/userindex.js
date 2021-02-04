@@ -2331,6 +2331,11 @@ const indexFunctions = {
                         status: 401,
                         msg: 'Student is not yet allowed to pay\nPlease wait for admin approval'
                     });
+                else if(studentMembers[0].remarks == "D")
+                    res.send({
+                        status: 401,
+                        msg: 'Student has been rejected. You are not eligible to pay.'
+                    });
 
                 var amountDue = await getAmountOwed(studentID, studentMembers[0].sectionID, paymentPlan);
                 console.log(amountDue);
