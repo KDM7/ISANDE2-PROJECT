@@ -117,13 +117,18 @@ app.engine('hbs', exphbs.create({
             if (remark == 'FA')
                 return true;
         },
-        getPrice: function(price) {
+        getPrice: function (price) {
             return price.toFixed(2);
         },
-        toPmtMtd(pmtMtd){
-            if(pmtMtd != 'visa' || pmtMtd != 'MasterCard')
+        toPmtMtd(pmtMtd) {
+            if (pmtMtd != 'visa' || pmtMtd != 'MasterCard')
                 return 'Bank';
             return 'N/A';
+        },
+        getBool: function (x) {
+            if (x)
+                return true;
+            return false;
         }
     }
 }).engine);

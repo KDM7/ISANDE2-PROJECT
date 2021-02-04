@@ -10,11 +10,14 @@
                 <div class="mt-1 container">
                     <div class="row">
                         <select class="form-control dropdown-schoolYear">
-                            <option value="">--School Year--</option>
+                            {{#if (getBool schoolYear)}}
                             <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
                             {{#each schoolYear}}
                             {{>dropdownOpt this}}
                             {{/each}}
+                            {{else}}
+                            <option value="">--School Year--</option>
+                            {{/if}}
                         </select>
                     </div>
                 </div>
