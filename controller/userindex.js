@@ -94,7 +94,7 @@ function Section(sectionID, sectionName, schoolYear, sectionAdviser) {
     this.sectionAdviser = sectionAdviser;
 }
 
-function Payment(paymentID,amountPaid, datePaid, paymentPlan, studentID,sectionID){
+function Payment(paymentID, amountPaid, datePaid, paymentPlan, studentID, sectionID) {
     this.paymentID = paymentID;
     this.amountPaid = amountPaid;
     this.datePaid = new Date(datePaid);
@@ -107,14 +107,15 @@ function schoolYear(schoolYear, isCurrent) {
     this.schoolYear = schoolYear;
     this.isCurrent = isCurrent;
 }
-function CC_Payment(paymentID, ccType,ccExp,ccHolderName)
-{
+
+function CC_Payment(paymentID, ccType, ccExp, ccHolderName) {
     this.paymentID = paymentID;
     this.ccType = ccType;
     this.ccExp = ccExp;
     this.ccHolderName = ccHolderName;
 }
-function Bank_Payment(paymentID,accountName,accountNumber){
+
+function Bank_Payment(paymentID, accountName, accountNumber) {
     this.paymentID = paymentID;
     this.accountName = accountName;
     this.accountNumber = accountNumber;
@@ -619,12 +620,11 @@ async function getNextStudentID() {
     //  console.log(highestID);
 }
 
-function renamePaymentPlan(string)
-{
-    switch(string){
+function renamePaymentPlan(string) {
+    switch (string) {
         case "nextPayment":
             return "Next"
-                break;
+            break;
         case "fullPayment":
             return "Full";
             break;
@@ -643,9 +643,9 @@ function renamePaymentPlan(string)
         case "monthlyPayment":
             return "Monthly";
             break;
-        }
-}   
-async function getNextPaymentID(){
+    }
+}
+async function getNextPaymentID() {
     var startNum = 1;
     var schoolYear = await getIDPrefix();
     schoolYear = parseInt(schoolYear.substr(0, 2));
@@ -1295,7 +1295,7 @@ const indexFunctions = {
     },
 
     //function to show outstanding balance report form
-    getAReportBalance : async function(req,res){
+    getAReportBalance: async function (req, res) {
         var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
             [{
                 '$project': {
@@ -1304,8 +1304,8 @@ const indexFunctions = {
                 }
             }]
         );
-        res.render('a_report_OutstandingBalForm',{
-            title : "Outstanding Balance Report",
+        res.render('a_report_OutstandingBalForm', {
+            title: "Outstanding Balance Report",
             schoolYear: schoolYear
         })
     },
@@ -1561,13 +1561,90 @@ const indexFunctions = {
                 }
             }]
         );
-        var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID); 
+        var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID);
         var remBal = studentinfo[0].begBal - paidAmt[0].totalAmountPaid;
+        var transHistPmt = await studentModel.aggregate(
+            [{
+                '$match': {
+                    //get only the relevant user
+                    'userID': studentinfo[0].userID
+                }
+            }, {
+                '$lookup': {
+                    'from': 'payments',
+                    'localField': 'userID',
+                    'foreignField': 'studentID',
+                    'as': 'pmtDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$pmtDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$match': {
+                    //get only the relevant section
+                    'pmtDta.sectionID': studentinfo[0].secID
+                }
+            }, {
+                '$lookup': {
+                    'from': 'cc_payment',
+                    'localField': 'pmtDta.paymentID',
+                    'foreignField': 'paymentID',
+                    'as': 'ccDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$ccDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'bank_payment',
+                    'localField': 'pmtDta.paymentID',
+                    'foreignField': 'paymentID',
+                    'as': 'bnkDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$bnkDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$project': {
+                    'pmtMtd': {
+                        '$switch': {
+                            //converts either cctype(cc) or accountNumber(bank) to boolean then if null(doesnt exist) pmtMtd field gets null otherwise gets either cctype or accountNumber
+                            'branches': [{
+                                'case': {
+                                    '$toBool': [
+                                        '$ccDta.ccType'
+                                    ]
+                                },
+                                'then': '$ccDta.ccType'
+                            }, {
+                                'case': {
+                                    '$toBool': [
+                                        '$bnkDta.accountNumber'
+                                    ]
+                                },
+                                'then': '$bnkDta.accountNumber'
+                            }],
+                            'default': null
+                        }
+                    },
+                    'dtPaid': '$pmtDta.datePaid',
+                    'pmtID': '$pmtDta.paymentID',
+                    'amt': '$pmtDta.amountPaid'
+                }
+            }]
+        );
         res.render('a_users_SAccount', {
             title: 'Student Account',
             info: studentinfo[0],
             paidAmt: paidAmt[0].totalAmountPaid,
-            remBal:remBal,
+            remBal: remBal,
+            histPmt: transHistPmt,
         });
     },
 
@@ -1729,10 +1806,10 @@ const indexFunctions = {
         }
     },
 
-    getPpayCCOTP : async function(req,res){
-        res.render('p_pay_CCOTP',{
-            title:'Confirm Payment',
-            amountDue : req.session.amountDue
+    getPpayCCOTP: async function (req, res) {
+        res.render('p_pay_CCOTP', {
+            title: 'Confirm Payment',
+            amountDue: req.session.amountDue
         })
     },
     // to show the breakdown of details from the parents side
@@ -1778,26 +1855,26 @@ const indexFunctions = {
         var amountDue = req.session.amountDue;
         res.render('p_pay_bank', {
             title: 'Bank Statement',
-            amountDue:amountDue
+            amountDue: amountDue
         });
     },
 
     getPpayBankPlan: async function (req, res) {
         var parentID = req.session.logUser.userID;
-        try{
+        try {
             var studentList = await getStudentListParentID(parentID);
             console.log(studentList);
-            if(studentList)
+            if (studentList)
                 res.render('p_pay_BPlan', {
                     title: 'Bank Payment',
-                    student:studentList
+                    student: studentList
                 });
             else
                 res.render('error', {
                     title: 'Error',
                     msg: 'something went wrong'
                 });
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     },
@@ -1928,14 +2005,16 @@ const indexFunctions = {
                     default:
                         console.log(amountDue);
                         console.log(studentID);
-                    
+
                         req.session.studentID = studentID;
                         req.session.amountDue = amountDue;
                         req.session.paymentPlan = paymentPlan;
                         req.session.sectionID = studentMembers[0].sectionID;
                         console.log(req.session);
-                        
-                        res.send({status:201});
+
+                        res.send({
+                            status: 201
+                        });
                 }
                 // res.send({status:401, msg:'Student is enrolled'});
             } else {
@@ -1951,24 +2030,30 @@ const indexFunctions = {
     },
 
     // This function saves data from CCInfo page to session, to be used after approval of OTP
-    postPpayCCInfo: async function(req,res){
+    postPpayCCInfo: async function (req, res) {
         var {
             ccHolderName,
             ccNo,
             ccExp,
             ccType
         } = req.body;
-        
-        try{
+
+        try {
             req.session.ccHolderName = ccHolderName;
             req.session.ccNo = ccNo;
             req.session.ccExp = ccExp;
             req.session.ccType = ccType;
-            var OTP = Math.random().toString().slice(2,10);;
+            var OTP = Math.random().toString().slice(2, 10);;
             req.session.otp = OTP;
-            res.send({status:201, otp:OTP});
-        }catch(e){
-            res.send({status:500,msg:e});
+            res.send({
+                status: 201,
+                otp: OTP
+            });
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            });
         }
     },
 
@@ -1976,26 +2061,28 @@ const indexFunctions = {
      *      This function is used to post the payment information once otp is confirmed to match
      */
 
-     postPpayCCOTP : async function(req,res){
-         var otp = req.body.otp;
-         try {
-             if(otp != req.session.otp)
-                res.send({status:401, msg:'OTP does not match'});
-            else
-            {
+    postPpayCCOTP: async function (req, res) {
+        var otp = req.body.otp;
+        try {
+            if (otp != req.session.otp)
+                res.send({
+                    status: 401,
+                    msg: 'OTP does not match'
+                });
+            else {
                 var sectionID = req.session.sectionID;
                 var paymentID = await getNextPaymentID();
 
-                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),req.session.paymentPlan,req.session.studentID,sectionID);
+                var paymentData = new Payment(paymentID, req.session.amountDue, new Date(), req.session.paymentPlan, req.session.studentID, sectionID);
                 var newPayment = new paymentModel(paymentData);
                 var paymentResult = await newPayment.recordNewPayment();
-                
+
 
                 if (paymentResult) {
-                    var cc_payment = new CC_Payment(paymentID, req.session.ccType,req.session.ccExp,req.session.ccHolderName);
+                    var cc_payment = new CC_Payment(paymentID, req.session.ccType, req.session.ccExp, req.session.ccHolderName);
                     var newcc_payment = new cc_paymentModel(cc_payment);
                     var newcc_paymentResult = await newcc_payment.recordNewCCPayment();
-                    if(newcc_paymentResult)
+                    if (newcc_paymentResult)
                         res.send({
                             status: 201
                         });
@@ -2011,48 +2098,54 @@ const indexFunctions = {
                     });
                 }
             }
-         } catch (e) {
-             res.send({status:500, msg:e});
-         }
-     },
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            });
+        }
+    },
 
-     // this function is used to post bank payments
-     
-    postPpayBank:async function(req,res){
+    // this function is used to post bank payments
+
+    postPpayBank: async function (req, res) {
         var {
             accountNumber,
             accountName
         } = req.body;
         accountNumber = parseInt(accountNumber);
-         try {
-                var paymentID = await getNextPaymentID();
-                var sectionID = req.session.sectionID;
-                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),req.session.paymentPlan,req.session.studentID,sectionID);
-                var newPayment = new paymentModel(paymentData);
-                var paymentResult = await newPayment.recordNewPayment();                
+        try {
+            var paymentID = await getNextPaymentID();
+            var sectionID = req.session.sectionID;
+            var paymentData = new Payment(paymentID, req.session.amountDue, new Date(), req.session.paymentPlan, req.session.studentID, sectionID);
+            var newPayment = new paymentModel(paymentData);
+            var paymentResult = await newPayment.recordNewPayment();
 
-                if (paymentResult) {
-                    var bank_payment = new Bank_Payment(paymentID,accountName,accountNumber);
-                    var newbank_payment = new bank_paymentModel(bank_payment);
-                    var newbank_paymentResult = await newbank_payment.recordNewBankPayment();
-                    if(newbank_paymentResult)
-                        res.send({
-                            status: 201
-                        });
-                    else
-                        res.send({
-                            status: 401,
-                            msg: 'There is an error when adding payment'
-                        });
-                } else {
+            if (paymentResult) {
+                var bank_payment = new Bank_Payment(paymentID, accountName, accountNumber);
+                var newbank_payment = new bank_paymentModel(bank_payment);
+                var newbank_paymentResult = await newbank_payment.recordNewBankPayment();
+                if (newbank_paymentResult)
+                    res.send({
+                        status: 201
+                    });
+                else
                     res.send({
                         status: 401,
                         msg: 'There is an error when adding payment'
                     });
-                }
-         }catch(e) {
-             res.send({status:500, msg:e});
-         }
+            } else {
+                res.send({
+                    status: 401,
+                    msg: 'There is an error when adding payment'
+                });
+            }
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            });
+        }
     },
 
     /*
