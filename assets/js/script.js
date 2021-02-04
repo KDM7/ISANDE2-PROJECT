@@ -742,6 +742,13 @@ $(document).ready(function () {
             location.reload();
         });
     });
+    $('.dropdown-studentID').on('change', function(){
+        var studentID = $('.dropdown-studentID').val();
+        console.log(studentID);
+        $.post('/userSettings/studentID/' + studentID, function () {
+            location.reload();
+        });
+    });
     $('#a_s_AC_AddClass').on('click', function () {
         var section = $('#a_s_AC_Section').val();
         var subject = $('#a_s_AC_Subject').val();

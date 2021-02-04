@@ -111,6 +111,7 @@ router.post('/enroll/parent/new', controller.postEnrollParentNew);
 
 router.post('/userSettings/schoolYear/:SY', controller.postUserSettingsSY);
 router.post('/userSettings/gradeLvl/:GL', controller.postUserSettingsGL);
+router.post('/userSettings/studentID/:SID', controller.postUserSettingsSID);
 
 module.exports = router;
 
