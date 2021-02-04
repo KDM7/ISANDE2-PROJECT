@@ -1025,7 +1025,7 @@ async function getMinMaxEventID(sortby, offset) {
         }
     }]);
     return highestID[0].eventID + offset;
-
+}
 
 //this functions gets the Outstanding Balance Report Data
 /*
@@ -1035,14 +1035,14 @@ async function getMinMaxEventID(sortby, offset) {
         Section
         Remaining Balance
 */
-async function getBalanceReportData(schoolYear)
-{
+async function getBalanceReportData(schoolYear){
     var sections = await getSectionsSY(schoolYear);
     var reportData = await sectionModel.aggregate([
         {
           '$match': {
-            'sectionID': sections
-            
+            'sectionID': {
+              '$in': sections
+            }
           }
         }, {
           '$lookup': {
@@ -1151,9 +1151,8 @@ async function getBalanceReportData(schoolYear)
             'name': 1
           }
         }
-      ]);
+      ])
     return reportData;
-}
 }
 
 const indexFunctions = {
@@ -1498,7 +1497,9 @@ const indexFunctions = {
     },
 
     getAReportBalanceTable : async function(req,res){
-        
+        var schoolYear = req.session.reportschoolYear;
+        var reportData = await getBalanceReportData(schoolYear);
+        console.log(reportData);
         res.render('a_report_OutstandingBalTable',{
             title : "Outstanding Balance Report",
         })
@@ -1830,12 +1831,7 @@ const indexFunctions = {
         try
         {
             req.session.reportschoolYear = schoolYear;
-            console.log(req.session);
-            sectionList = await getSectionsSY(schoolYear);
-            console.log(sectionList)
-            var reportData = await getBalanceReportData(sectionList);
-            console.log(reportData);
-            res.send({status:401,msg:'testing'});
+            res.send({status:201});
         }catch(e){
             res.send({status:500,msg:e})
         }

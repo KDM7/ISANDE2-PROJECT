@@ -388,7 +388,7 @@ $(document).ready(function () {
         $.post('/a/viewOutstandingBalReport',{schoolYear:schoolYear},function(result){
             switch (result.status) {
                 case 201: {
-                    window.location.href = '/a/balanceReport';
+                    window.location.href = '/a/report/outstandingBalanceTable';
                     break;
                 }
                 case 401:{
