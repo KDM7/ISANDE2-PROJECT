@@ -1958,14 +1958,6 @@ const indexFunctions = {
             });
         }
     },
-
-    postAddClass: async function (req, res) {
-        var {
-            section,
-            subject,
-            teacher
-        } = req.body;
-    },
     // to show the new event page for admin side
     getAschednewAcadCalendar: function (req, res) {
         try {
