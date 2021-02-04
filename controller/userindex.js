@@ -1403,7 +1403,7 @@ const indexFunctions = {
 
     // to show Upon Enrollment page for admin side
     getAfeeUponE: function (req, res) {
-        res.render('a_fees_edituponE', {
+        res.render('a_fees_uponE', {
             title: 'Edit Upon Enrollment',
         });
     },

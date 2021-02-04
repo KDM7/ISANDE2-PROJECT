@@ -52,7 +52,6 @@ router.get('/a/users/PAccount', controller.getAuserPAcc);
 router.get('/a/users/AProfile', controller.getAuserAProf);
 router.get('/a/users/admins', controller.getAuserAdmin);
 router.get('/a/users/students', controller.getAuserStudents);
-// router.get('/a/users/students/:schoolYear/:gradeLvl', controller.getAuserStudents);
 router.get('/a/users/teachers', controller.getAuserTeachers);
 router.get('/a/users/TProfile', controller.getAuserTProf);
 router.get('/a/users/editTeachers', controller.getAusereditTeachers);
