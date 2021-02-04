@@ -11,7 +11,7 @@ router.post('/logout', controller.postLogout);
 /*
     ADMIN
 */
-router.get('/a/doc/editSA', controller.getAdocEditSA);
+router.get('/a/doc/editS', controller.getAdocEditSA);
 router.get('/a/doc/editSD', controller.getAdocEditSD);
 router.get('/a/doc/newSA', controller.getAdocNewSA);
 router.get('/a/doc/newSD', controller.getAdocNewSD);
