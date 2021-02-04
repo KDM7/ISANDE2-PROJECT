@@ -1219,15 +1219,9 @@ const indexFunctions = {
         }
         try {
             var match = await findUser(user);
-            console.log(user);
-            console.log(pass);
-            console.log(match);
             if (match) {
-                console.log('matching');
                 bcrypt.compare(pass, match.password, function (err, result) {
                     // var result = match.password == pass;
-                    console.log('hi');
-                    console.log(result);
                     if (result) {
                         if (match.type == 'A') {
                             //send 201 admin
