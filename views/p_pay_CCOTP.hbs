@@ -26,8 +26,7 @@
                                         <hr style="border: 2px solid black;" />
                                         <p class="">Step 1 : Check your email for the One Time Password (OTP)</p><br>
                                         <p class="">Step 2 : Please Input the OTP</p><br>
-                                        <p class="">Step 3 : Check if amounts are the same</p><br>
-                                        <p class="">Step 4 : Confirm Payment</p><br>
+                                        <p class="">Step 3 : Confirm Payment</p><br>
                                         <div class="row">
                                             <div class="form-group w-25 col-4">
                                                 <label for="formGroupExampleInput2">Amount Due:</label>
@@ -35,46 +34,17 @@
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">PHP</div>
                                                     </div>
-                                                <input type="email" class="form-control" id="amountPaid" value="33137.00" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="form-group w-25 col-4">
-                                                <label for="formGroupExampleInput2">Amount Being Paid:</label>
-                                                <div class="input-group mb-2">
-                                                    <div class="input-group-prepend">
-                                                        <div class="input-group-text">PHP</div>
-                                                    </div>
-                                                <input type="email" class="form-control" id="amountPaid" value="33137.00" readonly>
+                                                <input type="number" class="form-control" id="amountPaid" value="{{amountDue}}" readonly>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group w-50">
-                                            <label for="formGroupExampleInput2">OTP</label>
-                                            <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" required>
+                                            <label for="otp">OTP</label>
+                                            <input type="text" class="form-control" id="otp" placeholder="" required>
                                         </div>
-                                        <a href="enroll_CC.html" class="btn btn-outline-secondary mb-4">Cancel</a>
-                                        <button type="button" class="btn btn-outline-primary mb-4" data-toggle="modal" data-target="#exampleModal">Confirm</button>
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLabel">Hooray</h5>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                  </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Thank You for paying
-                                                    
-                                                    
-
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                </div>
-                                              </div>
-                                            </div>
-                                        </div>
+                                        <a href="/p/pay/ccPaymentPlan" class="btn btn-outline-secondary mb-4">Cancel</a>
+                                        <a id="submitCCOTP" class="btn btn-outline-primary mb-4">Confirm</a>
+    
                                     </form>
                                 </div>
                             </div>

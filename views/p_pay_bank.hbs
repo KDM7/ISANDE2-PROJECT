@@ -21,36 +21,48 @@
                             <div class="mt-2">
                                 <div class="container">
                                     <form>
-                                        <h5 class="display-5 text-left">Bank Statement</h5>
+                                        <h5 class="display-5 text-left">Online Payment</h5>
                                         <hr style="border: 2px solid black;" />
-                                        <p class="">Step 1 : Please Download your Enrollment Assessment Form</p><br>
-                                        <p class="">Step 2 : Proceed to the affiliated banks and pay the appropriate amount</p><br>
-                                        <p class="">Step 3 : Upload the reciept you got from the bank</p><br>
-                                        <input type="file" class="mb-4" required>
-                                        <br>
-                                        <button type="button" class="btn btn-outline-primary mb-4" data-toggle="modal" data-target="#exampleModal">Upload</button>
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                              <div class="modal-content">
-                                                <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLabel">Hooray</h5>
-                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                  </button>
+                                        <p class="">Step 1 : Please Input your Bank Info</p><br>
+                                        {{!-- <p class="">Step 2 : Please Input the appropriate amount</p><br> --}}
+                                        {{!-- <p class="">Step 3 : Upload virtual reciept</p><br> --}}
+                                        <!-- <p class="">Note replace text for card type with images</p><br> -->
+                                        <div class="form-group">
+                                            <!-- <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label" for="inlineRadio2">Discover</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label" for="inlineRadio2">AMEX</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                                <label class="form-check-label" for="inlineRadio2">Other</label>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="formGroupExampleInput2">Fill up if other</label>
+                                                <input type="text" class="form-control w-25" id="formGroupExampleInput2" placeholder="">
+                                            </div> -->
+                                        </div>
+                                        <div class="form-group w-50">
+                                            <label for="accountNumber">Account Number</label>
+                                            <input type="text" class="form-control" id="accountNumber" placeholder="" required>
+                                        </div>
+                                        <div class="form-group w-50">
+                                            <label for="accountName">Account Holder</label>
+                                            <input type="text" class="form-control" id="accountName" placeholder="" required>
+                                        </div>
+                                        <div class="form-group w-25">
+                                            <label for="amountPaid">Amount</label>
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <div class="input-group-text">PHP</div>
                                                 </div>
-                                                <div class="modal-body">
-                                                    Thank You for paying
-                                                    
-                                                    
-
-                                                </div>
-                                                <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                </div>
-                                              </div>
+                                            <input type="number" class="form-control" id="amountPaid" placeholder="0.00" value="{{amountDue}}" required readonly>
                                             </div>
                                         </div>
-                                        <hr style="border: 2px solid black;" />
+                                        <a id="submitBankPayment" class="btn btn-outline-primary mb-4">Pay</a>
                                     </form>
                                     <!-- <h5 class="display-5 text-left">Registrar</h5>
                                     <hr style="border: 2px solid black;" />

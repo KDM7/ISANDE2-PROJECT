@@ -8,6 +8,9 @@ function isNumber(myString) {
     return /^\d+$/.test(myString);
 }
 
+function validCCExp(myString){
+    return /(0[1-9]|1[0-2])\/([0-9][0-9])/.test(myString);
+}
 // check user data to see if it is valid when creating any new user
 function checkUserInfo(userInfo) {
     var valid = true;
@@ -378,6 +381,14 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#submitBalanceReport').click(function(){
+        var schoolYear = $('#schoolYear').val();
+
+        $.get('/a/viewOutstandingBalReport'),{schoolYear:schoolYear},function(res){
+
+        }
+    });
     /*
         TEACHER
     */
@@ -433,7 +444,184 @@ $(document).ready(function () {
                 }
             }
         })
-    })
+    });
+
+    $('#submitCCInfo').click(function() {
+        var ccType = $('input[name="ccType"]:checked').val();
+        var ccHolderName = $('#ccHolderName').val();
+        var ccNo = $('#ccNo').val();
+        var ccExp = $('#ccExp').val();
+        var ccv = $('#ccv').val();
+
+        var valid = true;
+        var inv_fields = "Credit Card Info is Invalid. Modify the following: \n"
+
+        if(ccType != "MasterCard" && ccType != "Visa")
+        {
+            valid = false;
+            inv_fields =inv_fields + "   Credit Card Type is Unselected\n";
+        }
+
+        if(validator.isEmpty(ccHolderName) || hasNumber(ccHolderName))
+        {
+            valid = false;
+            inv_fields =inv_fields + "   Credit Card Holder's Name is Empty or Invalid\n";
+        }
+
+        if(validator.isEmpty(ccNo) || !isNumber(ccNo) || ccNo.length != 16)
+        {
+            valid = false;
+            inv_fields =inv_fields +"   Credit Card Number is Empty or Invalid\n";
+        }
+
+        if(validator.isEmpty(ccExp) || !validCCExp(ccExp)){
+            valid = false;
+            inv_fields = inv_fields +"   Credit Card Expiration is Empty or Invalid\n";
+        }
+
+        if(validator.isEmpty(ccv) || !isNumber(ccv) || ccv.length != 3)
+        {
+            valid = false;
+            inv_fields = inv_fields +"   CCV is Empty or Invalid\n";
+        }
+        
+        if(valid)
+        {
+            $.post('/p/submitCCInfo', {
+                ccHolderName:ccHolderName,
+                ccNo: ccNo,
+                ccExp: ccExp,
+                ccType:ccType
+            }, function (result) {
+                switch (result.status) {
+                    case 201: {
+                        alert('To confirm payment use this OTP: '+ result.otp);
+                        window.location.href = '/p/pay/ccOTP'
+                        break;
+                    }
+                    case 401: {
+                        alert('case 401: ' + result.msg);
+                        break;
+                    }
+                    case 500: {
+                        alert('case 500: ' + result.msg);
+                        break;
+                    }
+                }
+            })
+        }
+        else
+            alert(inv_fields);
+    });
+
+    $('#submitCCOTP').click(function(){
+        var otp = $('#otp').val();
+
+        if(!validator.isEmpty(otp)){
+            $.post('/p/submitCCOTP', {
+                otp:otp
+            }, function (result) {
+                switch (result.status) {
+                    case 201: {
+                        alert('Thank you for paying! ');
+                        window.location.href = '/p/pay/ccPaymentPlan';
+                        break;
+                    }
+                    case 401: {
+                        alert('case 401: ' + result.msg);
+                        break;
+                    }
+                    case 500: {
+                        alert('case 500: ' + result.msg);
+                        break;
+                    }
+                }
+            })
+        }
+        else alert('Please enter the OTP');
+
+    });
+
+    $('#submitBankPlan').click(function() {
+        var paymentPlan = $('input[name="paymentPlan"]:checked').val();
+        var studentID = $('#studentID').val();
+
+        console.log(paymentPlan);
+        $.post('/p/submitCCPlan', {
+            studentID : studentID,
+            paymentPlan : paymentPlan
+        }, function (result) {
+            switch (result.status) {
+                case 201: {
+                    window.location.href = '/p/pay/bank'
+                    break;
+                }
+                case 401: {
+                    alert('case 401: ' + result.msg);
+                    break;
+                }
+                case 500: {
+                    alert('case 500: ' + result.msg);
+                    break;
+                }
+            }
+        })
+    });
+
+    $('#submitBankPayment').click(function() {
+        var accountNumber = $('#accountNumber').val();
+        var accountName = $('#accountName').val();
+
+        console.log(accountNumber);
+        var valid = true;
+        var inv_fields = "Bank Info is Invalid. Modify the following: \n"
+
+        if(validator.isEmpty(accountNumber))
+        {
+            valid = false;
+            inv_fields =inv_fields + "   Account Number is Empty or Invalid\n";
+        }
+        else if(!isNumber(accountNumber))
+        {
+            valid = false;
+            inv_fields =inv_fields + "   Account Number is Empty or Invalid\n";
+        }
+        else if(accountNumber.length < 8 || accountNumber.lenth > 12)
+        {
+            valid = false;
+            inv_fields =inv_fields + "   Account Number is Empty or Invalid\n";
+        }
+
+        if(validator.isEmpty(accountName) || hasNumber(accountName))
+        {
+            valid = false;
+            inv_fields =inv_fields + "   Account Name is Empty or Invalid\n";
+        }
+
+        if(valid){
+            $.post('/p/submitBankPayment', {
+                accountNumber : accountNumber,
+                accountName : accountName
+            }, function (result) {
+                switch (result.status) {
+                    case 201: {
+                        alert('Thank you for paying! ');
+                        window.location.href = '/p/pay/bankPaymentPlan';
+                        break;
+                    }
+                    case 401: {
+                        alert('case 401: ' + result.msg);
+                        break;
+                    }
+                    case 500: {
+                        alert('case 500: ' + result.msg);
+                        break;
+                    }
+                }
+            })
+        }
+        else alert(inv_fields);
+    });
     /*
         STUDENT
     */
