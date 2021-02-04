@@ -1,0 +1,141 @@
+[{
+   
+    "classID": 31900001,
+    "teacherID": "Sandstorm",
+    "sectionID": 21900001,
+    "subjectCode": "MATH"
+  },{
+    
+    "classID": 31900002,
+    "teacherID": "l.graeber",
+    "sectionID": 21900001,
+    "subjectCode": "A.P."
+  },{
+    
+    "classID": 31900003,
+    "teacherID": "f.cannaway",
+    "sectionID": 21900001,
+    "subjectCode": "M.T."
+  },{
+    
+    "classID": 31900004,
+    "teacherID": "k.odunneen",
+    "sectionID": 21900001,
+    "subjectCode": "FIL"
+  },{
+    
+    "classID": 31900005,
+    "teacherID": "m.mitchard",
+    "sectionID": 21900001,
+    "subjectCode": "C.E."
+  },{
+    "classID": 31900006,
+    "teacherID": "j.legerwood",
+    "sectionID": 21900001,
+    "subjectCode": "ENG"
+  },{
+    "classID": 31900007,
+    "teacherID": "a.codd",
+    "sectionID": 21900001,
+    "subjectCode": "Deportment"
+  },{
+    "classID": 31900008,
+    "teacherID": "h.niezen",
+    "sectionID": 21900001,
+    "subjectCode": "SCI"
+  },{
+    "classID": 31900009,
+    "teacherID": "f.cannaway",
+    "sectionID": 21900001,
+    "subjectCode": "MAPE"
+  },{
+    "classID": 31900010,
+    "teacherID": "h.niezen",
+    "sectionID": 21900002,
+    "subjectCode": "MATH"
+  },{
+    "classID": 31900011,
+    "teacherID": "Darude",
+    "sectionID": 21900002,
+    "subjectCode": "A.P."
+  },{
+    "classID": 31900012,
+    "teacherID": "k.odunneen",
+    "sectionID": 21900002,
+    "subjectCode": "M.T."
+  },{
+    "classID": 31900013,
+    "teacherID": "d.endean",
+    "sectionID": 21900002,
+    "subjectCode": "FIL"
+  },{
+    "classID": 31900014,
+    "teacherID": "f.cannaway",
+    "sectionID": 21900002,
+    "subjectCode": "C.E."
+  },{
+    "classID": 31900015,
+    "teacherID": "j.worvell",
+    "sectionID": 21900002,
+    "subjectCode": "ENG"
+  },{
+    "classID": 31900016,
+    "teacherID": "f.cannaway",
+    "sectionID": 21900002,
+    "subjectCode": "Deportment"
+  },{
+    "classID": 31900017,
+    "teacherID": "j.legerwood",
+    "sectionID": 21900002,
+    "subjectCode": "SCI"
+  },{
+    "classID": 31900018,
+    "teacherID": "d.endean",
+    "sectionID": 21900002,
+    "subjectCode": "MAPE"
+  },{
+    "classID": 31900019,
+    "teacherID": "d.endean",
+    "sectionID": 21900003,
+    "subjectCode": "A.P."
+  },{
+    "classID": 31900020,
+    "teacherID": "b.sollon",
+    "sectionID": 21900003,
+    "subjectCode": "M.T."
+  },{
+    "classID": 31900021,
+    "teacherID": "k.odunneen",
+    "sectionID": 21900003,
+    "subjectCode": "FIL"
+  },{
+    "classID": 31900022,
+    "teacherID": "f.cannaway",
+    "sectionID": 21900003,
+    "subjectCode": "C.E."
+  },{
+    "classID": 31900023,
+    "teacherID": "l.graeber",
+    "sectionID": 21900003,
+    "subjectCode": "ENG"
+  },{
+    "classID": 31900024,
+    "teacherID": "k.odunneen",
+    "sectionID": 21900003,
+    "subjectCode": "Deportment"
+  },{
+    "classID": 31900025,
+    "teacherID": "d.endean",
+    "sectionID": 21900003,
+    "subjectCode": "SCI"
+  },{
+    "classID": 31900026,
+    "teacherID": "c.buffy",
+    "sectionID": 21900003,
+    "subjectCode": "MAPE"
+  },{
+    "classID": 31900027,
+    "teacherID": "b.sollon",
+    "sectionID": 21900003,
+    "subjectCode": "MATH"
+  }]
