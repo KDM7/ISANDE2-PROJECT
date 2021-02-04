@@ -13,47 +13,55 @@
                                 </div>
                             </div>
                         </div>
-                        <form>
-                            <div class="form-group">
-                                <label for="sel1">Academic Year:</label>
-                                <select class="form-control" id="sel1">
-                                  <option>2019-2020</option>
-                                  <option>2018-2019</option>
-                                  <option>2017-2018</option>
-                                  <option>2016-2017</option>
+                        <div class="mt-1 container">
+                            <div class="row">
+                                <select class="form-control dropdown-schoolYear">
+                                    {{#if (getBool schoolYear)}}
+                                    <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
+                                    {{#each schoolYear}}
+                                    {{>dropdownOpt this}}
+                                    {{/each}}
+                                    {{else}}
+                                    <option value="">--School Year--</option>
+                                    {{/if}}
                                 </select>
                             </div>
-
-                            <div class="form-group">
-                                <label for="sel1">Student:</label>
-                                <select class="form-control" id="sel1">
-                                  <option>JoJo</option>
-                                  <option>Bizare</option>
-                                  <option>Adventure</option>
-                                  <option>:)</option>
-                                </select>
-                            </div>
-                        </form>
+                        </div>
+                        
                         <div class="mt-2">
-                            <table class="table table-striped">
-                                <thead class="thead-dark">
-                                    <th class="text-center" colspan="2">Student Information</th>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th class="text-right">Student No:</th>
-                                        <td class="text-left">18-696969</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-right">Parent Name:</th>
-                                        <td class="text-left">Kevin</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-right">Grade Level/Section:</th>
-                                        <td class="text-left">Grade-11 - GAS-Ruby</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <table class="table table-bordered">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-center" colspan="2">Transaction Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-right">School Year:</td>
+                                    <td>{{info.schoolYear}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">Grade Level:</td>
+                                    <td>{{info.gradeLvl}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">Student No:</td>
+                                    <td>{{info.userID}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">Student Name:</td>
+                                    <td>{{info.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-right">Payment Type:</td>
+                                    <td>{{info.pmtType}}</td>
+                                </tr>
+                                <tr class="table-success">
+                                    <td class="text-right">Beginning Balance</td>
+                                    <td class="text-right">Php {{getPrice info.begBal}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
                             <table class="table table-striped">
                                 <thead class="thead-dark">
