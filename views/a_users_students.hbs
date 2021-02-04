@@ -13,7 +13,7 @@
                             <label for="a_u_ST_schoolYear"
                                 class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
                             <select class="form-control col-9 p-0 m-0 dropdown-schoolYear">
-                                <option value="{{SYSettings}}">{{SYSettings}}</option>
+                                <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
                                 {{#each schoolYear}}
                                 {{>dropdownOpt this}}
                                 {{/each}}
@@ -35,7 +35,7 @@
                             <label for="a_u_ST_gradeLVL"
                                 class="col-3 d-flex justify-content-center align-items-center m-0">Grade Level:</label>
                             <select class="form-control col-9 p-0 m-0 dropdown-gradeLvl">
-                                <option value="{{GLSettings}}">{{GLSettings}}</option>
+                                <option value="{{GLSettings}}">{{GLSettings}}--selected</option>
                                 {{#each gradeLvl}}
                                 {{>dropdownOpt this}}
                                 {{/each}}
