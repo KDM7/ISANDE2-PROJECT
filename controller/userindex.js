@@ -1176,7 +1176,7 @@ async function getBalanceReportData(schoolYear){
           }
         }, {
           '$addFields': {
-            'name': {
+            'studentName': {
               '$concat': [
                 '$studentInfo.lastName', ',', '$studentInfo.firstName', ' ', '$studentInfo.middleName'
               ]
@@ -1184,14 +1184,15 @@ async function getBalanceReportData(schoolYear){
           }
         }, {
           '$sort': {
-            'name': 1
+            'sectionName':1,
+            'studentName': 1
           }
         }, {
           '$project': {
             'studentID': 1, 
             'sectionName': 1, 
             'remainingBalance': 1, 
-            'name': 1
+            'studentName': 1
           }
         }
       ])
@@ -1545,6 +1546,8 @@ const indexFunctions = {
         console.log(reportData);
         res.render('a_report_OutstandingBalTable',{
             title : "Outstanding Balance Report",
+            schoolYear:schoolYear,
+            reportData:reportData
         })
     },
     // function to approve student enrollment
