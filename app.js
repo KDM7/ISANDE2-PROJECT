@@ -118,7 +118,11 @@ app.engine('hbs', exphbs.create({
                 return true;
         },
         getPrice: function (price) {
-            return price.toFixed(2);
+            try{
+                return price.toFixed(2);
+            }catch{
+                return;
+            }
         },
         toPmtMtd(pmtMtd) {
             if (pmtMtd != 'Visa' || pmtMtd != 'MasterCard')
