@@ -64,7 +64,7 @@ router.get('/t/sched/acadCalendar', controller.getTschedacadCalendar);
 router.get('/t/sched/acadCalendar2', controller.getTschedacadCalendar2);
 router.get('/t/sched/classSched', controller.getTschedclassSched);
 router.get('/t/users/SGrades', controller.getTuserSgrades);
-router.get('/t/users/SProfile', controller.getTuserSProf);
+router.get('/t/users/SProfile/:userID/:schoolYear', controller.getTuserSProf);
 router.get('/t/users/students', controller.getTuserStudents);
 
 /*

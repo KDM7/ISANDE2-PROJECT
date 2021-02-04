@@ -494,6 +494,7 @@ async function getSProfile(studentID, schoolYear) {
         }, {
             '$project': {
                 '_id': 0,
+                'userID': 1,
                 'firstName': 1,
                 'lastName': 1,
                 'middleName': 1,
@@ -643,33 +644,66 @@ async function getStudentMembership(studentID) {
     Gets user information of students under a specific parentID
 */
 async function getStudentListParentID(parentID) {
-    var parentID = parentID;
     var studentList = await studentModel.aggregate([{
         '$match': {
-            'parentID': 'PA-000001'
+            'parentID': parentID
         }
     }, {
         '$lookup': {
-            'from': 'users',
-            'localField': 'userID',
-            'foreignField': 'userID',
-            'as': 'userData'
+          'from': 'users', 
+          'localField': 'userID', 
+          'foreignField': 'userID', 
+          'as': 'userData'
         }
-    }, {
+      }, {
         '$unwind': {
-            'path': '$userData',
-            'preserveNullAndEmptyArrays': false
+          'path': '$userData', 
+          'preserveNullAndEmptyArrays': true
         }
-    }, {
-        '$sort': {
-            'userID': 1
+      }, {
+        '$lookup': {
+          'from': 'studentMembers', 
+          'localField': 'userID', 
+          'foreignField': 'studentID', 
+          'as': 'sectionIdentity'
         }
-    }, {
+      }, {
+        '$unwind': {
+          'path': '$sectionIdentity', 
+          'preserveNullAndEmptyArrays': true
+        }
+      }, {
+        '$lookup': {
+          'from': 'sections', 
+          'localField': 'sectionIdentity.sectionID', 
+          'foreignField': 'sectionID', 
+          'as': 'section'
+        }
+      }, {
+        '$unwind': {
+          'path': '$section', 
+          'preserveNullAndEmptyArrays': true
+        }
+      }, {
+        '$lookup': {
+          'from': 'ref_section', 
+          'localField': 'section.sectionName', 
+          'foreignField': 'sectionName', 
+          'as': 'sectionName'
+        }
+      }, {
+        '$unwind': {
+          'path': '$sectionName', 
+          'preserveNullAndEmptyArrays': true
+        }
+      }, {
         '$project': {
-            'userID': 1,
-            'firstName': '$userData.firstName',
-            'middleName': '$userData.middleName',
-            'lastName': '$userData.lastName'
+          'userID': 1, 
+          'firstName': '$userData.firstName', 
+          'middleName': '$userData.middleName', 
+          'lastName': '$userData.lastName', 
+          'gradeLvl': '$sectionName.gradeLvl', 
+          '_id': 0
         }
     }]);
 
@@ -2292,16 +2326,57 @@ const indexFunctions = {
     },
 
     // to show the students profile from the teachers side
-    getTuserSProf: function (req, res) {
+    getTuserSProf: async function (req, res) {
+        var userID = req.params.userID;
+        var schoolYear = req.params.schoolYear;
+        var studentProfile = await getSProfile(userID, schoolYear);
+        var student = await userModel.findOne({
+            userID: userID
+        });
         res.render('t_users_SProfile', {
-            title: 'Student profile'
+            title: 'Student profile',
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
+            title: 'Student Profile',
+            studentID: userID,
+            student: student,
+            profile: studentProfile,
         });
     },
 
     // to show the students from the teachers side
-    getTuserStudents: function (req, res) {
+    getTuserStudents: async function (req, res) {
+        var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
+            [{
+                '$project': {
+                    'value': '$schoolYear',
+                }
+            }]
+        );
+        var gradeLvl = await ref_sectionModel.aggregate(
+            [{
+                '$sort': {
+                    'gradeLvl': 1
+                }
+            }, {
+                '$project': {
+                    'value': '$gradeLvl'
+                }
+            }]
+        );
+        var students = await getStudentListSYGL(req.session.userSettings.schoolYear, req.session.userSettings.gradeLvl);
         res.render('t_users_students', {
-            title: 'Students'
+            title: 'Students',
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
+            title: 'Students',
+            schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
+            gradeLvl: gradeLvl,
+            GLSettings: req.session.userSettings.gradeLvl,
+            student: students
         });
     },
 
@@ -2338,6 +2413,8 @@ const indexFunctions = {
         try {
             var studentList = await getStudentListParentID(parentID);
             console.log(studentList);
+            console.log("HELLO WORLD!");
+            console.log(studentList[0].gradeLvl);
             if (studentList)
                 res.render('p_pay_CCPlan', {
                     title: 'Credit Card Payment',

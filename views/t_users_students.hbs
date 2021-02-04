@@ -5,57 +5,54 @@
 
                 <div class="col-9">
                     <div class="shadow">
-                        <div class="d-flex flex-column mt-2">
+                        <div class="d-flex flex-column mt-2 bg-light">
                             <div class="container">
                                 <div class="row mt-2">
                                     <div class="col-6">
-                                        School Year:
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    2020-2021
-                                                </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">2019-2020</a>
-                                                <a class="dropdown-item" href="#">2018-2019</a>
-                                                <a class="dropdown-item" href="#">2017-2018</a>
-                                            </div>
+                                        <div class="form-group row">
+                                            <label for="a_u_ST_schoolYear"
+                                                class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
+                                            <select class="form-control col-9 p-0 m-0 dropdown-schoolYear">
+                                                {{#if (getBool schoolYear)}}
+                                                <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
+                                                {{#each schoolYear}}
+                                                {{>dropdownOpt this}}
+                                                {{/each}}
+                                                {{else}}
+                                                <option value="">--School Year--</option>
+                                                {{/if}}
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <form class="form-inline justify-content-end">
-                                            <input class="form-control mr-sm-2" type="search" placeholder="Search Users" aria-label="Search">
-                                            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-                                        </form>
+                                        <div class="form-inline justify-content-end">
+                                            <input class="form-control mr-sm-2" type="search" placeholder="Search Users"
+                                                aria-label="Search">
+                                            <button class="btn btn-outline-primary my-2 my-sm-0" id="a_u_ST_Search">Search</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
-                                    <div class="mt-4 col-6">
-                                        Grade Level
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Grade 12
-                                                </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Grade 12</a>
-                                                <a class="dropdown-item" href="#">Grade 11</a>
-                                                <a class="dropdown-item" href="#">Grade 10</a>
-                                                <a class="dropdown-item" href="#">Grade 9</a>
-                                                <a class="dropdown-item" href="#">Grade 8</a>
-                                                <a class="dropdown-item" href="#">Grade 7</a>
-                                                <a class="dropdown-item" href="#">Grade 6</a>
-                                                <a class="dropdown-item" href="#">Grade 5</a>
-                                                <a class="dropdown-item" href="#">Grade 4</a>
-                                                <a class="dropdown-item" href="#">Grade 3</a>
-                                                <a class="dropdown-item" href="#">Grade 2</a>
-                                                <a class="dropdown-item" href="#">Grade 1</a>
-                                                <a class="dropdown-item" href="#">Advanced Casa</a>
-                                                <a class="dropdown-item" href="#">Senior Casa</a>
-                                                <a class="dropdown-item" href="#">Junior Casa</a>
-                                            </div>
+
+                                    <div class="col-6 mt-4">
+                                        <div class="form-group row">
+                                            <label for="a_u_ST_gradeLVL"
+                                                class="col-3 d-flex justify-content-center align-items-center m-0">Grade Level:</label>
+                                            <select class="form-control col-9 p-0 m-0 dropdown-gradeLvl">
+                                                {{#if (getBool gradeLvl)}}
+                                                <option value="{{GLSettings}}">{{GLSettings}}--selected</option>
+                                                {{#each gradeLvl}}
+                                                {{>dropdownOpt this}}
+                                                {{/each}}
+                                                {{else}}
+                                                <option value="">--Grade Level--</option>
+                                                {{/if}}
+                                            
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-6 form-inline justify-content-end my-4">
-                                        <a href="user_StudentGrades.html" class="btn btn-outline-dark">Set Grades</a>
+                                                    <div class="col-6 form-inline justify-content-end my-4">
+                                        <a href="/t/users/SGrades" class="btn btn-outline-dark">Set Grades</a>
                                     </div>
                                 </div>
                             </div>
@@ -64,111 +61,16 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th scope="col">Student Number</th>
-                                            <th scope="col">Teacher Name</th>
+                                            <th scope="col">Student Name</th>
                                             <th scope="col"></th>
                                                 
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">18-000001</th>
-                                            <td>Abas, Sajjad</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000002</th>
-                                            <td>Barte, Gwyn</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000003</th>
-                                            <td>Yusis, Ivan Heilee</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000004</th>
-                                            <td>Tumalian, Pauline</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000005</th>
-                                            <td>Prado, Hannah Dorothy</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000006</th>
-                                            <td>Polinag, Jomary</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000007</th>
-                                            <td>Bautista, Ryan Cristoff</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000008</th>
-                                            <td>Recia, Christian Jennace</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-00009</th>
-                                            <td>Banaag, Aidrian Curl</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000010</th>
-                                            <td>Balonzo, Julie</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000011</th>
-                                            <td>Pabustan, Nishamae</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000012</th>
-                                            <td>Ramirez, Kiefer Blake</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000013</th>
-                                            <td>Balonzo, Junlyn</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">18-000014</th>
-                                            <td>Wehbi, Natalia Angeline</td>
-                                            <td>
-                                                <a href="user_StudentProfile.html" class="btn btn-outline-dark">View Profile</a>
-                                            </td>
-                                        </tr>
+                                        {{#each student}}
+                                            {{>t_u_ST_students this}}
+                                        {{/each}}
                                     </tbody>
                                 </table>
                                 <nav aria-label="Page navigation example">
