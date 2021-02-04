@@ -15,6 +15,10 @@ const eventSchema = new mongoose.Schema({
     schoolYear : {type:String, required:true}
 }, { collection: "events" });
 
+eventSchema.methods.recordNewEvent = async function() {
+    eventModel.create(this);
+    return console.log(this);
+};
 
 const eventModel = db.model('events', eventSchema);
 

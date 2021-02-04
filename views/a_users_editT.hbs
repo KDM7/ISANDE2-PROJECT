@@ -1,0 +1,92 @@
+{{!-- This is for editting a certain portion of the teachers information, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+                <div class="col-9">
+                    <div class="shadow">
+                         <div class="list-group mt-2 shadow bg-light">
+                            <div class="container">
+								<h1 class="display-4 text-center">Edit Teacher</h1>
+							</div>
+							<div class="container">
+								<form>
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput2">First Name</label>
+										<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="Danilo" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput2">Last Name</label>
+										<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="Ibasan" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput2">Gender</label>
+										<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="" value="Male" readonly>
+                                    </div>
+									<div class="form-group">
+                                        <label for="formGroupExampleInput2">Section</label>
+										<div class="form-group">
+                                            <label for="formGroupExampleInput2">Grade Level</label>
+                                            <br>
+                                            <select name="grade_level_id" id="search_category_id" class="form-control valid" onchange="myFunction2()" required> 
+                                                <option value="2"> Junior Casa </option>
+                                                <option value="3"> Senior Casa </option>
+                                                <option value="16"> Advance Casa </option>
+                                                <option value="4"> Grade 1 - (Jupiter) </option>
+                                                <option value="5"> Grade 2 - (Saturn) </option>
+                                                <option value="6"> Grade 3 - (Venus) </option>
+                                                <option value="7"> Grade 4 - (Rose) </option>
+                                                <option value="8"> Grade 5 - (Dandelion) </option>
+                                                <option value="9"> Grade 6 - (Sampagita) </option>
+                                                <option value="10"> Grade 7 - (Narra) </option>
+                                                <option value="11"> Grade 8 - (Mahogany) </option>
+                                                <option value="12"> Grade 9 - (Camagong) </option>
+                                                <option value="13"> Grade 10 - (Yakal) </option>
+                                                <option value="14"> Grade 11 - (ABM - Ruby) </option>
+                                                <option value="15"> Grade 11 - (GAS - Ruby) </option>
+                                                <option value="16"> Grade 12 - (ABM - Diamond) </option>
+                                                <option value="17"> Grade 12 - (GAS - Diamond) </option>                            
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <div class="row">
+                                            <div class="col-6 mb-5 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-outline-primary mb-4" data-toggle="modal" data-target="#exampleModal">Submit</button>
+                                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            Edit in Teacher Recorded
+                                                            
+                                                            
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 d-flex justify-content-start">
+                                                <a href="user_Teacher.html" class="btn btn-outline-secondary" style="margin-bottom: 71px;">Cancel</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>

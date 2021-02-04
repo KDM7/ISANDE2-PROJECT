@@ -1,0 +1,42 @@
+{{>p_navbar}}
+{{>p_sidebar}}
+
+                <div class="col-9">
+                    <div class="shadow bg-light">
+                        <div class="container">
+                            <div class="row mt-2">
+                                <div class="col-12">
+                                    <h1 class="display-5 text-center font-weight-bold">Enroll in Regis-Grace Montessori School
+                                    </h1>
+                                    <div class="row justify-content-center">
+                                        <h5 class="display-5 text-center font-weight-light">Please select which student to enroll</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <div class="container">
+                                    <hr style="border: 2px solid black;">
+                                    <div class="form-group">
+                                        <label for="studentID">Student Name</label>
+                                                <span style="color:red">*</span>
+                                                <br>
+                                                <select name="studentID" id="studentID" class="form-control valid" required> 
+
+                                                   {{#each student}}
+                                                        <option value="{{this.userID}}">{{this.firstName}} {{this.middleName}} {{this.lastName}}</option>       
+                                                   {{/each}}                 
+                                                </select>
+                                    </div>
+                            <div class="d-flex border justify-content-center">
+                                <a id="submitEnrollOld" class="btn btn-outline-primary btn-lg btn-block mt-5 mb-5 w-75">Enroll</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>

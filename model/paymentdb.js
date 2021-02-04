@@ -9,13 +9,19 @@ mongoose.connect(`mongodb+srv://${process.env.DBUSER}:${process.env.DBPASS}@itis
 var db = mongoose.connection;
 
 const paymentSchema = new mongoose.Schema({
-    paymentNum: { type: Number, required: true},
+    paymentID: { type: Number, required: true},
     amountPaid : {type : Number, required : true},
     datePaid : {type : Date, required : true},
-    remarks : {type : String, required :true},
-    studentID : {type : String, required : true}
+    paymentPlan : {type : String, required :true},
+    studentID : {type : String, required : true},
+    sectionID :{type:Number,required:true}
 }, { collection: "payments" });
 
+paymentSchema.methods.recordNewPayment = async function() {
+    var result = await paymentModel.create(this);
+    console.log(JSON.stringify(result));
+    return result;
+};
 
 const paymentModel = db.model('payments', paymentSchema);
 

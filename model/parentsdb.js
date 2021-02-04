@@ -10,12 +10,17 @@ var db = mongoose.connection;
 
 const parentSchema = new mongoose.Schema({
     userID: { type: String, required: true },
-    mobileNum : { type: String, required: true},
+    phoneNum : { type: String, required: true},
     nationality : { type : String, required : true},
     birthDate : {type : Date, required : true},
-    birthPlace : { type : String, required :true}
+    birthPlace : { type : String, required :true},
 }, { collection: "parents" });
 
+parentSchema.methods.recordNewParent = async function() {
+    var result = await parentModel.create(this);
+    console.log(JSON.stringify(result));
+    return result;
+};
 
 const parentModel = db.model('parents', parentSchema);
 

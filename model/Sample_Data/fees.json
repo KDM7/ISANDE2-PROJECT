@@ -1,0 +1,45 @@
+[{
+  "sectionID": 22000001,
+  "schoolYear": "2020-2021",
+  "tuition": 23153.00,
+  "misc": 5780.00,
+  "additional": 0.00,
+  "other": 0.00
+},{ 
+  "sectionID": 22000002,
+  "schoolYear": "2020-2021",
+  "tuition": 23730.00,
+  "misc": 5780.00,
+  "additional": 0.00,
+  "other": 0.00
+},{
+  "sectionID": 22000003,
+  "schoolYear": "2020-2021",
+  "tuition": 24360.00,
+  "misc": 5950.00,
+  "additional": 0.00,
+  "other": 0.00
+},
+{
+  "sectionID": 21900001,
+  "schoolYear": "2019-2020",
+  "tuition": 22153.00,
+  "misc": 5780.00,
+  "additional": 0.00,
+  "other": 0.00
+},{ 
+  "sectionID": 21900002,
+  "schoolYear": "2019-2020",
+  "tuition": 22730.00,
+  "misc": 5780.00,
+  "additional": 0.00,
+  "other": 0.00
+},{
+  "sectionID": 21900003,
+  "schoolYear": "2019-2020",
+  "tuition": 23360.00,
+  "misc": 5950.00,
+  "additional": 0.00,
+  "other": 0.00
+}
+]

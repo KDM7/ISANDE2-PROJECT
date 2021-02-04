@@ -1,0 +1,57 @@
+{{!-- This is for inputting a OTP for enrollment (credit card), Parents --}}
+
+{{>p_navbar}}
+{{>p_sidebar}}
+
+
+                <div class="col-9">
+                     <div class="list-group mt-2 shadow bg-light">
+                        <div class="shadow">
+                            <div class="container">
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <h1 class="display-5 text-center font-weight-bold">Enroll in Regis-Grace Montessori School
+                                        </h1>
+                                        <div class="row justify-content-center">
+                                            <h5 class="display-5 text-center font-weight-light">Please follow the instructions below</h5>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <div class="container">
+                                    <form>
+                                        <h5 class="display-5 text-left">Online Payment</h5>
+                                        <hr style="border: 2px solid black;" />
+                                        <p class="">Step 1 : Check your email for the One Time Password (OTP)</p><br>
+                                        <p class="">Step 2 : Please Input the OTP</p><br>
+                                        <p class="">Step 3 : Confirm Payment</p><br>
+                                        <div class="row">
+                                            <div class="form-group w-25 col-4">
+                                                <label for="formGroupExampleInput2">Amount Due:</label>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">PHP</div>
+                                                    </div>
+                                                <input type="number" class="form-control" id="amountPaid" value="{{amountDue}}" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group w-50">
+                                            <label for="otp">OTP</label>
+                                            <input type="text" class="form-control" id="otp" placeholder="" required>
+                                        </div>
+                                        <a href="/p/pay/ccPaymentPlan" class="btn btn-outline-secondary mb-4">Cancel</a>
+                                        <a id="submitCCOTP" class="btn btn-outline-primary mb-4">Confirm</a>
+    
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>

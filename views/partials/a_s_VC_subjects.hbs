@@ -1,0 +1,18 @@
+<div class="display-4 ml-2">{{_id}}</div>
+<table class="table table-bordered">
+    <thead class="thead-primary">
+        <tr>
+            <th scope="col">Subject Name</th>
+            <th scope="col">Teacher Name</th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each cList}}
+        <tr>
+            <td>{{subNm}}</td>
+            <th>{{tchFNm}} {{tchMNm}} {{tchLNm}}</th>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>

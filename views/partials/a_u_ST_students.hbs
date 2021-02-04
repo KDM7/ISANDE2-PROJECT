@@ -1,0 +1,26 @@
+<tr id="{{userID}}">
+    {{!-- use helper for line 3 --}}
+    <td class="{{getRemarkColor remark}}">{{getRemark remark}}</td>
+    <th scope="row">{{userID}}</th>
+    <td>{{firstname}} {{middlename}} {{lastname}}</td>
+    {{!-- suggestion: 
+    use 
+        '$(this).parent().parent().attr('id');' 
+    or 
+        '$(this).closest('tr').attr('id');'
+    to get userID
+    --}}
+    <td>
+        <a href="/a/users/SAccount/{{userID}}" class="btn btn-outline-primary">View Account</a>
+    </td>
+    <td>
+        <a href="/a/users/SProfile/{{userID}}/{{schoolYear}}" class="btn btn-outline-primary">View Profile
+            {{#if (notifyRemark remark)}}
+            <span class="badge badge-danger">!</span>
+            {{/if}}
+        </a>
+    </td>
+    <td>
+        <a href="user_StudentEmail.html" class="btn btn-outline-primary">Send Email</a>
+    </td>
+</tr>

@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express();
 const controller = require('../controller/userindex');
-// const indexMiddleware = require('../middlewares/indexMiddleware');
+const indexMiddleware = require('../middlewares/indexMiddleware');
 
 // GETS
 router.get('/', controller.getLogin);
 router.post('/', controller.postLogin);
+router.post('/logout', controller.postLogout);
 //
 /*
     ADMIN
@@ -22,39 +23,93 @@ router.get('/a/fees/misc', controller.getAfeeMisc);
 router.get('/a/fees/other', controller.getAfeeOthers);
 router.get('/a/fees/tuition', controller.getAfeeTuition);
 router.get('/a/fees/uponE', controller.getAfeeUponE);
-router.get('/a/user/SProfile', controller.getAuserSProf);
+router.get('/a/sched/AddClasses', controller.getAschedAddClasses);
+router.get('/a/sched/ViewClasses', controller.getAschedViewClasses);
+router.get('/a/sched/CurSchoolYr', controller.getAschedCurSchoolYr);
+router.get('/a/sched/ClassSched', controller.getAschedClassSched);
+router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
+router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
+router.get('/a/report/outstandingBalance',controller.getAReportBalance);
+router.get('/a/report/outstandingBalanceTable',controller.getAReportBalanceTable);
+
+router.post('/addClass', controller.postAddClass);
+router.post('/enroll/approve', controller.postEnrollmentApproved);
+router.post('/enroll/deny', controller.postEnrollmentRejected);
+router.post('/a/viewOutstandingBalReport',controller.postOutstandingBalReport);
+
+router.post('/addClass', controller.postAddClass);
+//New Event
+router.get('/a/sched/newAcadCalendar', controller.getAschednewAcadCalendar);
+router.post('/newAcadCalendar', controller.postNewAcadCalendar);
+
+router.get('/a/sched/editAcadCalendar', controller.getAschededitAcadCalendar);
+router.get('/a/users/SProfile/:userID/:schoolYear', controller.getAuserSProf);
 router.get('/a/users/SEmail', controller.getAuserSEmail);
-router.get('/a/users/SAccount', controller.getAuserSAcc);
+router.get('/a/users/SAccount/:userID', controller.getAuserSAcc);
 router.get('/a/users/PProfile', controller.getAuserPProf);
 router.get('/a/users/parents', controller.getAuserParent);
 router.get('/a/users/PAccount', controller.getAuserPAcc);
 router.get('/a/users/AProfile', controller.getAuserAProf);
 router.get('/a/users/admins', controller.getAuserAdmin);
 router.get('/a/users/students', controller.getAuserStudents);
+router.get('/a/users/teachers', controller.getAuserTeachers);
+router.get('/a/users/TProfile', controller.getAuserTProf);
+router.get('/a/users/editTeachers', controller.getAusereditTeachers);
 
 /*
     TEACHER
 */
+router.get('/t/sched/acadCalendar', controller.getTschedacadCalendar);
+router.get('/t/sched/acadCalendar2', controller.getTschedacadCalendar2);
+router.get('/t/sched/classSched', controller.getTschedclassSched);
+router.get('/t/users/SGrades', controller.getTuserSgrades);
+router.get('/t/users/SProfile', controller.getTuserSProf);
 router.get('/t/users/students', controller.getTuserStudents);
 
 /*
     PARENT
 */
+router.get('/p/acc/EnrollChild', controller.getPaccEChild);
+router.get('/p/acc/studentGrades', controller.getPaccSGrades);
+router.get('/p/acc/NewChild', controller.getPaccNewChild);
 router.get('/p/pay/bank', controller.getPpaybank);
-router.get('/p/pay/BPlan', controller.getPpayBPlan);
+router.get('/p/pay/bankPaymentPlan', controller.getPpayBankPlan);
 router.get('/p/pay/cc', controller.getPpaycc);
-router.get('/p/pay/CCPlan', controller.getPpayCCPlan);
+router.get('/p/pay/ccOTP', controller.getPpayCCOTP);
+router.get('/p/pay/ccPaymentPlan', controller.getPpayCCPlan);
+router.get('/p/sched/acadCalendar', controller.getPschedacadCalendar);
+router.get('/p/sched/acadCalendar2', controller.getPschedacadCalendar2);
+router.get('/p/sched/classSched', controller.getPschedclassSched);
 router.get('/p/trans/brkdwn', controller.getPtransBD);
-router.get('/p/trans/SA', controller.getPtransSA);
+router.get('/p/trans/stmacc', controller.getPtransSA);
 
+router.post('/enrollold', controller.postEnrollmentOld);
+router.post('/p/submitCCPlan', controller.postPpayCCPlan);
+router.post('/p/submitCCInfo', controller.postPpayCCInfo);
+router.post('/p/submitCCOTP', controller.postPpayCCOTP);
+router.post('/p/submitBankPayment', controller.postPpayBank);
 /*
     STUDENT
 */
 router.get('/enroll', controller.getEnrollmentNew);
+router.get('/enroll/parent', controller.getEnrollmentParent);
+router.get('/s/acc/grades', controller.getSaccgrades);
+router.get('/s/acc/updateInfo', controller.getEnrollemtOld);
+router.get('/s/sched/acadCalendar', controller.getSschedacadCalendar);
+router.get('/s/sched/acadCalendar2', controller.getSschedacadCalendar2);
+router.get('/s/sched/classSched', controller.getSschedclassSched);
 router.get('/s/trans/brkdwn', controller.getStransBD);
+router.get('/s/trans/stmacc', controller.getStransSA);
 
+router.post('/enroll', controller.postEnrollmentNew);
+router.post('/enroll/parent/old', indexMiddleware.validateEnrollOldParent, controller.postEnrollParentOld);
+router.post('/enroll/parent/new', controller.postEnrollParentNew);
+/*
+    USER SETTINGS
+*/
 
-
+router.post('/userSettings/schoolYear/:SY', controller.postUserSettingsSY);
+router.post('/userSettings/gradeLvl/:GL', controller.postUserSettingsGL);
 
 module.exports = router;
 

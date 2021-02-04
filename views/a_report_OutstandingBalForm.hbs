@@ -1,0 +1,41 @@
+{{!-- This is for setting up the school year for the system, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+                <div class="col-9">
+                    <div class="shadow">
+                         <div class="list-group mt-2 shadow bg-light">
+                            <div class="container">
+								<h1 class="display-4 text-center">Outstanding Balance Report</h1>
+							</div>
+                        <div class = "mt-2"><div class="container">
+								<form>
+                                    <br>
+									<div class="form-group row">
+                                        <label for="a_u_ST_schoolYear"
+                                            class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
+                                        <select class="form-control col-6 p-0 m-0" id="schoolYear">
+                                            {{#each schoolYear}}
+                                            {{>dropdownOpt this}}
+                                            {{/each}}
+                                        </select>
+                                    </div>
+                                    <br><br>
+                                    <div class="form-group ">
+                                        <div class="row">
+                                            <div class="col-7 mb-5 d-flex justify-content-end">
+                                                <a id="submitBalanceReport" class="btn btn-outline-primary mb-4">View Report</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br>
+                            </div></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>

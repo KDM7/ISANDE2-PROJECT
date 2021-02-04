@@ -1,14 +1,1501 @@
 [{
-    "paymentNum" : 12100000,
-    "amountPaid" : 1000.00,
-    "datePaid" : "07/10/2015",
-    "remarks" : "P",
-    "studentID" : "Abra"
-},
-{
-    "paymentNum" : 12100001,
-    "amountPaid" : 1000.00,
-    "datePaid" : "07/10/2015",
-    "remarks" : "P",
-    "studentID" : "Kadabra"
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce3f"
+  },
+  "paymentID": 11900001,
+  "studentID": "19-000001",
+  "datePaid": {
+    "$date": "2019-02-22T03:25:39Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce40"
+  },
+  "paymentID": 11900002,
+  "studentID": "19-000002",
+  "datePaid": {
+    "$date": "2019-03-05T15:34:22Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce41"
+  },
+  "paymentID": 11900003,
+  "studentID": "19-000003",
+  "datePaid": {
+    "$date": "2019-02-04T19:33:02Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce42"
+  },
+  "paymentID": 11900004,
+  "studentID": "19-000004",
+  "datePaid": {
+    "$date": "2019-02-15T08:22:13Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce43"
+  },
+  "paymentID": 11900005,
+  "studentID": "19-000005",
+  "datePaid": {
+    "$date": "2019-03-05T18:13:37Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce44"
+  },
+  "paymentID": 11900006,
+  "studentID": "19-000006",
+  "datePaid": {
+    "$date": "2019-03-05T23:11:33Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce45"
+  },
+  "paymentID": 11900007,
+  "studentID": "19-000007",
+  "datePaid": {
+    "$date": "2019-03-09T12:29:22Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce46"
+  },
+  "paymentID": 11900008,
+  "studentID": "19-000008",
+  "datePaid": {
+    "$date": "2019-02-14T20:22:13Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce47"
+  },
+  "paymentID": 11900009,
+  "studentID": "19-000009",
+  "datePaid": {
+    "$date": "2019-03-02T19:32:22Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce48"
+  },
+  "paymentID": 11900010,
+  "studentID": "19-000010",
+  "datePaid": {
+    "$date": "2019-03-04T03:20:52Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce49"
+  },
+  "paymentID": 11900011,
+  "studentID": "19-000011",
+  "datePaid": {
+    "$date": "2019-02-17T20:45:22Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce4a"
+  },
+  "paymentID": 11900012,
+  "studentID": "19-000012",
+  "datePaid": {
+    "$date": "2019-02-05T13:00:00Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce4b"
+  },
+  "paymentID": 11900013,
+  "studentID": "19-000013",
+  "datePaid": {
+    "$date": "2019-03-13T21:21:55Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce4c"
+  },
+  "paymentID": 11900014,
+  "studentID": "19-000014",
+  "datePaid": {
+    "$date": "2019-03-12T23:13:26Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce4d"
+  },
+  "paymentID": 11900015,
+  "studentID": "19-000015",
+  "datePaid": {
+    "$date": "2019-03-08T12:33:34Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce4e"
+  },
+  "paymentID": 11900016,
+  "studentID": "19-000016",
+  "datePaid": {
+    "$date": "2019-03-03T08:54:24Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce4f"
+  },
+  "paymentID": 11900017,
+  "studentID": "19-000017",
+  "datePaid": {
+    "$date": "2019-02-24T20:13:21Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce50"
+  },
+  "paymentID": 11900018,
+  "studentID": "19-000018",
+  "datePaid": {
+    "$date": "2019-03-12T05:52:49Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce51"
+  },
+  "paymentID": 11900019,
+  "studentID": "19-000019",
+  "datePaid": {
+    "$date": "2019-02-04T18:47:46Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce52"
+  },
+  "paymentID": 11900020,
+  "studentID": "19-000020",
+  "datePaid": {
+    "$date": "2019-02-26T01:25:46Z"
+  },
+  "amountPaid": 27993,
+  "sectionID": 21900001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce53"
+  },
+  "paymentID": 11900021,
+  "studentID": "19-000021",
+  "datePaid": {
+    "$date": "2019-03-04T04:02:00Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce54"
+  },
+  "paymentID": 11900022,
+  "studentID": "19-000022",
+  "datePaid": {
+    "$date": "2019-02-06T02:39:50Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce55"
+  },
+  "paymentID": 11900023,
+  "studentID": "19-000023",
+  "datePaid": {
+    "$date": "2019-02-22T00:40:24Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce56"
+  },
+  "paymentID": 11900024,
+  "studentID": "19-000024",
+  "datePaid": {
+    "$date": "2019-03-07T12:32:39Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce57"
+  },
+  "paymentID": 11900025,
+  "studentID": "19-000025",
+  "datePaid": {
+    "$date": "2019-02-20T07:30:58Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce58"
+  },
+  "paymentID": 11900026,
+  "studentID": "19-000026",
+  "datePaid": {
+    "$date": "2019-02-17T18:23:34Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce59"
+  },
+  "paymentID": 11900027,
+  "studentID": "19-000027",
+  "datePaid": {
+    "$date": "2019-03-10T15:39:12Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce5a"
+  },
+  "paymentID": 11900028,
+  "studentID": "19-000028",
+  "datePaid": {
+    "$date": "2019-03-07T17:11:22Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce5b"
+  },
+  "paymentID": 11900029,
+  "studentID": "19-000029",
+  "datePaid": {
+    "$date": "2019-02-22T16:25:11Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce5c"
+  },
+  "paymentID": 11900030,
+  "studentID": "19-000030",
+  "datePaid": {
+    "$date": "2019-03-06T02:03:25Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce5d"
+  },
+  "paymentID": 11900031,
+  "studentID": "19-000031",
+  "datePaid": {
+    "$date": "2019-02-09T23:47:33Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce5e"
+  },
+  "paymentID": 11900032,
+  "studentID": "19-000032",
+  "datePaid": {
+    "$date": "2019-02-06T20:23:56Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce5f"
+  },
+  "paymentID": 11900033,
+  "studentID": "19-000033",
+  "datePaid": {
+    "$date": "2019-02-11T03:46:42Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce60"
+  },
+  "paymentID": 11900034,
+  "studentID": "19-000034",
+  "datePaid": {
+    "$date": "2019-02-23T05:26:02Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce61"
+  },
+  "paymentID": 11900035,
+  "studentID": "19-000035",
+  "datePaid": {
+    "$date": "2019-02-21T01:44:31Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce62"
+  },
+  "paymentID": 11900036,
+  "studentID": "19-000036",
+  "datePaid": {
+    "$date": "2019-03-12T07:17:21Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce63"
+  },
+  "paymentID": 11900037,
+  "studentID": "19-000037",
+  "datePaid": {
+    "$date": "2019-02-04T12:11:48Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce64"
+  },
+  "paymentID": 11900038,
+  "studentID": "19-000038",
+  "datePaid": {
+    "$date": "2019-03-14T05:44:21Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce65"
+  },
+  "paymentID": 11900039,
+  "studentID": "19-000039",
+  "datePaid": {
+    "$date": "2019-02-05T20:38:23Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce66"
+  },
+  "paymentID": 11900040,
+  "studentID": "19-000040",
+  "datePaid": {
+    "$date": "2019-02-18T21:06:16Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce67"
+  },
+  "paymentID": 11900041,
+  "studentID": "19-000041",
+  "datePaid": {
+    "$date": "2019-03-02T07:06:53Z"
+  },
+  "amountPaid": 28510,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce68"
+  },
+  "paymentID": 11900042,
+  "studentID": "19-000042",
+  "datePaid": {
+    "$date": "2019-03-12T17:00:20Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce69"
+  },
+  "paymentID": 11900043,
+  "studentID": "19-000043",
+  "datePaid": {
+    "$date": "2019-03-07T09:22:35Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce6a"
+  },
+  "paymentID": 11900044,
+  "studentID": "19-000044",
+  "datePaid": {
+    "$date": "2019-02-07T05:22:25Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce6b"
+  },
+  "paymentID": 11900045,
+  "studentID": "19-000045",
+  "datePaid": {
+    "$date": "2019-02-09T15:22:28Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce6c"
+  },
+  "paymentID": 11900046,
+  "studentID": "19-000046",
+  "datePaid": {
+    "$date": "2019-02-14T21:49:33Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce6d"
+  },
+  "paymentID": 11900047,
+  "studentID": "19-000047",
+  "datePaid": {
+    "$date": "2019-02-25T20:38:25Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce6e"
+  },
+  "paymentID": 11900048,
+  "studentID": "19-000048",
+  "datePaid": {
+    "$date": "2019-02-05T23:39:29Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce6f"
+  },
+  "paymentID": 11900049,
+  "studentID": "19-000049",
+  "datePaid": {
+    "$date": "2019-02-13T03:48:07Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce70"
+  },
+  "paymentID": 11900050,
+  "studentID": "19-000050",
+  "datePaid": {
+    "$date": "2019-02-12T18:19:41Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce71"
+  },
+  "paymentID": 11900051,
+  "studentID": "19-000051",
+  "datePaid": {
+    "$date": "2019-03-08T07:51:07Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce72"
+  },
+  "paymentID": 11900052,
+  "studentID": "19-000052",
+  "datePaid": {
+    "$date": "2019-02-07T10:02:34Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce73"
+  },
+  "paymentID": 11900053,
+  "studentID": "19-000053",
+  "datePaid": {
+    "$date": "2019-02-03T15:48:30Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce74"
+  },
+  "paymentID": 11900054,
+  "studentID": "19-000054",
+  "datePaid": {
+    "$date": "2019-03-14T07:22:53Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce75"
+  },
+  "paymentID": 11900055,
+  "studentID": "19-000055",
+  "datePaid": {
+    "$date": "2019-03-09T03:34:19Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce76"
+  },
+  "paymentID": 11900056,
+  "studentID": "19-000056",
+  "datePaid": {
+    "$date": "2019-02-25T23:37:34Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce77"
+  },
+  "paymentID": 11900057,
+  "studentID": "19-000057",
+  "datePaid": {
+    "$date": "2019-02-03T09:21:51Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce78"
+  },
+  "paymentID": 11900058,
+  "studentID": "19-000058",
+  "datePaid": {
+    "$date": "2019-02-12T21:14:33Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce79"
+  },
+  "paymentID": 11900059,
+  "studentID": "19-000059",
+  "datePaid": {
+    "$date": "2019-02-06T20:17:57Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a43d1380fc305b8ddce7a"
+  },
+  "paymentID": 11900060,
+  "studentID": "19-000060",
+  "datePaid": {
+    "$date": "2019-02-24T11:12:32Z"
+  },
+  "amountPaid": 29310,
+  "sectionID": 21900003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce7b"
+  },
+  "paymentID": 12000001,
+  "studentID": "19-000001",
+  "datePaid": {
+    "$date": "2020-02-18T21:10:20Z"
+  },
+  "amountPaid": 15000,
+  "sectionID": 22000002,
+  "paymentPlan": "Semestral"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce7c"
+  },
+  "paymentID": 12000002,
+  "studentID": "19-000002",
+  "datePaid": {
+    "$date": "2020-02-19T12:22:44Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce7d"
+  },
+  "paymentID": 12000003,
+  "studentID": "19-000003",
+  "datePaid": {
+    "$date": "2020-02-10T11:19:32Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce7e"
+  },
+  "paymentID": 12000004,
+  "studentID": "19-000004",
+  "datePaid": {
+    "$date": "2020-02-05T03:06:20Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce7f"
+  },
+  "paymentID": 12000005,
+  "studentID": "19-000005",
+  "datePaid": {
+    "$date": "2020-02-11T11:11:26Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce80"
+  },
+  "paymentID": 12000006,
+  "studentID": "19-000006",
+  "datePaid": {
+    "$date": "2020-02-07T08:07:39Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce81"
+  },
+  "paymentID": 12000007,
+  "studentID": "19-000007",
+  "datePaid": {
+    "$date": "2020-02-27T14:37:36Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce82"
+  },
+  "paymentID": 12000008,
+  "studentID": "19-000008",
+  "datePaid": {
+    "$date": "2020-03-04T06:36:39Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce83"
+  },
+  "paymentID": 12000009,
+  "studentID": "19-000009",
+  "datePaid": {
+    "$date": "2020-02-25T10:41:06Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce84"
+  },
+  "paymentID": 12000010,
+  "studentID": "19-000010",
+  "datePaid": {
+    "$date": "2020-02-14T22:41:03Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce85"
+  },
+  "paymentID": 12000011,
+  "studentID": "19-000011",
+  "datePaid": {
+    "$date": "2020-03-11T16:43:17Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce86"
+  },
+  "paymentID": 12000012,
+  "studentID": "19-000012",
+  "datePaid": {
+    "$date": "2020-03-03T14:46:35Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce87"
+  },
+  "paymentID": 12000013,
+  "studentID": "19-000013",
+  "datePaid": {
+    "$date": "2020-02-12T19:54:36Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce88"
+  },
+  "paymentID": 12000014,
+  "studentID": "19-000014",
+  "datePaid": {
+    "$date": "2020-02-26T12:36:02Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce89"
+  },
+  "paymentID": 12000015,
+  "studentID": "19-000015",
+  "datePaid": {
+    "$date": "2020-02-28T11:40:51Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce8a"
+  },
+  "paymentID": 12000016,
+  "studentID": "19-000016",
+  "datePaid": {
+    "$date": "2020-02-14T10:44:49Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce8b"
+  },
+  "paymentID": 12000017,
+  "studentID": "19-000017",
+  "datePaid": {
+    "$date": "2020-02-08T17:02:09Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce8c"
+  },
+  "paymentID": 12000018,
+  "studentID": "19-000018",
+  "datePaid": {
+    "$date": "2020-02-18T23:52:47Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce8d"
+  },
+  "paymentID": 12000019,
+  "studentID": "19-000019",
+  "datePaid": {
+    "$date": "2020-02-22T22:40:49Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce8e"
+  },
+  "paymentID": 12000020,
+  "studentID": "19-000020",
+  "datePaid": {
+    "$date": "2020-03-08T10:22:12Z"
+  },
+  "amountPaid": 29510,
+  "sectionID": 22000002,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce8f"
+  },
+  "paymentID": 12000021,
+  "studentID": "19-000021",
+  "datePaid": {
+    "$date": "2020-03-07T16:43:25Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce90"
+  },
+  "paymentID": 12000022,
+  "studentID": "19-000022",
+  "datePaid": {
+    "$date": "2020-02-07T16:04:51Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce91"
+  },
+  "paymentID": 12000023,
+  "studentID": "19-000023",
+  "datePaid": {
+    "$date": "2020-02-24T22:35:05Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce92"
+  },
+  "paymentID": 12000024,
+  "studentID": "19-000024",
+  "datePaid": {
+    "$date": "2020-02-26T16:34:33Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce93"
+  },
+  "paymentID": 12000025,
+  "studentID": "19-000025",
+  "datePaid": {
+    "$date": "2020-02-28T15:18:08Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce94"
+  },
+  "paymentID": 12000026,
+  "studentID": "19-000026",
+  "datePaid": {
+    "$date": "2020-03-13T21:12:52Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce95"
+  },
+  "paymentID": 12000027,
+  "studentID": "19-000027",
+  "datePaid": {
+    "$date": "2020-03-07T17:49:36Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce96"
+  },
+  "paymentID": 12000028,
+  "studentID": "19-000028",
+  "datePaid": {
+    "$date": "2020-02-09T01:53:17Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce97"
+  },
+  "paymentID": 12000029,
+  "studentID": "19-000029",
+  "datePaid": {
+    "$date": "2020-02-24T15:12:00Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce98"
+  },
+  "paymentID": 12000030,
+  "studentID": "19-000030",
+  "datePaid": {
+    "$date": "2020-03-08T13:03:11Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce99"
+  },
+  "paymentID": 12000031,
+  "studentID": "19-000031",
+  "datePaid": {
+    "$date": "2020-03-01T23:53:49Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce9a"
+  },
+  "paymentID": 12000032,
+  "studentID": "19-000032",
+  "datePaid": {
+    "$date": "2020-02-13T10:44:59Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce9b"
+  },
+  "paymentID": 12000033,
+  "studentID": "19-000033",
+  "datePaid": {
+    "$date": "2020-02-25T23:22:07Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce9c"
+  },
+  "paymentID": 12000034,
+  "studentID": "19-000034",
+  "datePaid": {
+    "$date": "2020-03-04T02:32:36Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce9d"
+  },
+  "paymentID": 12000035,
+  "studentID": "19-000035",
+  "datePaid": {
+    "$date": "2020-03-12T15:19:58Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce9e"
+  },
+  "paymentID": 12000036,
+  "studentID": "19-000036",
+  "datePaid": {
+    "$date": "2020-03-02T08:03:24Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddce9f"
+  },
+  "paymentID": 12000037,
+  "studentID": "19-000037",
+  "datePaid": {
+    "$date": "2020-03-06T17:21:19Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea0"
+  },
+  "paymentID": 12000038,
+  "studentID": "19-000038",
+  "datePaid": {
+    "$date": "2020-02-17T23:55:09Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea1"
+  },
+  "paymentID": 12000039,
+  "studentID": "19-000039",
+  "datePaid": {
+    "$date": "2020-02-13T17:20:09Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea2"
+  },
+  "paymentID": 12000040,
+  "studentID": "19-000040",
+  "datePaid": {
+    "$date": "2020-02-11T11:19:57Z"
+  },
+  "amountPaid": 30310,
+  "sectionID": 22000003,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea3"
+  },
+  "paymentID": 12000041,
+  "studentID": "20-000001",
+  "datePaid": {
+    "$date": "2020-03-09T18:16:04Z"
+  },
+  "amountPaid": 15053,
+  "sectionID": 22000001,
+  "paymentPlan": "Semestral"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea4"
+  },
+  "paymentID": 12000042,
+  "studentID": "20-000002",
+  "datePaid": {
+    "$date": "2020-02-04T09:35:31Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea5"
+  },
+  "paymentID": 12000043,
+  "studentID": "20-000003",
+  "datePaid": {
+    "$date": "2020-02-05T04:39:23Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea6"
+  },
+  "paymentID": 12000044,
+  "studentID": "20-000004",
+  "datePaid": {
+    "$date": "2020-03-05T23:12:16Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea7"
+  },
+  "paymentID": 12000045,
+  "studentID": "20-000005",
+  "datePaid": {
+    "$date": "2020-02-15T19:52:10Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea8"
+  },
+  "paymentID": 12000046,
+  "studentID": "20-000006",
+  "datePaid": {
+    "$date": "2020-02-24T11:49:08Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcea9"
+  },
+  "paymentID": 12000047,
+  "studentID": "20-000007",
+  "datePaid": {
+    "$date": "2020-02-17T19:47:35Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceaa"
+  },
+  "paymentID": 12000048,
+  "studentID": "20-000008",
+  "datePaid": {
+    "$date": "2020-02-07T17:07:44Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceab"
+  },
+  "paymentID": 12000049,
+  "studentID": "20-000009",
+  "datePaid": {
+    "$date": "2020-02-18T21:07:16Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceac"
+  },
+  "paymentID": 12000050,
+  "studentID": "20-000010",
+  "datePaid": {
+    "$date": "2020-02-17T14:12:17Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddcead"
+  },
+  "paymentID": 12000051,
+  "studentID": "20-000011",
+  "datePaid": {
+    "$date": "2020-02-08T08:01:43Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceae"
+  },
+  "paymentID": 12000052,
+  "studentID": "20-000012",
+  "datePaid": {
+    "$date": "2020-02-09T18:35:00Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceaf"
+  },
+  "paymentID": 12000053,
+  "studentID": "20-000013",
+  "datePaid": {
+    "$date": "2020-02-24T20:46:58Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb0"
+  },
+  "paymentID": 12000054,
+  "studentID": "20-000014",
+  "datePaid": {
+    "$date": "2020-02-15T10:57:05Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb1"
+  },
+  "paymentID": 12000055,
+  "studentID": "20-000015",
+  "datePaid": {
+    "$date": "2020-02-16T08:30:40Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb2"
+  },
+  "paymentID": 12000056,
+  "studentID": "20-000016",
+  "datePaid": {
+    "$date": "2020-02-04T04:50:49Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb3"
+  },
+  "paymentID": 12000057,
+  "studentID": "20-000017",
+  "datePaid": {
+    "$date": "2020-02-04T07:53:08Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb4"
+  },
+  "paymentID": 12000058,
+  "studentID": "20-000018",
+  "datePaid": {
+    "$date": "2020-02-10T17:59:11Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb5"
+  },
+  "paymentID": 12000059,
+  "studentID": "20-000019",
+  "datePaid": {
+    "$date": "2020-03-10T09:36:04Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb6"
+  },
+  "paymentID": 12000060,
+  "studentID": "20-000020",
+  "datePaid": {
+    "$date": "2020-03-05T11:00:45Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb7"
+  },
+  "paymentID": 12000061,
+  "studentID": "20-000021",
+  "datePaid": {
+    "$date": "2020-03-13T15:34:04Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a4661380fc305b8ddceb8"
+  },
+  "paymentID": 12000062,
+  "studentID": "20-000022",
+  "datePaid": {
+    "$date": "2020-03-04T03:02:36Z"
+  },
+  "amountPaid": 28853,
+  "sectionID": 22000001,
+  "paymentPlan": "Full"
+},{
+  "_id": {
+    "$oid": "601a8fd5795fce13b8c22c33"
+  },
+  "paymentID": 12000063,
+  "studentID": "20-000001",
+  "datePaid": {
+    "$date": "2020-06-04T03:02:36Z"
+  },
+  "amountPaid": 13800,
+  "sectionID": 22000001,
+  "paymentPlan": "Remaining"
+},{
+  "_id": {
+    "$oid": "601ac93d1a096e3ee4fead0e"
+  },
+  "paymentID": 12000064,
+  "amountPaid": 7255,
+  "datePaid": {
+    "$date": "2021-02-03T16:03:09.267Z"
+  },
+  "paymentPlan": "Next",
+  "studentID": "19-000001",
+  "sectionID": 22000002
+},{
+  "_id": {
+    "$oid": "601af29e6300364298e87fb8"
+  },
+  "paymentID": 12000065,
+  "amountPaid": 7255,
+  "datePaid": {
+    "$date": "2021-02-03T18:59:42.881Z"
+  },
+  "paymentPlan": "remainingPayment",
+  "studentID": "19-000001",
+  "sectionID": 22000002
 }]

@@ -18,6 +18,11 @@ const userSchema = new mongoose.Schema({
     gender: { type: String, required: true }
 }, { collection: "users" });
 
+userSchema.methods.recordNewUser = async function() {
+    var result = await userModel.create(this);
+    console.log(JSON.stringify(result));
+    return result;
+};
 
 const userModel = db.model('users', userSchema);
 

@@ -1,0 +1,51 @@
+[{
+  "sectionID": 22000001,
+  "schoolYear": "2020-2021",
+  "fullPayment": 28853,
+  "semestralPayment":0,
+  "trimestralPayment":0,
+  "monthlyPayment" : 11000,
+  "quarterlyPayment": 0
+},{ 
+  "sectionID": 22000002,
+  "schoolYear": "2020-2021",
+  "fullPayment": 29510,
+  "semestralPayment":0,
+  "trimestralPayment":0,
+  "monthlyPayment" : 12000,
+  "quarterlyPayment": 0
+},{
+  "sectionID": 22000003,
+  "schoolYear": "2020-2021",
+  "fullPayment": 30310,
+  "semestralPayment":0,
+  "trimestralPayment":0,
+  "monthlyPayment" : 13000,
+  "quarterlyPayment": 0
+},
+{
+  "sectionID": 21900001,
+  "schoolYear": "2019-2020",
+  "fullPayment": 27993,
+  "semestralPayment":0,
+  "trimestralPayment":0,
+  "monthlyPayment" : 10500,
+  "quarterlyPayment": 0
+},{ 
+  "sectionID": 21900002,
+  "schoolYear": "2019-2020",
+  "fullPayment": 28510,
+  "semestralPayment":0,
+  "trimestralPayment":0,
+  "monthlyPayment" : 11000,
+  "quarterlyPayment": 0
+},{
+  "sectionID": 21900003,
+  "schoolYear": "2019-2020",
+  "fullPayment": 29310,
+  "semestralPayment":0,
+  "trimestralPayment":0,
+  "monthlyPayment" : 12500,
+  "quarterlyPayment": 0
+}
+]

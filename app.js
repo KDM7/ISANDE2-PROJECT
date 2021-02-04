@@ -30,8 +30,8 @@ app.engine('hbs', exphbs.create({
     partialsDir: 'views/partials',
     layoutsDir: 'views/layouts',
     helpers: {
-        isSelected: function(selected){
-            if(selected)
+        isSelected: function (selected) {
+            if (selected)
                 return 'selected';
         },
         getDate: function (date) {
@@ -46,17 +46,105 @@ app.engine('hbs', exphbs.create({
 
             return month + '/' + day + '/' + d.getFullYear();
         },
+        getRemark: function (remarks) {
+            var remark;
+            switch (remarks) {
+                case 'P': {
+                    remark = 'Passed';
+                    break;
+                }
+                case 'R': {
+                    remark = 'Repeat';
+                    break;
+                }
+                case 'E': {
+                    remark = 'Enrolled';
+                    break;
+                }
+                case 'D': {
+                    remark = 'Rejected';
+                    break;
+                }
+                case 'FA': {
+                    remark = 'For Approval';
+                    break;
+                }
+                default: {
+                    remark = 'N/A'
+                    break;
+                }
+
+            }
+            return remark;
+        },
+        getAge: function (birthday) {
+            var d = new Date();
+            var dob = new Date(birthday);
+            return Math.floor((d.getTime() - dob.getTime()) / 31536000000);
+        },
+        getRemarkColor: function (remarks) {
+            var color;
+            switch (remarks) {
+                case 'P': {
+                    color = 'text-success';
+                    break;
+                }
+                case 'R': {
+                    color = 'text-danger';
+                    break;
+                }
+                case 'E': {
+                    color = 'text-primary';
+                    break;
+                }
+                case 'D': {
+                    color = 'text-warning';
+                    break;
+                }
+                case 'FA': {
+                    color = 'text-info';
+                    break;
+                }
+                default: {
+                    color = 'text-secondary'
+                    break;
+                }
+
+            }
+            return color;
+        },
+        notifyRemark: function (remark) {
+            if (remark == 'FA')
+                return true;
+        },
+        getPrice: function (price) {
+            return price.toFixed(2);
+        },
+        toPmtMtd(pmtMtd) {
+            if (pmtMtd != 'Visa' || pmtMtd != 'MasterCard')
+                return 'Bank';
+            return 'N/A';
+        },
+        getBool: function (x) {
+            if (x)
+                return true;
+            return false;
+        }
     }
 }).engine);
 app.set('view engine', 'hbs');
 
 // MIDDLEWARES => functions that run before we execute the control functions
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(bodyParser.json());
 
 // ROUTERS
 const indexRouter = require('./router/userindexRouter');
-const { text } = require('body-parser');
+const {
+    text
+} = require('body-parser');
 app.use('/', indexRouter)
 
 // log this in console when ran
