@@ -1196,6 +1196,44 @@ async function getBalanceReportData(schoolYear) {
     return reportData;
 }
 
+async function getTeacherClassesList(teacherID){
+    var classes = await classModel.aggregate([
+        {
+          '$match': {
+            'teacherID': teacherID
+          }
+        }, {
+          '$lookup': {
+            'from': 'sections', 
+            'localField': 'sectionID', 
+            'foreignField': 'sectionID', 
+            'as': 'section'
+          }
+        }, {
+          '$unwind': {
+            'path': '$section', 
+            'preserveNullAndEmptyArrays': false
+          }
+        }, {
+          '$sort': {
+            'section.sechoolYear': -1, 
+            'sectionID': 1, 
+            'classID': 1
+          }
+        }, {
+          '$project': {
+            'classID': 1, 
+            'sectionID': 1, 
+            'subjectCode': 1, 
+            'schoolYear': '$section.schoolYear', 
+            'sectionName': '$section.sectionName'
+          }
+        }
+      ]);
+    
+    return classes;
+}
+
 const indexFunctions = {
     /* 
         LOGIN FUNCTIONS    
@@ -2105,9 +2143,41 @@ const indexFunctions = {
     },
 
     // to show the students from the teachers side
-    getTuserStudents: function (req, res) {
+    // 
+    getTuserStudents: async function (req, res) {
+        // var schoolYear = 
+        // var classes = await getClassList()
+        var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
+            [{
+                '$project': {
+                    'value': '$schoolYear',
+                }
+            }]
+        );
+        var gradeLvl = await ref_sectionModel.aggregate(
+            [{
+                '$sort': {
+                    'gradeLvl': 1
+                }
+            }, {
+                '$project': {
+                    'value': '$gradeLvl'
+                }
+            }]
+        );
+        var students = await getStudentListSYGL(req.session.userSettings.schoolYear, req.session.userSettings.gradeLvl);
+
         res.render('t_users_students', {
-            title: 'Students'
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
+            title: 'Students',
+            schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
+            gradeLvl: gradeLvl,
+            GLSettings: req.session.userSettings.gradeLvl,
+            student: students
+            
         });
     },
 

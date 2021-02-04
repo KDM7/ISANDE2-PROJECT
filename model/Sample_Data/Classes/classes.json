@@ -1,0 +1,217 @@
+[{
+  "_id": {
+    "$oid": "601a68ef494219d7bc8448fb"
+  },
+  "classID": 32000001,
+  "teacherID": "Sandstorm",
+  "sectionID": 22000001,
+  "subjectCode": "MATH"
+},{
+  "_id": {
+    "$oid": "601a6a57362fefc37c27de7f"
+  },
+  "classID": 32000002,
+  "teacherID": "l.graeber",
+  "sectionID": 22000001,
+  "subjectCode": "A.P."
+},{
+  "_id": {
+    "$oid": "601a6a92362fefc37c27de80"
+  },
+  "classID": 32000003,
+  "teacherID": "f.cannaway",
+  "sectionID": 22000001,
+  "subjectCode": "M.T."
+},{
+  "_id": {
+    "$oid": "601a6aa1362fefc37c27de81"
+  },
+  "classID": 32000004,
+  "teacherID": "k.odunneen",
+  "sectionID": 22000001,
+  "subjectCode": "FIL"
+},{
+  "_id": {
+    "$oid": "601a6aac362fefc37c27de82"
+  },
+  "classID": 32000005,
+  "teacherID": "m.mitchard",
+  "sectionID": 22000001,
+  "subjectCode": "C.E."
+},{
+  "_id": {
+    "$oid": "601a6ab3362fefc37c27de83"
+  },
+  "classID": 32000006,
+  "teacherID": "j.legerwood",
+  "sectionID": 22000001,
+  "subjectCode": "ENG"
+},{
+  "_id": {
+    "$oid": "601a6ae0362fefc37c27de84"
+  },
+  "classID": 32000007,
+  "teacherID": "a.codd",
+  "sectionID": 22000001,
+  "subjectCode": "Deportment"
+},{
+  "_id": {
+    "$oid": "601a6aef362fefc37c27de85"
+  },
+  "classID": 32000008,
+  "teacherID": "h.niezen",
+  "sectionID": 22000001,
+  "subjectCode": "SCI"
+},{
+  "_id": {
+    "$oid": "601a6afc362fefc37c27de86"
+  },
+  "classID": 32000009,
+  "teacherID": "f.cannaway",
+  "sectionID": 22000001,
+  "subjectCode": "MAPE"
+},{
+  "_id": {
+    "$oid": "601a6b05362fefc37c27de87"
+  },
+  "classID": 32000010,
+  "teacherID": "h.niezen",
+  "sectionID": 22000002,
+  "subjectCode": "MATH"
+},{
+  "_id": {
+    "$oid": "601a6b0e362fefc37c27de88"
+  },
+  "classID": 32000011,
+  "teacherID": "Darude",
+  "sectionID": 22000002,
+  "subjectCode": "A.P."
+},{
+  "_id": {
+    "$oid": "601a6b16362fefc37c27de89"
+  },
+  "classID": 32000012,
+  "teacherID": "k.odunneen",
+  "sectionID": 22000002,
+  "subjectCode": "M.T."
+},{
+  "_id": {
+    "$oid": "601a6b1e362fefc37c27de8a"
+  },
+  "classID": 32000013,
+  "teacherID": "d.endean",
+  "sectionID": 22000002,
+  "subjectCode": "FIL"
+},{
+  "_id": {
+    "$oid": "601a6b24362fefc37c27de8b"
+  },
+  "classID": 32000014,
+  "teacherID": "f.cannaway",
+  "sectionID": 22000002,
+  "subjectCode": "C.E."
+},{
+  "_id": {
+    "$oid": "601a6b2c362fefc37c27de8c"
+  },
+  "classID": 32000015,
+  "teacherID": "j.worvell",
+  "sectionID": 22000002,
+  "subjectCode": "ENG"
+},{
+  "_id": {
+    "$oid": "601a6b33362fefc37c27de8d"
+  },
+  "classID": 32000016,
+  "teacherID": "f.cannaway",
+  "sectionID": 22000002,
+  "subjectCode": "Deportment"
+},{
+  "_id": {
+    "$oid": "601a6b39362fefc37c27de8e"
+  },
+  "classID": 32000017,
+  "teacherID": "j.legerwood",
+  "sectionID": 22000002,
+  "subjectCode": "SCI"
+},{
+  "_id": {
+    "$oid": "601a6b3f362fefc37c27de8f"
+  },
+  "classID": 32000018,
+  "teacherID": "d.endean",
+  "sectionID": 22000002,
+  "subjectCode": "MAPE"
+},{
+  "_id": {
+    "$oid": "601a6b44362fefc37c27de90"
+  },
+  "classID": 32000019,
+  "teacherID": "d.endean",
+  "sectionID": 22000003,
+  "subjectCode": "A.P."
+},{
+  "_id": {
+    "$oid": "601a6b4e362fefc37c27de91"
+  },
+  "classID": 32000020,
+  "teacherID": "b.sollon",
+  "sectionID": 22000003,
+  "subjectCode": "M.T."
+},{
+  "_id": {
+    "$oid": "601a6b56362fefc37c27de92"
+  },
+  "classID": 32000021,
+  "teacherID": "k.odunneen",
+  "sectionID": 22000003,
+  "subjectCode": "FIL"
+},{
+  "_id": {
+    "$oid": "601a6b5d362fefc37c27de93"
+  },
+  "classID": 32000022,
+  "teacherID": "f.cannaway",
+  "sectionID": 22000003,
+  "subjectCode": "C.E."
+},{
+  "_id": {
+    "$oid": "601a6b63362fefc37c27de94"
+  },
+  "classID": 32000023,
+  "teacherID": "l.graeber",
+  "sectionID": 22000003,
+  "subjectCode": "ENG"
+},{
+  "_id": {
+    "$oid": "601a6b69362fefc37c27de95"
+  },
+  "classID": 32000024,
+  "teacherID": "k.odunneen",
+  "sectionID": 22000003,
+  "subjectCode": "Deportment"
+},{
+  "_id": {
+    "$oid": "601a6b70362fefc37c27de96"
+  },
+  "classID": 32000025,
+  "teacherID": "d.endean",
+  "sectionID": 22000003,
+  "subjectCode": "SCI"
+},{
+  "_id": {
+    "$oid": "601a6b76362fefc37c27de97"
+  },
+  "classID": 32000026,
+  "teacherID": "c.buffy",
+  "sectionID": 22000003,
+  "subjectCode": "MAPE"
+},{
+  "_id": {
+    "$oid": "601a6b8b362fefc37c27de98"
+  },
+  "classID": 32000027,
+  "teacherID": "b.sollon",
+  "sectionID": 22000003,
+  "subjectCode": "MATH"
+}]

@@ -1,0 +1,13 @@
+<tr id="{{userID}}">
+    {{!-- use helper for line 3 --}}
+    <th scope="row">{{userID}}</th>
+    <td>{{firstname}} {{middlename}} {{lastname}}</td>
+    {{!-- suggestion: 
+    use 
+        '$(this).parent().parent().attr('id');' 
+    or 
+        '$(this).closest('tr').attr('id');'
+    to get userID
+    --}}
+    </td>
+</tr>
