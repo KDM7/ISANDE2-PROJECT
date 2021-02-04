@@ -385,9 +385,22 @@ $(document).ready(function () {
     $('#submitBalanceReport').click(function(){
         var schoolYear = $('#schoolYear').val();
 
-        $.get('/a/viewOutstandingBalReport'),{schoolYear:schoolYear},function(res){
-
-        }
+        $.post('/a/viewOutstandingBalReport',{schoolYear:schoolYear},function(result){
+            switch (result.status) {
+                case 201: {
+                    window.location.href = '/a/balanceReport';
+                    break;
+                }
+                case 401:{
+                    alert('case 401: ' + result.msg);
+                    break;
+                }
+                case 500: {
+                    alert('case 500: ' + result.msg);
+                    break;
+                }
+            }
+        });
     });
     /*
         TEACHER

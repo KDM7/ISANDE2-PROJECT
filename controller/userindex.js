@@ -253,6 +253,42 @@ async function getCurrentSections() {
 }
 
 //get sections based on schoolYear and gradeLvl
+async function getSectionsSY(schoolYear) {
+    var sectionIDs = await sectionModel.aggregate(
+        [{ //merge section and ref_section for schoolYear and gradeLvl be in same doc
+            '$lookup': {
+                'from': 'ref_section',
+                'localField': 'sectionName',
+                'foreignField': 'sectionName',
+                'as': 'section'
+            }
+        }, { //unwind section to be safe (this part doesnt seem to be important)
+            '$unwind': {
+                'path': '$section',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, { //get sections that are valid using the parameters
+            '$match': {
+                'schoolYear': schoolYear,
+            }
+        }, { //group sections into an array
+            '$group': {
+                '_id': null,
+                'sectionID': {
+                    '$push': '$sectionID'
+                }
+            }
+        }, { //remove _id and project only the sectionID array which contains all valid section IDs based on parameters
+            '$project': {
+                '_id': false,
+                'sectionID': true
+            }
+        }]
+    );
+    return sectionIDs[0].sectionID;
+}
+
+//get sections based on schoolYear and gradeLvl
 async function getSectionsSYGL(schoolYear, gradeLvl) {
     var sectionIDs = await sectionModel.aggregate(
         [{ //merge section and ref_section for schoolYear and gradeLvl be in same doc
@@ -885,6 +921,28 @@ async function getAmountOwed(studentID, sectionID, paymentPlan) {
     }
     return amountDue;
 }
+//gets all section information based on school year
+async function getSectionList(schoolYear){
+    var sectionList = await sectionModel.aggregate([
+        {
+          '$match': {
+            'schoolYear': schoolYear
+          }
+        }, {
+          '$sort': {
+            'sectionID': 1
+          }
+        }, {
+          '$project': {
+            'sectionID': 1, 
+            'sectionName': 1, 
+            'schoolYear': 1, 
+            'sectionAdviser': 1
+          }
+        }
+      ]);
+    return sectionList;   
+}
 
 async function getNextParentID() {
     var schoolYear = await getCurrentSY();
@@ -967,6 +1025,135 @@ async function getMinMaxEventID(sortby, offset) {
         }
     }]);
     return highestID[0].eventID + offset;
+
+
+//this functions gets the Outstanding Balance Report Data
+/*
+    Data Required:
+        StudentID
+        StudentName
+        Section
+        Remaining Balance
+*/
+async function getBalanceReportData(schoolYear)
+{
+    var sections = await getSectionsSY(schoolYear);
+    var reportData = await sectionModel.aggregate([
+        {
+          '$match': {
+            'sectionID': sections
+            
+          }
+        }, {
+          '$lookup': {
+            'from': 'upon_enrollment', 
+            'localField': 'sectionID', 
+            'foreignField': 'sectionID', 
+            'as': 'upon_enrollment'
+          }
+        }, {
+          '$unwind': {
+            'path': '$upon_enrollment', 
+            'preserveNullAndEmptyArrays': true
+          }
+        }, {
+          '$lookup': {
+            'from': 'studentMembers', 
+            'localField': 'sectionID', 
+            'foreignField': 'sectionID', 
+            'as': 'studentMembers'
+          }
+        }, {
+          '$unwind': {
+            'path': '$studentMembers', 
+            'preserveNullAndEmptyArrays': true
+          }
+        }, {
+          '$lookup': {
+            'from': 'payments', 
+            'localField': 'studentMembers.studentID', 
+            'foreignField': 'studentID', 
+            'as': 'payments'
+          }
+        }, {
+          '$unwind': {
+            'path': '$payments', 
+            'preserveNullAndEmptyArrays': true
+          }
+        }, {
+          '$match': {
+            'payments.sectionID': {
+              '$in': sections
+            }
+          }
+        }, {
+          '$group': {
+            '_id': '$payments.studentID', 
+            'totalAmtPaid': {
+              '$sum': '$payments.amountPaid'
+            }, 
+            'amountDue': {
+              '$first': '$upon_enrollment.fullPayment'
+            }, 
+            'studentID': {
+              '$first': '$studentMembers.studentID'
+            }, 
+            'sectionID': {
+              '$first': '$sectionID'
+            }, 
+            'sectionName': {
+              '$first': '$sectionName'
+            }
+          }
+        }, {
+          '$addFields': {
+            'remainingBalance': {
+              '$subtract': [
+                '$amountDue', '$totalAmtPaid'
+              ]
+            }
+          }
+        }, {
+          '$match': {
+            'remainingBalance': {
+              '$gt': 0
+            }
+          }
+        }, {
+          '$lookup': {
+            'from': 'users', 
+            'localField': 'studentID', 
+            'foreignField': 'userID', 
+            'as': 'studentInfo'
+          }
+        }, {
+          '$unwind': {
+            'path': '$studentInfo', 
+            'preserveNullAndEmptyArrays': false
+          }
+        }, {
+          '$addFields': {
+            'name': {
+              '$concat': [
+                '$studentInfo.lastName', ',', '$studentInfo.firstName', ' ', '$studentInfo.middleName'
+              ]
+            }
+          }
+        }, {
+          '$sort': {
+            'name': 1
+          }
+        }, {
+          '$project': {
+            'studentID': 1, 
+            'sectionName': 1, 
+            'remainingBalance': 1, 
+            'name': 1
+          }
+        }
+      ]);
+    return reportData;
+}
 }
 
 const indexFunctions = {
@@ -1309,6 +1496,13 @@ const indexFunctions = {
             schoolYear: schoolYear
         })
     },
+
+    getAReportBalanceTable : async function(req,res){
+        
+        res.render('a_report_OutstandingBalTable',{
+            title : "Outstanding Balance Report",
+        })
+    },
     // function to approve student enrollment
     postEnrollmentApproved: async function (req, res) {
         var {
@@ -1629,6 +1823,24 @@ const indexFunctions = {
             status: 200,
             msg: 'Class has been recorded'
         });
+    },
+
+    postOutstandingBalReport: async function(req,res){
+        var schoolYear = req.body.schoolYear;
+        try
+        {
+            req.session.reportschoolYear = schoolYear;
+            console.log(req.session);
+            sectionList = await getSectionsSY(schoolYear);
+            console.log(sectionList)
+            var reportData = await getBalanceReportData(sectionList);
+            console.log(reportData);
+            res.send({status:401,msg:'testing'});
+        }catch(e){
+            res.send({status:500,msg:e})
+        }
+        
+
     },
 
     /* 
@@ -1981,8 +2193,9 @@ const indexFunctions = {
             {
                 var sectionID = req.session.sectionID;
                 var paymentID = await getNextPaymentID();
+                var paymentPlan = renamePaymentPlan(req.session.paymentPlan);
 
-                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),req.session.paymentPlan,req.session.studentID,sectionID);
+                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),paymentPlan,req.session.studentID,sectionID);
                 var newPayment = new paymentModel(paymentData);
                 var paymentResult = await newPayment.recordNewPayment();
                 
@@ -2023,7 +2236,9 @@ const indexFunctions = {
          try {
                 var paymentID = await getNextPaymentID();
                 var sectionID = req.session.sectionID;
-                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),req.session.paymentPlan,req.session.studentID,sectionID);
+                var paymentPlan = renamePaymentPlan(req.session.paymentPlan);
+
+                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),paymentPlan,req.session.studentID,sectionID);
                 var newPayment = new paymentModel(paymentData);
                 var paymentResult = await newPayment.recordNewPayment();                
 

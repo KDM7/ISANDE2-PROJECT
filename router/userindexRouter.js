@@ -30,10 +30,12 @@ router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
 router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
 router.get('/a/report/outstandingBalance',controller.getAReportBalance);
+router.get('/a/report/outstandingBalanceTable',controller.getAReportBalanceTable);
 
 router.post('/addClass', controller.postAddClass);
 router.post('/enroll/approve', controller.postEnrollmentApproved);
 router.post('/enroll/deny', controller.postEnrollmentRejected);
+router.post('/a/viewOutstandingBalReport',controller.postOutstandingBalReport);
 
 router.post('/addClass', controller.postAddClass);
 //New Event
