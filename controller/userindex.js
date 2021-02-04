@@ -1110,6 +1110,21 @@ const indexFunctions = {
         });
     },
 
+    //function to show outstanding balance report form
+    getAReportBalance : async function(req,res){
+        var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
+            [{
+                '$project': {
+                    'value': '$schoolYear',
+                    'selected': '$isCurrent'
+                }
+            }]
+        );
+        res.render('a_report_OutstandingBalForm',{
+            title : "Outstanding Balance Report",
+            schoolYear: schoolYear
+        })
+    },
     // function to approve student enrollment
     postEnrollmentApproved: async function (req, res) {
         var {

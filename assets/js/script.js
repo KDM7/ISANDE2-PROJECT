@@ -381,6 +381,14 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#submitBalanceReport').click(function(){
+        var schoolYear = $('#schoolYear').val();
+
+        $.get('/a/viewOutstandingBalReport'),{schoolYear:schoolYear},function(res){
+
+        }
+    });
     /*
         TEACHER
     */

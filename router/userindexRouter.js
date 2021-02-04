@@ -27,6 +27,7 @@ router.get('/a/sched/CurSchoolYr', controller.getAschedCurSchoolYr);
 router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
 router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
+router.get('/a/report/outstandingBalance',controller.getAReportBalance);
 
 router.post('/enroll/approve', controller.postEnrollmentApproved);
 router.post('/enroll/deny', controller.postEnrollmentRejected);
