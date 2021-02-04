@@ -11,9 +11,9 @@
                     <div class="row">
                         <select class="form-control" id="a_u_SA_schoolYear">
                             <option value="">--School Year--</option>
-                            {{!-- {{#each schoolYear}}
+                            {{#each schoolYear}}
                             {{>dropdownOpt this}}
-                            {{/each}} --}}
+                            {{/each}}
                         </select>
                     </div>
                 </div>
@@ -86,8 +86,8 @@
                             <tbody>
                                 {{#each histPmt}}
                                 <tr>
-                                    <td>{{getDate dtPaid}}</td>
-                                    <td>{{pmtID}}</td>
+                                    <td class="text-center">{{getDate dtPaid}}</td>
+                                    <td class="text-center">{{pmtID}}</td>
                                     <td>{{toPmtMtd pmtMtd}}</td>
                                     <td class="text-right">Php {{getPrice amt}}</td>
                                 </tr>

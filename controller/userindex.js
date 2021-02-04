@@ -512,6 +512,44 @@ async function getStudentListSYGL(schoolYear, gradeLvl) {
     );
     return studentList;
 }
+async function getStudentSY(studentID){
+    return await studentModel.aggregate( //get school years in database base on the sectons of the student for display in dropdown element
+        [{
+            '$match': {
+                'userID': studentID
+            }
+        }, {
+            '$lookup': {
+                'from': 'studentMembers',
+                'localField': 'userID',
+                'foreignField': 'studentID',
+                'as': 'mbrDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$mbrDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$lookup': {
+                'from': 'sections',
+                'localField': 'mbrDta.sectionID',
+                'foreignField': 'sectionID',
+                'as': 'secDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$secDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$project': {
+                '_id': 0,
+                'value': '$secDta.schoolYear'
+            }
+        }]
+    );
+}
 
 // gets the list of sections for the student
 async function getStudentMembership(studentID) {
@@ -1455,6 +1493,7 @@ const indexFunctions = {
     // to show a students account for admin side
     getAuserSAcc: async function (req, res) {
         var studentID = req.params.userID;
+        var schoolYear = await getStudentSY(studentID);
         var studentinfo = await studentModel.aggregate(
             [{
                 '$match': {
@@ -1641,6 +1680,7 @@ const indexFunctions = {
         );
         res.render('a_users_SAccount', {
             title: 'Student Account',
+            schoolYear: schoolYear,
             info: studentinfo[0],
             paidAmt: paidAmt[0].totalAmountPaid,
             remBal: remBal,
