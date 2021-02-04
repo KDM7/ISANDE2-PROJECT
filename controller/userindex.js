@@ -895,6 +895,52 @@ async function getClassList(schoolYear) {
         ]
     );
 }
+async function getParentChildren(userID) {
+    var user = await userModel.aggregate([{
+            '$match': {
+            'type': 'S'
+            }
+        }, {
+            '$lookup': {
+            'from': 'students', 
+            'localField': 'userID', 
+            'foreignField': 'userID', 
+            'as': 'students'
+            }
+        }, {
+            '$unwind': {
+            'path': '$students', 
+            'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$lookup': {
+            'from': 'parents', 
+            'localField': 'students.parentID', 
+            'foreignField': 'userID', 
+            'as': 'parents'
+            }
+        }, {
+            '$unwind': {
+            'path': '$parents', 
+            'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$match': {
+            'parents.userID': userID
+            }
+        }, {
+            '$project': {
+            'studentID': '$userID',
+            'value': '$userID',
+            'name1': '$firstName',
+            'name2': '$middleName',
+            'name3': '$lastName',
+            '_id': 0
+            }
+    }]);
+    console.log(user[0].studentID);
+    return user;
+}
 // gets the amount the student already paid, as well as the payment plan
 async function getStudentPaymentsSummary(studentID, sectionID) {
     return await paymentModel.aggregate([{
@@ -1250,13 +1296,21 @@ const indexFunctions = {
             schoolYear: await getCurrentSY(),
             gradeLvl: 'Grade 1'
         }
+        
+        console.log(student);
         try {
+            
             var match = await findUser(user);
             console.log(user);
             console.log(pass);
             console.log(match);
             if (match) {
                 console.log('matching');
+                try {
+                    var student = await getParentChildren(user);
+                } catch (e) {
+                    console.log("HI");
+                }
                 bcrypt.compare(pass, match.password, function (err, result) {
                     // var result = match.password == pass;
                     console.log('hi');
@@ -1283,6 +1337,8 @@ const indexFunctions = {
                             req.session.logUser = match;
                             req.session.type = 'parent';
                             req.session.userSettings = initSettings;
+                            req.session.userSettings.studentID = student[0].studentID;
+                            console.log(req.session);
                             res.send({
                                 status: 203
                             });
@@ -2307,7 +2363,7 @@ const indexFunctions = {
 
     // to show the Statement of Accounts from the parents side
     getPtransSA: async function (req, res) {
-        var studentID = req.params.userID;
+        var studentID = req.session.userSettings.studentID;
         var schoolYear = await getStudentSY(studentID);
         var studentinfo = await studentModel.aggregate(
             [{
@@ -2417,6 +2473,7 @@ const indexFunctions = {
         );
         var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID);
         var remBal = studentinfo[0].begBal - paidAmt[0].totalAmountPaid;
+        var studentList = await getParentChildren(req.session.logUser.userID);
         var transHistPmt = await studentModel.aggregate(
             [{
                 '$match': {
@@ -2493,6 +2550,7 @@ const indexFunctions = {
                 }
             }]
         );
+        console.log(studentList);
         res.render('p_trans_SA', {
             title: 'Statement of Accounts',
             schoolYear: schoolYear,
@@ -2501,6 +2559,8 @@ const indexFunctions = {
             paidAmt: paidAmt[0].totalAmountPaid,
             remBal: remBal,
             histPmt: transHistPmt,
+            studentID: studentList,
+            SIDSettings: studentinfo[0].name,
         });
     },
 
@@ -2559,12 +2619,6 @@ const indexFunctions = {
     getPtransBD: function (req, res) {
         res.render('p_trans_BD', {
             title: 'Breakdown Details'
-        });
-    },
-
-    getPtransSA: function (req, res) {
-        res.render('p_trans_SA', {
-            title: 'Statement of Account'
         });
     },
 
@@ -3092,5 +3146,10 @@ const indexFunctions = {
         req.session.userSettings.gradeLvl = req.params.GL;
         res.send();
     },
+
+    postUserSettingsSID: function (req, res) {
+        req.session.userSettings.studentID = req.params.SID;
+        res.send();
+    }
 }
 module.exports = indexFunctions;
