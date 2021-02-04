@@ -1500,14 +1500,18 @@ const indexFunctions = {
                         ]
                     },
                     'pmtType': '$pmtDta.paymentPlan',
-                    'begBal': '$erlDta.fullPayment'
+                    'begBal': '$erlDta.fullPayment',
+                    'secID': '$mbrDta.sectionID'
                 }
             }]
         );
-        console.log(studentinfo[0]);
+        var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID); 
+        var remBal = studentinfo[0].begBal - paidAmt[0].totalAmountPaid;
         res.render('a_users_SAccount', {
             title: 'Student Account',
             info: studentinfo[0],
+            paidAmt: paidAmt[0].totalAmountPaid,
+            remBal:remBal,
         });
     },
 
