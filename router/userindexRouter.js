@@ -22,6 +22,7 @@ router.get('/a/fees/editUE', controller.getAfeeEditUE);
 router.get('/a/fees/misc', controller.getAfeeMisc);
 router.get('/a/fees/other', controller.getAfeeOthers);
 router.get('/a/fees/tuition', controller.getAfeeTuition);
+router.get('/a/fees/manage', controller.getAfeeManage);
 router.get('/a/fees/uponE', controller.getAfeeUponE);
 router.get('/a/sched/AddClasses', controller.getAschedAddClasses);
 router.get('/a/sched/ViewClasses', controller.getAschedViewClasses);
@@ -52,7 +53,6 @@ router.get('/a/users/PAccount', controller.getAuserPAcc);
 router.get('/a/users/AProfile', controller.getAuserAProf);
 router.get('/a/users/admins', controller.getAuserAdmin);
 router.get('/a/users/students', controller.getAuserStudents);
-// router.get('/a/users/students/:schoolYear/:gradeLvl', controller.getAuserStudents);
 router.get('/a/users/teachers', controller.getAuserTeachers);
 router.get('/a/users/TProfile', controller.getAuserTProf);
 router.get('/a/users/editTeachers', controller.getAusereditTeachers);
@@ -108,6 +108,7 @@ router.post('/enroll/parent/new', controller.postEnrollParentNew);
 /*
     USER SETTINGS
 */
+
 router.post('/userSettings/schoolYear/:SY', controller.postUserSettingsSY);
 router.post('/userSettings/gradeLvl/:GL', controller.postUserSettingsGL);
 
