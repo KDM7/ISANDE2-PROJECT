@@ -1296,25 +1296,15 @@ const indexFunctions = {
             schoolYear: await getCurrentSY(),
             gradeLvl: 'Grade 1'
         }
-        
-        console.log(student);
         try {
-            
             var match = await findUser(user);
-            console.log(user);
-            console.log(pass);
-            console.log(match);
             if (match) {
-                console.log('matching');
                 try {
                     var student = await getParentChildren(user);
                 } catch (e) {
-                    console.log("HI");
                 }
                 bcrypt.compare(pass, match.password, function (err, result) {
                     // var result = match.password == pass;
-                    console.log('hi');
-                    console.log(result);
                     if (result) {
                         if (match.type == 'A') {
                             //send 201 admin
@@ -1525,52 +1515,24 @@ const indexFunctions = {
                 }
             }]
         );
-        var schoolYear = await feesModel.aggregate(
+        var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
             [{
-                '$group': {
-                    '_id': '$schoolYear'
-                }
-            }, {
                 '$project': {
-                    '_id': 0,
-                    'value': '$_id'
+                    'value': '$schoolYear',
                 }
             }]
         );
-        var gradeLvl = await feesModel.aggregate([{
-            '$lookup': {
-                'from': 'sections',
-                'localField': 'sectionID',
-                'foreignField': 'sectionID',
-                'as': 'secDta'
-            }
-        }, {
-            '$unwind': {
-                'path': '$secDta',
-                'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$lookup': {
-                'from': 'ref_section',
-                'localField': 'secDta.sectionName',
-                'foreignField': 'sectionName',
-                'as': 'refSec'
-            }
-        }, {
-            '$unwind': {
-                'path': '$refSec',
-                'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$group': {
-                '_id': '$refSec.gradeLvl'
-            }
-        }, {
-            '$project': {
-                '_id': 0,
-                'value': '$_id'
-            }
-        }]);
+        var gradeLvl = await ref_sectionModel.aggregate(
+            [{
+                '$sort': {
+                    'gradeLvl': 1
+                }
+            }, {
+                '$project': {
+                    'value': '$gradeLvl'
+                }
+            }]
+        );
         res.render('a_fees_Manage', {
             title: 'Manage Fees',
             schoolYear: schoolYear,
@@ -1582,9 +1544,71 @@ const indexFunctions = {
     },
 
     // to show Upon Enrollment page for admin side
-    getAfeeUponE: function (req, res) {
+    getAfeeUponE: async function (req, res) {
+        var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
+            [{
+                '$project': {
+                    'value': '$schoolYear',
+                }
+            }]
+        );
+        var gradeLvl = await ref_sectionModel.aggregate(
+            [{
+                '$sort': {
+                    'gradeLvl': 1
+                }
+            }, {
+                '$project': {
+                    'value': '$gradeLvl'
+                }
+            }]
+        );
+        var enroll = await upon_enrollmentModel.aggregate(
+            [{
+                '$match': {
+                    'schoolYear': req.session.userSettings.schoolYear
+                }
+            }, {
+                '$lookup': {
+                    'from': 'sections',
+                    'localField': 'sectionID',
+                    'foreignField': 'sectionID',
+                    'as': 'secDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$secDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'ref_section',
+                    'localField': 'secDta.sectionName',
+                    'foreignField': 'sectionName',
+                    'as': 'refSec'
+                }
+            }, {
+                '$match': {
+                    'refSec.gradeLvl': req.session.userSettings.gradeLvl
+                }
+            }, {
+                '$project': {
+                    '_id': 0,
+                    'fullPayment': 1,
+                    'semestralPayment': 1,
+                    'trimestralPayment': 1,
+                    'monthlyPayment': 1,
+                    'quarterlyPayment': 1
+                }
+            }]
+        );
         res.render('a_fees_uponE', {
             title: 'Edit Upon Enrollment',
+            schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
+            gradeLvl: gradeLvl,
+            GLSettings: req.session.userSettings.gradeLvl,
+            enroll: enroll[0],
         });
     },
 
@@ -1723,10 +1747,10 @@ const indexFunctions = {
         var schoolYear = req.session.reportschoolYear;
         var reportData = await getBalanceReportData(schoolYear);
         console.log(reportData);
-        res.render('a_report_OutstandingBalTable',{
-            title : "Outstanding Balance Report",
-            schoolYear:schoolYear,
-            reportData:reportData
+        res.render('a_report_OutstandingBalTable', {
+            title: "Outstanding Balance Report",
+            schoolYear: schoolYear,
+            reportData: reportData
         })
     },
     // function to approve student enrollment
@@ -2693,7 +2717,7 @@ const indexFunctions = {
                         status: 401,
                         msg: 'Student is not yet allowed to pay\nPlease wait for admin approval'
                     });
-                else if(studentMembers[0].remarks == "D")
+                else if (studentMembers[0].remarks == "D")
                     res.send({
                         status: 401,
                         msg: 'Student has been rejected. You are not eligible to pay.'
