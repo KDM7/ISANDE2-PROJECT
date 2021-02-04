@@ -94,7 +94,7 @@ function Section(sectionID, sectionName, schoolYear, sectionAdviser) {
     this.sectionAdviser = sectionAdviser;
 }
 
-function Payment(paymentID,amountPaid, datePaid, paymentPlan, studentID,sectionID){
+function Payment(paymentID, amountPaid, datePaid, paymentPlan, studentID, sectionID) {
     this.paymentID = paymentID;
     this.amountPaid = amountPaid;
     this.datePaid = new Date(datePaid);
@@ -107,14 +107,15 @@ function schoolYear(schoolYear, isCurrent) {
     this.schoolYear = schoolYear;
     this.isCurrent = isCurrent;
 }
-function CC_Payment(paymentID, ccType,ccExp,ccHolderName)
-{
+
+function CC_Payment(paymentID, ccType, ccExp, ccHolderName) {
     this.paymentID = paymentID;
     this.ccType = ccType;
     this.ccExp = ccExp;
     this.ccHolderName = ccHolderName;
 }
-function Bank_Payment(paymentID,accountName,accountNumber){
+
+function Bank_Payment(paymentID, accountName, accountNumber) {
     this.paymentID = paymentID;
     this.accountName = accountName;
     this.accountNumber = accountNumber;
@@ -483,69 +484,111 @@ async function getSProfile(studentID, schoolYear) {
 
 // get a list of students using 'schoolYear' an 'gradeLvl' as parameters
 async function getStudentListSYGL(schoolYear, gradeLvl) {
-    var sections = await getSectionsSYGL(schoolYear, gradeLvl);
-    var students = await getStudentsS(sections);
-    var studentList = await studentModel.aggregate(
+    try {
+        var sections = await getSectionsSYGL(schoolYear, gradeLvl);
+        var students = await getStudentsS(sections);
+        var studentList = await studentModel.aggregate(
+            [{
+                '$match': {
+                    'userID': {
+                        '$in': students
+                    }
+                }
+            }, {
+                '$lookup': {
+                    'from': 'users',
+                    'localField': 'userID',
+                    'foreignField': 'userID',
+                    'as': 'userData'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$userData',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'studentMembers',
+                    'localField': 'userID',
+                    'foreignField': 'studentID',
+                    'as': 'memberData'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$memberData',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$match': {
+                    'memberData.sectionID': {
+                        '$in': sections
+                    }
+                }
+            }, {
+                '$lookup': {
+                    'from': 'sections',
+                    'localField': 'memberData.sectionID',
+                    'foreignField': 'sectionID',
+                    'as': 'sectionData'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$sectionData',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$project': {
+                    'userID': 1,
+                    'firstname': '$userData.firstName',
+                    'middlename': '$userData.middleName',
+                    'lastname': '$userData.lastName',
+                    'remark': '$memberData.remarks',
+                    'schoolYear': '$sectionData.schoolYear'
+                }
+            }]
+        );
+    } catch {
+        studentList = null;
+    }
+    return studentList;
+}
+async function getStudentSY(studentID) {
+    return await studentModel.aggregate( //get school years in database base on the sectons of the student for display in dropdown element
         [{
             '$match': {
-                'userID': {
-                    '$in': students
-                }
-            }
-        }, {
-            '$lookup': {
-                'from': 'users',
-                'localField': 'userID',
-                'foreignField': 'userID',
-                'as': 'userData'
-            }
-        }, {
-            '$unwind': {
-                'path': '$userData',
-                'preserveNullAndEmptyArrays': true
+                'userID': studentID
             }
         }, {
             '$lookup': {
                 'from': 'studentMembers',
                 'localField': 'userID',
                 'foreignField': 'studentID',
-                'as': 'memberData'
+                'as': 'mbrDta'
             }
         }, {
             '$unwind': {
-                'path': '$memberData',
+                'path': '$mbrDta',
                 'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$match': {
-                'memberData.sectionID': {
-                    '$in': sections
-                }
             }
         }, {
             '$lookup': {
                 'from': 'sections',
-                'localField': 'memberData.sectionID',
+                'localField': 'mbrDta.sectionID',
                 'foreignField': 'sectionID',
-                'as': 'sectionData'
+                'as': 'secDta'
             }
         }, {
             '$unwind': {
-                'path': '$sectionData',
+                'path': '$secDta',
                 'preserveNullAndEmptyArrays': true
             }
         }, {
             '$project': {
-                'userID': 1,
-                'firstname': '$userData.firstName',
-                'middlename': '$userData.middleName',
-                'lastname': '$userData.lastName',
-                'remark': '$memberData.remarks',
-                'schoolYear': '$sectionData.schoolYear'
+                '_id': 0,
+                'value': '$secDta.schoolYear'
             }
         }]
     );
-    return studentList;
 }
 
 // gets the list of sections for the student
@@ -660,7 +703,7 @@ function renamePaymentPlan(string)
     switch(string){
         case "nextPayment":
             return "Next"
-                break;
+            break;
         case "fullPayment":
             return "Full";
             break;
@@ -1174,6 +1217,10 @@ const indexFunctions = {
             user,
             pass
         } = req.body;
+        var initSettings = {
+            schoolYear: await getCurrentSY(),
+            gradeLvl: 'Grade 1'
+        }
         try {
             var match = await findUser(user);
             console.log(user);
@@ -1190,6 +1237,7 @@ const indexFunctions = {
                             //send 201 admin
                             req.session.logUser = match;
                             req.session.type = 'admin';
+                            req.session.userSettings = initSettings;
                             res.send({
                                 status: 201
                             });
@@ -1197,6 +1245,7 @@ const indexFunctions = {
                             //send 202 teacher
                             req.session.logUser = match;
                             req.session.type = 'teacher';
+                            req.session.userSettings = initSettings;
                             res.send({
                                 status: 202
                             });
@@ -1204,6 +1253,7 @@ const indexFunctions = {
                             //send 203 parent
                             req.session.logUser = match;
                             req.session.type = 'parent';
+                            req.session.userSettings = initSettings;
                             res.send({
                                 status: 203
                             });
@@ -1211,6 +1261,7 @@ const indexFunctions = {
                             //send 204 student
                             req.session.logUser = match;
                             req.session.type = 'student';
+                            req.session.userSettings = initSettings;
                             res.send({
                                 status: 204
                             });
@@ -1242,13 +1293,10 @@ const indexFunctions = {
     // to show the students from the admins side
     getAuserStudents: async function (req, res) {
         // after grades have been set up: may have to merge student and another var grades instead of trying to aggregate for remarks
-        var SY = req.params.schoolYear;
-        var GL = req.params.gradeLvl;
         var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
             [{
                 '$project': {
                     'value': '$schoolYear',
-                    'selected': '$isCurrent'
                 }
             }]
         );
@@ -1263,22 +1311,17 @@ const indexFunctions = {
                 }
             }]
         );
-        if (SY || GL) {
-            var students = await getStudentListSYGL(SY, GL);
-        } else {
-            var currentYear = await getCurrentSY();
-            var students = await getStudentListSYGL(currentYear, gradeLvl[0].value);
-        }
-        req.session.studentList = students;
-        console.log(req.session.studentList);
+        var students = await getStudentListSYGL(req.session.userSettings.schoolYear, req.session.userSettings.gradeLvl);
         res.render('a_users_students', {
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
             lastname: req.session.logUser.lastName,
             title: 'Students',
             schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
             gradeLvl: gradeLvl,
-            student: req.session.studentList
+            GLSettings: req.session.userSettings.gradeLvl,
+            student: students
         });
     },
     // to show edit student agreements page for admins side
@@ -1481,7 +1524,7 @@ const indexFunctions = {
     },
 
     //function to show outstanding balance report form
-    getAReportBalance : async function(req,res){
+    getAReportBalance: async function (req, res) {
         var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
             [{
                 '$project': {
@@ -1490,8 +1533,8 @@ const indexFunctions = {
                 }
             }]
         );
-        res.render('a_report_OutstandingBalForm',{
-            title : "Outstanding Balance Report",
+        res.render('a_report_OutstandingBalForm', {
+            title: "Outstanding Balance Report",
             schoolYear: schoolYear
         })
     },
@@ -1650,6 +1693,7 @@ const indexFunctions = {
     // to show a students account for admin side
     getAuserSAcc: async function (req, res) {
         var studentID = req.params.userID;
+        var schoolYear = await getStudentSY(studentID);
         var studentinfo = await studentModel.aggregate(
             [{
                 '$match': {
@@ -1688,7 +1732,7 @@ const indexFunctions = {
                 }
             }, {
                 '$match': {
-                    'secDta.schoolYear': await getCurrentSY()
+                    'secDta.schoolYear': req.session.userSettings.schoolYear
                 }
             }, {
                 '$lookup': {
@@ -1751,14 +1795,97 @@ const indexFunctions = {
                         ]
                     },
                     'pmtType': '$pmtDta.paymentPlan',
-                    'begBal': '$erlDta.fullPayment'
+                    'begBal': '$erlDta.fullPayment',
+                    'secID': '$mbrDta.sectionID'
                 }
             }]
         );
-        console.log(studentinfo[0]);
+        var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID);
+        var remBal = studentinfo[0].begBal - paidAmt[0].totalAmountPaid;
+        var transHistPmt = await studentModel.aggregate(
+            [{
+                '$match': {
+                    //get only the relevant user
+                    'userID': studentinfo[0].userID
+                }
+            }, {
+                '$lookup': {
+                    'from': 'payments',
+                    'localField': 'userID',
+                    'foreignField': 'studentID',
+                    'as': 'pmtDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$pmtDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$match': {
+                    //get only the relevant section
+                    'pmtDta.sectionID': studentinfo[0].secID
+                }
+            }, {
+                '$lookup': {
+                    'from': 'cc_payment',
+                    'localField': 'pmtDta.paymentID',
+                    'foreignField': 'paymentID',
+                    'as': 'ccDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$ccDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'bank_payment',
+                    'localField': 'pmtDta.paymentID',
+                    'foreignField': 'paymentID',
+                    'as': 'bnkDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$bnkDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$project': {
+                    'pmtMtd': {
+                        '$switch': {
+                            //converts either cctype(cc) or accountNumber(bank) to boolean then if null(doesnt exist) pmtMtd field gets null otherwise gets either cctype or accountNumber
+                            'branches': [{
+                                'case': {
+                                    '$toBool': [
+                                        '$ccDta.ccType'
+                                    ]
+                                },
+                                'then': '$ccDta.ccType'
+                            }, {
+                                'case': {
+                                    '$toBool': [
+                                        '$bnkDta.accountNumber'
+                                    ]
+                                },
+                                'then': '$bnkDta.accountNumber'
+                            }],
+                            'default': null
+                        }
+                    },
+                    'dtPaid': '$pmtDta.datePaid',
+                    'pmtID': '$pmtDta.paymentID',
+                    'amt': '$pmtDta.amountPaid'
+                }
+            }]
+        );
         res.render('a_users_SAccount', {
             title: 'Student Account',
+            schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
             info: studentinfo[0],
+            paidAmt: paidAmt[0].totalAmountPaid,
+            remBal: remBal,
+            histPmt: transHistPmt,
         });
     },
 
@@ -1933,10 +2060,10 @@ const indexFunctions = {
         }
     },
 
-    getPpayCCOTP : async function(req,res){
-        res.render('p_pay_CCOTP',{
-            title:'Confirm Payment',
-            amountDue : req.session.amountDue
+    getPpayCCOTP: async function (req, res) {
+        res.render('p_pay_CCOTP', {
+            title: 'Confirm Payment',
+            amountDue: req.session.amountDue
         })
     },
     // to show the breakdown of details from the parents side
@@ -1982,26 +2109,26 @@ const indexFunctions = {
         var amountDue = req.session.amountDue;
         res.render('p_pay_bank', {
             title: 'Bank Statement',
-            amountDue:amountDue
+            amountDue: amountDue
         });
     },
 
     getPpayBankPlan: async function (req, res) {
         var parentID = req.session.logUser.userID;
-        try{
+        try {
             var studentList = await getStudentListParentID(parentID);
             console.log(studentList);
-            if(studentList)
+            if (studentList)
                 res.render('p_pay_BPlan', {
                     title: 'Bank Payment',
-                    student:studentList
+                    student: studentList
                 });
             else
                 res.render('error', {
                     title: 'Error',
                     msg: 'something went wrong'
                 });
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     },
@@ -2138,8 +2265,10 @@ const indexFunctions = {
                         req.session.paymentPlan = paymentPlan;
                         req.session.sectionID = studentMembers[0].sectionID;
                         console.log(req.session);
-                        
-                        res.send({status:201});
+
+                        res.send({
+                            status: 201
+                        });
                 }
                 // res.send({status:401, msg:'Student is enrolled'});
             } else {
@@ -2155,24 +2284,30 @@ const indexFunctions = {
     },
 
     // This function saves data from CCInfo page to session, to be used after approval of OTP
-    postPpayCCInfo: async function(req,res){
+    postPpayCCInfo: async function (req, res) {
         var {
             ccHolderName,
             ccNo,
             ccExp,
             ccType
         } = req.body;
-        
-        try{
+
+        try {
             req.session.ccHolderName = ccHolderName;
             req.session.ccNo = ccNo;
             req.session.ccExp = ccExp;
             req.session.ccType = ccType;
-            var OTP = Math.random().toString().slice(2,10);;
+            var OTP = Math.random().toString().slice(2, 10);;
             req.session.otp = OTP;
-            res.send({status:201, otp:OTP});
-        }catch(e){
-            res.send({status:500,msg:e});
+            res.send({
+                status: 201,
+                otp: OTP
+            });
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            });
         }
     },
 
@@ -2180,13 +2315,15 @@ const indexFunctions = {
      *      This function is used to post the payment information once otp is confirmed to match
      */
 
-     postPpayCCOTP : async function(req,res){
-         var otp = req.body.otp;
-         try {
-             if(otp != req.session.otp)
-                res.send({status:401, msg:'OTP does not match'});
-            else
-            {
+    postPpayCCOTP: async function (req, res) {
+        var otp = req.body.otp;
+        try {
+            if (otp != req.session.otp)
+                res.send({
+                    status: 401,
+                    msg: 'OTP does not match'
+                });
+            else {
                 var sectionID = req.session.sectionID;
                 var paymentID = await getNextPaymentID();
                 var paymentPlan = renamePaymentPlan(req.session.paymentPlan);
@@ -2194,13 +2331,13 @@ const indexFunctions = {
                 var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),paymentPlan,req.session.studentID,sectionID);
                 var newPayment = new paymentModel(paymentData);
                 var paymentResult = await newPayment.recordNewPayment();
-                
+
 
                 if (paymentResult) {
-                    var cc_payment = new CC_Payment(paymentID, req.session.ccType,req.session.ccExp,req.session.ccHolderName);
+                    var cc_payment = new CC_Payment(paymentID, req.session.ccType, req.session.ccExp, req.session.ccHolderName);
                     var newcc_payment = new cc_paymentModel(cc_payment);
                     var newcc_paymentResult = await newcc_payment.recordNewCCPayment();
-                    if(newcc_paymentResult)
+                    if (newcc_paymentResult)
                         res.send({
                             status: 201
                         });
@@ -2216,14 +2353,17 @@ const indexFunctions = {
                     });
                 }
             }
-         } catch (e) {
-             res.send({status:500, msg:e});
-         }
-     },
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            });
+        }
+    },
 
-     // this function is used to post bank payments
-     
-    postPpayBank:async function(req,res){
+    // this function is used to post bank payments
+
+    postPpayBank: async function (req, res) {
         var {
             accountNumber,
             accountName
@@ -2256,10 +2396,13 @@ const indexFunctions = {
                         status: 401,
                         msg: 'There is an error when adding payment'
                     });
-                }
-         }catch(e) {
-             res.send({status:500, msg:e});
-         }
+            }
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            });
+        }
     },
 
     /*
@@ -2526,6 +2669,18 @@ const indexFunctions = {
         }
     },
 
+    /*
+     USER SETTINGS FUNCTIONS
+     */
 
+
+    postUserSettingsSY: function (req, res) {
+        req.session.userSettings.schoolYear = req.params.SY;
+        res.send();
+    },
+    postUserSettingsGL: function (req, res) {
+        req.session.userSettings.gradeLvl = req.params.GL;
+        res.send();
+    },
 }
 module.exports = indexFunctions;

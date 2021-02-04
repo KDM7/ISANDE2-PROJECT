@@ -9,46 +9,47 @@
             <div class="container">
                 <div class="mt-1 container">
                     <div class="row">
-                        <select class="form-control" id="a_u_SA_schoolYear">
+                        <select class="form-control dropdown-schoolYear">
                             <option value="">--School Year--</option>
-                            {{!-- {{#each schoolYear}}
+                            <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
+                            {{#each schoolYear}}
                             {{>dropdownOpt this}}
-                            {{/each}} --}}
+                            {{/each}}
                         </select>
                     </div>
                 </div>
                 <div class="mt-2">
-                    <div class="col-8">
+                    <div class="col-6">
                         <table class="table table-bordered">
-                            <thead class="thead-primary">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th class="text-center" colspan="2">Transaction Details</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>School Year:</td>
+                                    <td class="text-right">School Year:</td>
                                     <td>{{info.schoolYear}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Grade Level:</td>
+                                    <td class="text-right">Grade Level:</td>
                                     <td>{{info.gradeLvl}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Student No:</td>
+                                    <td class="text-right">Student No:</td>
                                     <td>{{info.userID}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Student Name:</td>
+                                    <td class="text-right">Student Name:</td>
                                     <td>{{info.name}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Payment Type:</td>
+                                    <td class="text-right">Payment Type:</td>
                                     <td>{{info.pmtType}}</td>
                                 </tr>
-                                <tr>
-                                    <td>Beginning Balance</td>
-                                    <td class="table-success">Php {{getPrice info.begBal}}</td>
+                                <tr class="table-success">
+                                    <td class="text-right">Beginning Balance</td>
+                                    <td class="text-right">Php {{getPrice info.begBal}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -58,41 +59,44 @@
                         <table class="table table-bordered">
                             <thead class="thead-primary">
                                 <tr>
-                                    <th scope="col">Paid Amount</th>
-                                    <th scope="col">Remaining Balance</th>
+                                    <th scope="col" class="text-center">Paid Amount</th>
+                                    <th scope="col" class="text-center">Remaining Balance</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Php total(student > payments)</td>
-                                    <td>Php students > studentMembers > upon_enrollment - total(student > payments)</td>
+                                    <td class="text-right">Php {{getPrice paidAmt}}</td>
+                                    <td class="text-right">Php {{getPrice remBal}}</td>
                                 </tr>
                             </tbody>
                         </table>
-                      
+
                         <br><br>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered table-striped">
                             <thead class="thead-primary">
                                 <tr>
                                     <th class="text-center" colspan="4">Transaction History Payment</th>
                                 </tr>
                                 <tr>
-                                    <th scope="col">Date Paid</th>
-                                    <th scope="col">Payment ID</th>
-                                    <th scope="col">Payment Method</th>
-                                    <th scope="col">Amount</th>
+                                    <th scope="col" class="text-center">Date Paid</th>
+                                    <th scope="col" class="text-center">Payment ID</th>
+                                    <th scope="col" class="text-center">Payment Method</th>
+                                    <th scope="col" class="text-center">Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                {{#each histPmt}}
                                 <tr>
-                                    <td>student > payments</td>
-                                    <td>student > payments</td>
-                                    <td>student > payments</td>
-                                    <td>Php student > payments</td>
+                                    <td class="text-center">{{getDate dtPaid}}</td>
+                                    <td class="text-center">{{pmtID}}</td>
+                                    <td>{{toPmtMtd pmtMtd}}</td>
+                                    <td class="text-right">Php {{getPrice amt}}</td>
                                 </tr>
+                                {{/each}}
+
                                 <tr>
-                                    <td colspan="3" class="text-right font-weight-bold">Total Paid Amount</td>
-                                    <td class="font-weight-bold">Php total(student > payments)</td>
+                                    <td colspan="3" class="text-right font-weight-bold">Total Paid Amount:</td>
+                                    <td class="font-weight-bold text-right">Php {{getPrice paidAmt}}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -52,7 +52,7 @@ router.get('/a/users/PAccount', controller.getAuserPAcc);
 router.get('/a/users/AProfile', controller.getAuserAProf);
 router.get('/a/users/admins', controller.getAuserAdmin);
 router.get('/a/users/students', controller.getAuserStudents);
-router.get('/a/users/students/:schoolYear/:gradeLvl', controller.getAuserStudents);
+// router.get('/a/users/students/:schoolYear/:gradeLvl', controller.getAuserStudents);
 router.get('/a/users/teachers', controller.getAuserTeachers);
 router.get('/a/users/TProfile', controller.getAuserTProf);
 router.get('/a/users/editTeachers', controller.getAusereditTeachers);
@@ -85,10 +85,10 @@ router.get('/p/trans/brkdwn', controller.getPtransBD);
 router.get('/p/trans/stmacc', controller.getPtransSA);
 
 router.post('/enrollold', controller.postEnrollmentOld);
-router.post('/p/submitCCPlan',controller.postPpayCCPlan);
-router.post('/p/submitCCInfo',controller.postPpayCCInfo);
-router.post('/p/submitCCOTP',controller.postPpayCCOTP);
-router.post('/p/submitBankPayment',controller.postPpayBank);
+router.post('/p/submitCCPlan', controller.postPpayCCPlan);
+router.post('/p/submitCCInfo', controller.postPpayCCInfo);
+router.post('/p/submitCCOTP', controller.postPpayCCOTP);
+router.post('/p/submitBankPayment', controller.postPpayBank);
 /*
     STUDENT
 */
@@ -103,9 +103,13 @@ router.get('/s/trans/brkdwn', controller.getStransBD);
 router.get('/s/trans/stmacc', controller.getStransSA);
 
 router.post('/enroll', controller.postEnrollmentNew);
-router.post('/enroll/parent/old',indexMiddleware.validateEnrollOldParent, controller.postEnrollParentOld);
-router.post('/enroll/parent/new',controller.postEnrollParentNew);
-
+router.post('/enroll/parent/old', indexMiddleware.validateEnrollOldParent, controller.postEnrollParentOld);
+router.post('/enroll/parent/new', controller.postEnrollParentNew);
+/*
+    USER SETTINGS
+*/
+router.post('/userSettings/schoolYear/:SY', controller.postUserSettingsSY);
+router.post('/userSettings/gradeLvl/:GL', controller.postUserSettingsGL);
 
 module.exports = router;
 

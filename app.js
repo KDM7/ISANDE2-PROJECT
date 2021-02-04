@@ -120,6 +120,11 @@ app.engine('hbs', exphbs.create({
         getPrice: function(price) {
             return price.toFixed(2);
         },
+        toPmtMtd(pmtMtd){
+            if(pmtMtd != 'visa' || pmtMtd != 'MasterCard')
+                return 'Bank';
+            return 'N/A';
+        }
     }
 }).engine);
 app.set('view engine', 'hbs');
