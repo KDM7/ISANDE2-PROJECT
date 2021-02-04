@@ -121,7 +121,7 @@ app.engine('hbs', exphbs.create({
             return price.toFixed(2);
         },
         toPmtMtd(pmtMtd) {
-            if (pmtMtd != 'visa' || pmtMtd != 'MasterCard')
+            if (pmtMtd != 'Visa' || pmtMtd != 'MasterCard')
                 return 'Bank';
             return 'N/A';
         },
