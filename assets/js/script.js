@@ -715,12 +715,17 @@ $(document).ready(function () {
         If Parent does not have account
             -Create Parent Account
     */
-    $('#a_u_ST_Search').on('click', function(){
-        var schoolYear = $('#a_u_ST_schoolYear').val();
-        var gradeLvl = $('#a_u_ST_gradeLVL').val();
+    $('.dropdown-schoolYear').on('change', function(){
+        var schoolYear = $('.dropdown-schoolYear').val();
         console.log(schoolYear);
+        $.post('/userSettings/schoolYear/' + schoolYear, function () {
+            location.reload();
+        });
+    });
+    $('.dropdown-gradeLvl').on('change', function(){
+        var gradeLvl = $('.dropdown-gradeLvl').val();
         console.log(gradeLvl);
-        $.get('/a/users/students/' + schoolYear + '/' + gradeLvl, function (res) {
+        $.post('/userSettings/gradeLvl/' + gradeLvl, function () {
             location.reload();
         });
     });

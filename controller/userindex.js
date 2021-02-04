@@ -448,71 +448,75 @@ async function getSProfile(studentID, schoolYear) {
 
 // get a list of students using 'schoolYear' an 'gradeLvl' as parameters
 async function getStudentListSYGL(schoolYear, gradeLvl) {
-    var sections = await getSectionsSYGL(schoolYear, gradeLvl);
-    var students = await getStudentsS(sections);
-    var studentList = await studentModel.aggregate(
-        [{
-            '$match': {
-                'userID': {
-                    '$in': students
+    try {
+        var sections = await getSectionsSYGL(schoolYear, gradeLvl);
+        var students = await getStudentsS(sections);
+        var studentList = await studentModel.aggregate(
+            [{
+                '$match': {
+                    'userID': {
+                        '$in': students
+                    }
                 }
-            }
-        }, {
-            '$lookup': {
-                'from': 'users',
-                'localField': 'userID',
-                'foreignField': 'userID',
-                'as': 'userData'
-            }
-        }, {
-            '$unwind': {
-                'path': '$userData',
-                'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$lookup': {
-                'from': 'studentMembers',
-                'localField': 'userID',
-                'foreignField': 'studentID',
-                'as': 'memberData'
-            }
-        }, {
-            '$unwind': {
-                'path': '$memberData',
-                'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$match': {
-                'memberData.sectionID': {
-                    '$in': sections
+            }, {
+                '$lookup': {
+                    'from': 'users',
+                    'localField': 'userID',
+                    'foreignField': 'userID',
+                    'as': 'userData'
                 }
-            }
-        }, {
-            '$lookup': {
-                'from': 'sections',
-                'localField': 'memberData.sectionID',
-                'foreignField': 'sectionID',
-                'as': 'sectionData'
-            }
-        }, {
-            '$unwind': {
-                'path': '$sectionData',
-                'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$project': {
-                'userID': 1,
-                'firstname': '$userData.firstName',
-                'middlename': '$userData.middleName',
-                'lastname': '$userData.lastName',
-                'remark': '$memberData.remarks',
-                'schoolYear': '$sectionData.schoolYear'
-            }
-        }]
-    );
+            }, {
+                '$unwind': {
+                    'path': '$userData',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'studentMembers',
+                    'localField': 'userID',
+                    'foreignField': 'studentID',
+                    'as': 'memberData'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$memberData',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$match': {
+                    'memberData.sectionID': {
+                        '$in': sections
+                    }
+                }
+            }, {
+                '$lookup': {
+                    'from': 'sections',
+                    'localField': 'memberData.sectionID',
+                    'foreignField': 'sectionID',
+                    'as': 'sectionData'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$sectionData',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$project': {
+                    'userID': 1,
+                    'firstname': '$userData.firstName',
+                    'middlename': '$userData.middleName',
+                    'lastname': '$userData.lastName',
+                    'remark': '$memberData.remarks',
+                    'schoolYear': '$sectionData.schoolYear'
+                }
+            }]
+        );
+    } catch {
+        studentList = null;
+    }
     return studentList;
 }
-async function getStudentSY(studentID){
+async function getStudentSY(studentID) {
     return await studentModel.aggregate( //get school years in database base on the sectons of the student for display in dropdown element
         [{
             '$match': {
@@ -1026,6 +1030,10 @@ const indexFunctions = {
             user,
             pass
         } = req.body;
+        var initSettings = {
+            schoolYear: await getCurrentSY(),
+            gradeLvl: 'Grade 1'
+        }
         try {
             var match = await findUser(user);
             console.log(user);
@@ -1042,6 +1050,7 @@ const indexFunctions = {
                             //send 201 admin
                             req.session.logUser = match;
                             req.session.type = 'admin';
+                            req.session.userSettings = initSettings;
                             res.send({
                                 status: 201
                             });
@@ -1049,6 +1058,7 @@ const indexFunctions = {
                             //send 202 teacher
                             req.session.logUser = match;
                             req.session.type = 'teacher';
+                            req.session.userSettings = initSettings;
                             res.send({
                                 status: 202
                             });
@@ -1056,6 +1066,7 @@ const indexFunctions = {
                             //send 203 parent
                             req.session.logUser = match;
                             req.session.type = 'parent';
+                            req.session.userSettings = initSettings;
                             res.send({
                                 status: 203
                             });
@@ -1063,6 +1074,7 @@ const indexFunctions = {
                             //send 204 student
                             req.session.logUser = match;
                             req.session.type = 'student';
+                            req.session.userSettings = initSettings;
                             res.send({
                                 status: 204
                             });
@@ -1094,13 +1106,10 @@ const indexFunctions = {
     // to show the students from the admins side
     getAuserStudents: async function (req, res) {
         // after grades have been set up: may have to merge student and another var grades instead of trying to aggregate for remarks
-        var SY = req.params.schoolYear;
-        var GL = req.params.gradeLvl;
         var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
             [{
                 '$project': {
                     'value': '$schoolYear',
-                    'selected': '$isCurrent'
                 }
             }]
         );
@@ -1115,22 +1124,17 @@ const indexFunctions = {
                 }
             }]
         );
-        if (SY || GL) {
-            var students = await getStudentListSYGL(SY, GL);
-        } else {
-            var currentYear = await getCurrentSY();
-            var students = await getStudentListSYGL(currentYear, gradeLvl[0].value);
-        }
-        req.session.studentList = students;
-        console.log(req.session.studentList);
+        var students = await getStudentListSYGL(req.session.userSettings.schoolYear, req.session.userSettings.gradeLvl);
         res.render('a_users_students', {
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
             lastname: req.session.logUser.lastName,
             title: 'Students',
             schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
             gradeLvl: gradeLvl,
-            student: req.session.studentList
+            GLSettings: req.session.userSettings.gradeLvl,
+            student: students
         });
     },
     // to show edit student agreements page for admins side
@@ -1532,7 +1536,7 @@ const indexFunctions = {
                 }
             }, {
                 '$match': {
-                    'secDta.schoolYear': await getCurrentSY()
+                    'secDta.schoolYear': req.session.userSettings.schoolYear
                 }
             }, {
                 '$lookup': {
@@ -1681,6 +1685,7 @@ const indexFunctions = {
         res.render('a_users_SAccount', {
             title: 'Student Account',
             schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
             info: studentinfo[0],
             paidAmt: paidAmt[0].totalAmountPaid,
             remBal: remBal,
@@ -2452,6 +2457,18 @@ const indexFunctions = {
         }
     },
 
+    /*
+     USER SETTINGS FUNCTIONS
+     */
 
+
+    postUserSettingsSY: function (req, res) {
+        req.session.userSettings.schoolYear = req.params.SY;
+        res.send();
+    },
+    postUserSettingsGL: function (req, res) {
+        req.session.userSettings.gradeLvl = req.params.GL;
+        res.send();
+    },
 }
 module.exports = indexFunctions;

@@ -9,8 +9,9 @@
             <div class="container">
                 <div class="mt-1 container">
                     <div class="row">
-                        <select class="form-control" id="a_u_SA_schoolYear">
+                        <select class="form-control dropdown-schoolYear">
                             <option value="">--School Year--</option>
+                            <option value="{{SYSettings}}">{{SYSettings}}</option>
                             {{#each schoolYear}}
                             {{>dropdownOpt this}}
                             {{/each}}

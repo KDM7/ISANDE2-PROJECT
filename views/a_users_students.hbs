@@ -12,7 +12,8 @@
                         <div class="form-group row">
                             <label for="a_u_ST_schoolYear"
                                 class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
-                            <select class="form-control col-9 p-0 m-0" id="a_u_ST_schoolYear">
+                            <select class="form-control col-9 p-0 m-0 dropdown-schoolYear">
+                                <option value="{{SYSettings}}">{{SYSettings}}</option>
                                 {{#each schoolYear}}
                                 {{>dropdownOpt this}}
                                 {{/each}}
@@ -33,7 +34,8 @@
                         <div class="form-group row">
                             <label for="a_u_ST_gradeLVL"
                                 class="col-3 d-flex justify-content-center align-items-center m-0">Grade Level:</label>
-                            <select class="form-control col-9 p-0 m-0" id="a_u_ST_gradeLVL">
+                            <select class="form-control col-9 p-0 m-0 dropdown-gradeLvl">
+                                <option value="{{GLSettings}}">{{GLSettings}}</option>
                                 {{#each gradeLvl}}
                                 {{>dropdownOpt this}}
                                 {{/each}}
