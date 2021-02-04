@@ -117,6 +117,9 @@ app.engine('hbs', exphbs.create({
             if (remark == 'FA')
                 return true;
         },
+        getPrice: function(price) {
+            return price.toFixed(2);
+        },
     }
 }).engine);
 app.set('view engine', 'hbs');

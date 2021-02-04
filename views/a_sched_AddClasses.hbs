@@ -1,0 +1,44 @@
+{{!-- This is for viewing all of the students, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+<div class="col-9">
+    <div class="container shadow bg-light p-3">
+        <div class="display-4">Add Class</div>
+        <form>
+            <div class="form-group">
+                <label for="a_s_AC_Subject">Subject:</label>
+                <select id="a_s_AC_Subject" class="form-control">
+                    {{#each subject}}
+                    {{>dropdownOpt2 this}}
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="a_s_AC_Section">Section:</label>
+                <select id="a_s_AC_Section" class="form-control">
+                    {{#each section}}
+                    {{>dropdownOpt2 this}}
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="a_s_AC_Teacher">Teacher:</label>
+                <select id="a_s_AC_Teacher" class="form-control">
+                    {{#each teacher}}
+                    {{>dropdownOpt3 this}}
+                    {{/each}}
+                </select>
+            </div>
+            <br>
+            <button id="a_s_AC_AddClass" type="button" class="btn btn-primary btn-block">Add Class</button>
+        </form>
+    </div>
+</div>
+
+
+</div>
+</div>

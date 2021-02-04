@@ -23,15 +23,19 @@ router.get('/a/fees/misc', controller.getAfeeMisc);
 router.get('/a/fees/other', controller.getAfeeOthers);
 router.get('/a/fees/tuition', controller.getAfeeTuition);
 router.get('/a/fees/uponE', controller.getAfeeUponE);
+router.get('/a/sched/AddClasses', controller.getAschedAddClasses);
+router.get('/a/sched/ViewClasses', controller.getAschedViewClasses);
 router.get('/a/sched/CurSchoolYr', controller.getAschedCurSchoolYr);
 router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
 router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
 router.get('/a/report/outstandingBalance',controller.getAReportBalance);
 
+router.post('/addClass', controller.postAddClass);
 router.post('/enroll/approve', controller.postEnrollmentApproved);
 router.post('/enroll/deny', controller.postEnrollmentRejected);
 
+router.post('/addClass', controller.postAddClass);
 //New Event
 router.get('/a/sched/newAcadCalendar', controller.getAschednewAcadCalendar);
 router.post('/newAcadCalendar', controller.postNewAcadCalendar);
@@ -39,13 +43,14 @@ router.post('/newAcadCalendar', controller.postNewAcadCalendar);
 router.get('/a/sched/editAcadCalendar', controller.getAschededitAcadCalendar);
 router.get('/a/users/SProfile/:userID/:schoolYear', controller.getAuserSProf);
 router.get('/a/users/SEmail', controller.getAuserSEmail);
-router.get('/a/users/SAccount', controller.getAuserSAcc);
+router.get('/a/users/SAccount/:userID', controller.getAuserSAcc);
 router.get('/a/users/PProfile', controller.getAuserPProf);
 router.get('/a/users/parents', controller.getAuserParent);
 router.get('/a/users/PAccount', controller.getAuserPAcc);
 router.get('/a/users/AProfile', controller.getAuserAProf);
 router.get('/a/users/admins', controller.getAuserAdmin);
 router.get('/a/users/students', controller.getAuserStudents);
+router.get('/a/users/students/:schoolYear/:gradeLvl', controller.getAuserStudents);
 router.get('/a/users/teachers', controller.getAuserTeachers);
 router.get('/a/users/TProfile', controller.getAuserTProf);
 router.get('/a/users/editTeachers', controller.getAusereditTeachers);
