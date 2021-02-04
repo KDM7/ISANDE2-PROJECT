@@ -22,6 +22,7 @@ const classModel = require("../model/classdb");
 const upon_enrollmentModel = require("../model/upon_enrollmentdb");
 const cc_paymentModel = require("../model/cc_paymentdb");
 const bank_paymentModel = require("../model/bank_paymentdb");
+const feesModel = require("../model/feesdb");
 
 const bcrypt = require('bcrypt');
 const e = require('express');
@@ -698,9 +699,8 @@ async function getNextStudentID() {
     //  console.log(highestID);
 }
 
-function renamePaymentPlan(string)
-{
-    switch(string){
+function renamePaymentPlan(string) {
+    switch (string) {
         case "nextPayment":
             return "Next"
             break;
@@ -722,9 +722,9 @@ function renamePaymentPlan(string)
         case "monthlyPayment":
             return "Monthly";
             break;
-        }
-}   
-async function getNextPaymentID(){
+    }
+}
+async function getNextPaymentID() {
     var startNum = 1;
     var schoolYear = await getIDPrefix();
     schoolYear = parseInt(schoolYear.substr(0, 2));
@@ -965,26 +965,24 @@ async function getAmountOwed(studentID, sectionID, paymentPlan) {
     return amountDue;
 }
 //gets all section information based on school year
-async function getSectionList(schoolYear){
-    var sectionList = await sectionModel.aggregate([
-        {
-          '$match': {
+async function getSectionList(schoolYear) {
+    var sectionList = await sectionModel.aggregate([{
+        '$match': {
             'schoolYear': schoolYear
-          }
-        }, {
-          '$sort': {
-            'sectionID': 1
-          }
-        }, {
-          '$project': {
-            'sectionID': 1, 
-            'sectionName': 1, 
-            'schoolYear': 1, 
-            'sectionAdviser': 1
-          }
         }
-      ]);
-    return sectionList;   
+    }, {
+        '$sort': {
+            'sectionID': 1
+        }
+    }, {
+        '$project': {
+            'sectionID': 1,
+            'sectionName': 1,
+            'schoolYear': 1,
+            'sectionAdviser': 1
+        }
+    }]);
+    return sectionList;
 }
 
 async function getNextParentID() {
@@ -1078,123 +1076,121 @@ async function getMinMaxEventID(sortby, offset) {
         Section
         Remaining Balance
 */
-async function getBalanceReportData(schoolYear){
+async function getBalanceReportData(schoolYear) {
     var sections = await getSectionsSY(schoolYear);
-    var reportData = await sectionModel.aggregate([
-        {
-          '$match': {
+    var reportData = await sectionModel.aggregate([{
+        '$match': {
             'sectionID': {
-              '$in': sections
+                '$in': sections
             }
-          }
-        }, {
-          '$lookup': {
-            'from': 'upon_enrollment', 
-            'localField': 'sectionID', 
-            'foreignField': 'sectionID', 
-            'as': 'upon_enrollment'
-          }
-        }, {
-          '$unwind': {
-            'path': '$upon_enrollment', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$lookup': {
-            'from': 'studentMembers', 
-            'localField': 'sectionID', 
-            'foreignField': 'sectionID', 
-            'as': 'studentMembers'
-          }
-        }, {
-          '$unwind': {
-            'path': '$studentMembers', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$lookup': {
-            'from': 'payments', 
-            'localField': 'studentMembers.studentID', 
-            'foreignField': 'studentID', 
-            'as': 'payments'
-          }
-        }, {
-          '$unwind': {
-            'path': '$payments', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$match': {
-            'payments.sectionID': {
-              '$in': sections
-            }
-          }
-        }, {
-          '$group': {
-            '_id': '$payments.studentID', 
-            'totalAmtPaid': {
-              '$sum': '$payments.amountPaid'
-            }, 
-            'amountDue': {
-              '$first': '$upon_enrollment.fullPayment'
-            }, 
-            'studentID': {
-              '$first': '$studentMembers.studentID'
-            }, 
-            'sectionID': {
-              '$first': '$sectionID'
-            }, 
-            'sectionName': {
-              '$first': '$sectionName'
-            }
-          }
-        }, {
-          '$addFields': {
-            'remainingBalance': {
-              '$subtract': [
-                '$amountDue', '$totalAmtPaid'
-              ]
-            }
-          }
-        }, {
-          '$match': {
-            'remainingBalance': {
-              '$gt': 0
-            }
-          }
-        }, {
-          '$lookup': {
-            'from': 'users', 
-            'localField': 'studentID', 
-            'foreignField': 'userID', 
-            'as': 'studentInfo'
-          }
-        }, {
-          '$unwind': {
-            'path': '$studentInfo', 
-            'preserveNullAndEmptyArrays': false
-          }
-        }, {
-          '$addFields': {
-            'name': {
-              '$concat': [
-                '$studentInfo.lastName', ',', '$studentInfo.firstName', ' ', '$studentInfo.middleName'
-              ]
-            }
-          }
-        }, {
-          '$sort': {
-            'name': 1
-          }
-        }, {
-          '$project': {
-            'studentID': 1, 
-            'sectionName': 1, 
-            'remainingBalance': 1, 
-            'name': 1
-          }
         }
-      ])
+    }, {
+        '$lookup': {
+            'from': 'upon_enrollment',
+            'localField': 'sectionID',
+            'foreignField': 'sectionID',
+            'as': 'upon_enrollment'
+        }
+    }, {
+        '$unwind': {
+            'path': '$upon_enrollment',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'studentMembers',
+            'localField': 'sectionID',
+            'foreignField': 'sectionID',
+            'as': 'studentMembers'
+        }
+    }, {
+        '$unwind': {
+            'path': '$studentMembers',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'payments',
+            'localField': 'studentMembers.studentID',
+            'foreignField': 'studentID',
+            'as': 'payments'
+        }
+    }, {
+        '$unwind': {
+            'path': '$payments',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$match': {
+            'payments.sectionID': {
+                '$in': sections
+            }
+        }
+    }, {
+        '$group': {
+            '_id': '$payments.studentID',
+            'totalAmtPaid': {
+                '$sum': '$payments.amountPaid'
+            },
+            'amountDue': {
+                '$first': '$upon_enrollment.fullPayment'
+            },
+            'studentID': {
+                '$first': '$studentMembers.studentID'
+            },
+            'sectionID': {
+                '$first': '$sectionID'
+            },
+            'sectionName': {
+                '$first': '$sectionName'
+            }
+        }
+    }, {
+        '$addFields': {
+            'remainingBalance': {
+                '$subtract': [
+                    '$amountDue', '$totalAmtPaid'
+                ]
+            }
+        }
+    }, {
+        '$match': {
+            'remainingBalance': {
+                '$gt': 0
+            }
+        }
+    }, {
+        '$lookup': {
+            'from': 'users',
+            'localField': 'studentID',
+            'foreignField': 'userID',
+            'as': 'studentInfo'
+        }
+    }, {
+        '$unwind': {
+            'path': '$studentInfo',
+            'preserveNullAndEmptyArrays': false
+        }
+    }, {
+        '$addFields': {
+            'name': {
+                '$concat': [
+                    '$studentInfo.lastName', ',', '$studentInfo.firstName', ' ', '$studentInfo.middleName'
+                ]
+            }
+        }
+    }, {
+        '$sort': {
+            'name': 1
+        }
+    }, {
+        '$project': {
+            'studentID': 1,
+            'sectionName': 1,
+            'remainingBalance': 1,
+            'name': 1
+        }
+    }])
     return reportData;
 }
 
@@ -1368,7 +1364,7 @@ const indexFunctions = {
 
     // to show Additional Fees page for admin side
     getAfeeAdd: function (req, res) {
-        res.render('a_fee_add', {
+        res.render('a_fees_add', {
             title: 'Additional Fees',
         });
     },
@@ -1382,14 +1378,14 @@ const indexFunctions = {
 
     // to show Miscellaneous Fees page for admin side
     getAfeeMisc: function (req, res) {
-        res.render('a_fee_misc', {
+        res.render('a_fees_misc', {
             title: 'Miscellaneous Fees'
         });
     },
 
     // to show Other Fees page for admin side
     getAfeeOthers: function (req, res) {
-        res.render('a_fees_others', {
+        res.render('a_fees_other', {
             title: 'Other Fees'
         });
     },
@@ -1398,6 +1394,101 @@ const indexFunctions = {
     getAfeeTuition: function (req, res) {
         res.render('a_fees_tuition', {
             title: 'Tuition Fees',
+        });
+    },
+
+    getAfeeManage: async function (req, res) {
+        var fees = await feesModel.aggregate(
+            [{
+                '$match': {
+                    'schoolYear': req.session.userSettings.schoolYear
+                }
+            }, {
+                '$lookup': {
+                    'from': 'sections',
+                    'localField': 'sectionID',
+                    'foreignField': 'sectionID',
+                    'as': 'secDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$secDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'ref_section',
+                    'localField': 'secDta.sectionName',
+                    'foreignField': 'sectionName',
+                    'as': 'refSec'
+                }
+            }, {
+                '$match': {
+                    'refSec.gradeLvl': req.session.userSettings.gradeLvl
+                }
+            }, {
+                '$project': {
+                    '_id': 0,
+                    'tuition': 1,
+                    'misc': 1,
+                    'additional': 1,
+                    'other': 1
+                }
+            }]
+        );
+        var schoolYear = await feesModel.aggregate(
+            [{
+                '$group': {
+                    '_id': '$schoolYear'
+                }
+            }, {
+                '$project': {
+                    '_id': 0,
+                    'value': '$_id'
+                }
+            }]
+        );
+        var gradeLvl = await feesModel.aggregate([{
+            '$lookup': {
+                'from': 'sections',
+                'localField': 'sectionID',
+                'foreignField': 'sectionID',
+                'as': 'secDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$secDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$lookup': {
+                'from': 'ref_section',
+                'localField': 'secDta.sectionName',
+                'foreignField': 'sectionName',
+                'as': 'refSec'
+            }
+        }, {
+            '$unwind': {
+                'path': '$refSec',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$group': {
+                '_id': '$refSec.gradeLvl'
+            }
+        }, {
+            '$project': {
+                '_id': 0,
+                'value': '$_id'
+            }
+        }]);
+        res.render('a_fees_Manage', {
+            title: 'Manage Fees',
+            schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
+            gradeLvl: gradeLvl,
+            GLSettings: req.session.userSettings.gradeLvl,
+            fees: fees[0],
         });
     },
 
@@ -1539,12 +1630,12 @@ const indexFunctions = {
         })
     },
 
-    getAReportBalanceTable : async function(req,res){
+    getAReportBalanceTable: async function (req, res) {
         var schoolYear = req.session.reportschoolYear;
         var reportData = await getBalanceReportData(schoolYear);
         console.log(reportData);
-        res.render('a_report_OutstandingBalTable',{
-            title : "Outstanding Balance Report",
+        res.render('a_report_OutstandingBalTable', {
+            title: "Outstanding Balance Report",
         })
     },
     // function to approve student enrollment
@@ -1953,16 +2044,20 @@ const indexFunctions = {
         });
     },
 
-    postOutstandingBalReport: async function(req,res){
+    postOutstandingBalReport: async function (req, res) {
         var schoolYear = req.body.schoolYear;
-        try
-        {
+        try {
             req.session.reportschoolYear = schoolYear;
-            res.send({status:201});
-        }catch(e){
-            res.send({status:500,msg:e})
+            res.send({
+                status: 201
+            });
+        } catch (e) {
+            res.send({
+                status: 500,
+                msg: e
+            })
         }
-        
+
 
     },
 
@@ -2259,7 +2354,7 @@ const indexFunctions = {
                     default:
                         console.log(amountDue);
                         console.log(studentID);
-                    
+
                         req.session.studentID = studentID;
                         req.session.amountDue = amountDue;
                         req.session.paymentPlan = paymentPlan;
@@ -2328,7 +2423,7 @@ const indexFunctions = {
                 var paymentID = await getNextPaymentID();
                 var paymentPlan = renamePaymentPlan(req.session.paymentPlan);
 
-                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),paymentPlan,req.session.studentID,sectionID);
+                var paymentData = new Payment(paymentID, req.session.amountDue, new Date(), paymentPlan, req.session.studentID, sectionID);
                 var newPayment = new paymentModel(paymentData);
                 var paymentResult = await newPayment.recordNewPayment();
 
@@ -2369,33 +2464,33 @@ const indexFunctions = {
             accountName
         } = req.body;
         accountNumber = parseInt(accountNumber);
-         try {
-                var paymentID = await getNextPaymentID();
-                var sectionID = req.session.sectionID;
-                var paymentPlan = renamePaymentPlan(req.session.paymentPlan);
+        try {
+            var paymentID = await getNextPaymentID();
+            var sectionID = req.session.sectionID;
+            var paymentPlan = renamePaymentPlan(req.session.paymentPlan);
 
-                var paymentData = new Payment(paymentID,req.session.amountDue,new Date(),paymentPlan,req.session.studentID,sectionID);
-                var newPayment = new paymentModel(paymentData);
-                var paymentResult = await newPayment.recordNewPayment();                
+            var paymentData = new Payment(paymentID, req.session.amountDue, new Date(), paymentPlan, req.session.studentID, sectionID);
+            var newPayment = new paymentModel(paymentData);
+            var paymentResult = await newPayment.recordNewPayment();
 
-                if (paymentResult) {
-                    var bank_payment = new Bank_Payment(paymentID,accountName,accountNumber);
-                    var newbank_payment = new bank_paymentModel(bank_payment);
-                    var newbank_paymentResult = await newbank_payment.recordNewBankPayment();
-                    if(newbank_paymentResult)
-                        res.send({
-                            status: 201
-                        });
-                    else
-                        res.send({
-                            status: 401,
-                            msg: 'There is an error when adding payment'
-                        });
-                } else {
+            if (paymentResult) {
+                var bank_payment = new Bank_Payment(paymentID, accountName, accountNumber);
+                var newbank_payment = new bank_paymentModel(bank_payment);
+                var newbank_paymentResult = await newbank_payment.recordNewBankPayment();
+                if (newbank_paymentResult)
+                    res.send({
+                        status: 201
+                    });
+                else
                     res.send({
                         status: 401,
                         msg: 'There is an error when adding payment'
                     });
+            } else {
+                res.send({
+                    status: 401,
+                    msg: 'There is an error when adding payment'
+                });
             }
         } catch (e) {
             res.send({

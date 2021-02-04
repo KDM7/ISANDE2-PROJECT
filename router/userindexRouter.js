@@ -22,6 +22,7 @@ router.get('/a/fees/editUE', controller.getAfeeEditUE);
 router.get('/a/fees/misc', controller.getAfeeMisc);
 router.get('/a/fees/other', controller.getAfeeOthers);
 router.get('/a/fees/tuition', controller.getAfeeTuition);
+router.get('/a/fees/manage', controller.getAfeeManage);
 router.get('/a/fees/uponE', controller.getAfeeUponE);
 router.get('/a/sched/AddClasses', controller.getAschedAddClasses);
 router.get('/a/sched/ViewClasses', controller.getAschedViewClasses);

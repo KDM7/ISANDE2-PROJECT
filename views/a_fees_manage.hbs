@@ -1,0 +1,93 @@
+{{!-- This is for viewing all of the student's tuition fees, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+<div class="col-9">
+    <div class="shadow">
+        <div class="list-group mt-2 shadow bg-light">
+            <div class="container">
+                <div class="row m-2">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="schoolYear"
+                                class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
+                            <select id="schoolYear" class="form-control col-9 p-0 m-0 dropdown-schoolYear">
+                                {{#if (getBool schoolYear)}}
+                                <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
+                                {{#each schoolYear}}
+                                {{>dropdownOpt this}}
+                                {{/each}}
+                                {{else}}
+                                <option value="">--School Year--</option>
+                                {{/if}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="gradeLvl"
+                                class="col-3 d-flex justify-content-center align-items-center m-0">Grade Level:</label>
+                            <select id="gradeLvl" class="form-control col-9 p-0 m-0 dropdown-gradeLvl">
+                                {{#if (getBool gradeLvl)}}
+                                <option value="{{GLSettings}}">{{GLSettings}}--selected</option>
+                                {{#each gradeLvl}}
+                                {{>dropdownOpt this}}
+                                {{/each}}
+                                {{else}}
+                                <option value="">--Grade Level--</option>
+                                {{/if}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <th scope="row">Tuition Fee</th>
+                                <td>Php {{getPrice fees.tuition}}</td>
+                                <td class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Php</div>
+                                    </div> <input value="{{fees.tuition}}" class="form-control" type="number" placeholder="0" id="fee_tuition">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Additional Fee</th>
+                                <td>Php {{getPrice fees.additional}}</td>
+                                <td class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Php</div>
+                                    </div><input value="{{fees.additional}}" class="form-control" type="number" placeholder="0" id="fee_add">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Miscellaneous Fee</th>
+                                <td>Php {{getPrice fees.misc}}</td>
+                                <td class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Php</div>
+                                    </div><input value="{{fees.misc}}" class="form-control" type="number" placeholder="0" id="fee_misc">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Other Fee</th>
+                                <td>Php {{getPrice fees.other}}</td>
+                                <td class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">Php</div>
+                                    </div><input value="{{fees.other}}" class="form-control" type="number" placeholder="0" id="fee_other">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button id="a_f_M_Save" type="button" class="btn btn-primary btn-block mt-4 mb-4">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
