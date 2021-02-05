@@ -26,6 +26,7 @@ router.get('/a/fees/manage', controller.getAfeeManage);
 router.get('/a/fees/uponE', controller.getAfeeUponE);
 router.get('/a/sched/AddClasses', controller.getAschedAddClasses);
 router.get('/a/sched/ViewClasses', controller.getAschedViewClasses);
+router.get('/a/sched/editSection/:sectionID', controller.getAschedEditSection)
 router.get('/a/sched/CurSchoolYr', controller.getAschedCurSchoolYr);
 router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);
@@ -33,6 +34,8 @@ router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
 router.get('/a/report/outstandingBalance',controller.getAReportBalance);
 router.get('/a/report/outstandingBalanceTable',controller.getAReportBalanceTable);
 
+router.post('/editUponE', controller.postEditUponE);
+router.post('/editFees', indexMiddleware.validateEditFees, controller.postEditFees);
 router.post('/addClass', controller.postAddClass);
 router.post('/enroll/approve', controller.postEnrollmentApproved);
 router.post('/enroll/deny', controller.postEnrollmentRejected);
@@ -111,6 +114,7 @@ router.post('/enroll/parent/new', controller.postEnrollParentNew);
 
 router.post('/userSettings/schoolYear/:SY', controller.postUserSettingsSY);
 router.post('/userSettings/gradeLvl/:GL', controller.postUserSettingsGL);
+router.post('/userSettings/studentID/:SID', controller.postUserSettingsSID);
 
 module.exports = router;
 
