@@ -304,7 +304,11 @@ async function getSectionReport(schoolYear) {
             'sectionName': '$secDta.sectionName',
             'gradeLvl': '$refSec.gradeLvl'
         }
-    }]);
+    }, {
+        '$sort': {
+          'gradeLvl': 1
+        }
+      }]);
 }
 
 async function getBankReportTotal(schoolYear) {
