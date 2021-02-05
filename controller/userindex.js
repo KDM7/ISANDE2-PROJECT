@@ -2062,6 +2062,9 @@ const indexFunctions = {
             clsDta.cList[i].tchList = tchList;
 
         res.render('a_sched_EditSection', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Section',
             clsDta: clsDta,
             tchList: tchList,
@@ -2152,6 +2155,9 @@ const indexFunctions = {
     // to show edit student agreements page for admins side
     getAdocEditSA: function (req, res) {
         res.render('a_doc_editSA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Student Agreement',
         });
     },
@@ -2159,6 +2165,9 @@ const indexFunctions = {
     // to show edit student documents page for admins side
     getAdocEditSD: function (req, res) {
         res.render('a_doc_editSD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Student Document',
         });
     },
@@ -2166,6 +2175,9 @@ const indexFunctions = {
     // to show new student agreements page for admin side
     getAdocNewSA: function (req, res) {
         res.render('a_doc_newSA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'New Student Agreement',
         });
     },
@@ -2173,6 +2185,9 @@ const indexFunctions = {
     // to show new student documents page for admin side
     getAdocNewSD: function (req, res) {
         res.render('a_doc_newSD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'New Student Document',
         });
     },
@@ -2180,6 +2195,9 @@ const indexFunctions = {
     // to show student agreements page for admin side
     getAdocSA: function (req, res) {
         res.render('a_doc_SA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Agreement',
         });
     },
@@ -2187,6 +2205,9 @@ const indexFunctions = {
     // to show student documents page for admin side
     getAdocSD: function (req, res) {
         res.render('a_doc_SD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Document',
         });
     },
@@ -2194,6 +2215,9 @@ const indexFunctions = {
     // to show Additional Fees page for admin side
     getAfeeAdd: function (req, res) {
         res.render('a_fees_add', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Additional Fees',
         });
     },
@@ -2201,6 +2225,9 @@ const indexFunctions = {
     // to show Edit Upon Enrollment page for admin side
     getAfeeEditUE: function (req, res) {
         res.render('a_fees_editUE', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Upon Enrollment'
         });
     },
@@ -2208,6 +2235,9 @@ const indexFunctions = {
     // to show Miscellaneous Fees page for admin side
     getAfeeMisc: function (req, res) {
         res.render('a_fees_misc', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Miscellaneous Fees'
         });
     },
@@ -2215,6 +2245,9 @@ const indexFunctions = {
     // to show Other Fees page for admin side
     getAfeeOthers: function (req, res) {
         res.render('a_fees_other', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Other Fees'
         });
     },
@@ -2222,6 +2255,9 @@ const indexFunctions = {
     // to show Tuition Fees page for admin side
     getAfeeTuition: function (req, res) {
         res.render('a_fees_tuition', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Tuition Fees',
         });
     },
@@ -2284,6 +2320,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_fees_Manage', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Manage Fees',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -2411,6 +2450,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_fees_uponE', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Upon Enrollment',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -2523,6 +2565,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_sched_AddClasses', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Add Classes',
             subject: subject,
             section: section,
@@ -2556,6 +2601,9 @@ const indexFunctions = {
         );
         var list = await getClassList(req.session.userSettings.schoolYear);
         res.render('a_sched_ViewClasses', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'View Classes',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -2566,6 +2614,9 @@ const indexFunctions = {
     // to show the set school year page for admin side
     getAschedCurSchoolYr: function (req, res) {
         res.render('a_sched_CurSchoolYr', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Set CUrrent School Year',
         });
     },
@@ -2573,6 +2624,9 @@ const indexFunctions = {
     // to show the class schedule page for admin side
     getAschedClassSched: function (req, res) {
         res.render('a_sched_classSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Class Schedules',
         });
     },
@@ -2580,6 +2634,9 @@ const indexFunctions = {
     // to show the add class schedule page for admin side
     getAschednewClassSched: function (req, res) {
         res.render('a_sched_newClassSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'New Class Schedules',
         });
     },
@@ -2587,6 +2644,9 @@ const indexFunctions = {
     // to show the academic calendar page for admin side
     getAschedAcadCalendar: function (req, res) {
         res.render('a_sched_acadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar',
         });
     },
@@ -2602,6 +2662,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_report_OutstandingBalForm', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: "Outstanding Balance Report",
             schoolYear: schoolYear
         })
@@ -2612,6 +2675,9 @@ const indexFunctions = {
         var reportData = await getBalanceReportData(schoolYear);
         console.log(reportData);
         res.render('a_report_OutstandingBalTable', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: "Outstanding Balance Report",
             schoolYear: schoolYear,
             reportData: reportData
@@ -2641,6 +2707,9 @@ const indexFunctions = {
 
         // console.log(totals);
         res.render('a_report_paymentsReport', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Payment Report',
             schoolYear:schoolYears,
             SYSettings: req.session.userSettings.schoolYear,
@@ -2706,6 +2775,9 @@ const indexFunctions = {
     getAschednewAcadCalendar: function (req, res) {
         try {
             res.render('a_sched_newAcadCalendar', {
+                firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
                 title: 'New Event',
             });
         } catch (e) {
@@ -2743,6 +2815,9 @@ const indexFunctions = {
     // to show the edit event page for admin side
     getAschededitAcadCalendar: function (req, res) {
         res.render('a_sched_editAcadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Event',
         });
     },
@@ -2779,6 +2854,9 @@ const indexFunctions = {
             }
         }]);
         res.render('a_users_admins', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Admins',
             admins: matches
         });
@@ -2787,6 +2865,9 @@ const indexFunctions = {
     // to show the profile of an admin for admin side
     getAuserAProf: function (req, res) {
         res.render('a_users_AProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Admin Profile',
         });
     },
@@ -2794,6 +2875,9 @@ const indexFunctions = {
     // to show all accounts of all of the parent's children for admin side
     getAuserPAcc: function (req, res) {
         res.render('a_users_PAccount', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Parent Account',
         });
     },
@@ -2827,6 +2911,9 @@ const indexFunctions = {
             }
         }]);
         res.render('a_users_parents', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Parents',
             parents: matches
         });
@@ -2835,6 +2922,9 @@ const indexFunctions = {
     //to show the profile of a parent for admin side 
     getAuserPProf: function (req, res) {
         res.render('a_users_PProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Parent Profile',
         });
     },
@@ -3028,6 +3118,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_users_SAccount', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Account',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -3041,6 +3134,9 @@ const indexFunctions = {
     // to show page for sending a student an email for admin side
     getAuserSEmail: function (req, res) {
         res.render('a_users_SEmail', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Send Email',
         });
     },
@@ -3094,6 +3190,9 @@ const indexFunctions = {
             }
         }]);
         res.render('a_users_teachers', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Teachers',
             teachers: matches
         });
@@ -3102,6 +3201,9 @@ const indexFunctions = {
     // to show the teachers profile page for admin side
     getAuserTProf: function (req, res) {
         res.render('a_users_TProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Teacher Profile',
         });
     },
@@ -3109,6 +3211,9 @@ const indexFunctions = {
     // to show the edit teachers page for admin side
     getAusereditTeachers: function (req, res) {
         res.render('a_users_editT', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Teacher',
         });
     },
@@ -3154,6 +3259,9 @@ const indexFunctions = {
     // to show the students from the teachers side
     getTschedacadCalendar: function (req, res) {
         res.render('t_sched_acadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
@@ -3161,6 +3269,9 @@ const indexFunctions = {
     // to show the students from the teachers side
     getTschedacadCalendar2: function (req, res) {
         res.render('t_sched_acadCalendar2', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
@@ -3168,6 +3279,9 @@ const indexFunctions = {
     // to show the students from the teachers side
     getTschedclassSched: function (req, res) {
         res.render('t_sched_classSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Teacher Schedule'
         });
     },
@@ -3175,6 +3289,9 @@ const indexFunctions = {
     // to show the students from the teachers side
     getTuserSgrades: function (req, res) {
         res.render('t_users_SGrades', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Students grades'
         });
     },
@@ -3188,6 +3305,9 @@ const indexFunctions = {
             userID: userID
         });
         res.render('t_users_SProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student profile',
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
@@ -3244,6 +3364,9 @@ const indexFunctions = {
     // to show paying for enrollment (bank) from the parents side
     getPpaybank: function (req, res) {
         res.render('p_pay_bank', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Payment'
         });
     },
@@ -3251,6 +3374,9 @@ const indexFunctions = {
     // to show selecting of payment plan for enrollment (bank) from the parents side
     getPpayBPlan: function (req, res) {
         res.render('p_pay_BPlan', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Payment'
         });
     },
@@ -3260,6 +3386,9 @@ const indexFunctions = {
         var amountDue = req.session.amountDue;
         //console.log(amountDue);
         res.render('p_pay_cc', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Payment',
             amountDue: amountDue
         });
@@ -3275,6 +3404,9 @@ const indexFunctions = {
             console.log(studentList[0].gradeLvl);
             if (studentList)
                 res.render('p_pay_CCPlan', {
+                    firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
                     title: 'Credit Card Payment',
                     student: studentList
                 });
@@ -3290,6 +3422,9 @@ const indexFunctions = {
 
     getPpayCCOTP: async function (req, res) {
         res.render('p_pay_CCOTP', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Confirm Payment',
             amountDue: req.session.amountDue
         })
@@ -3301,6 +3436,9 @@ const indexFunctions = {
             var studentList = await getStudentListParentID(parentID);
             if (studentList)
                 res.render('p_acc_enrollChild', {
+                    firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
                     title: 'Enroll Child',
                     student: studentList
                 });
@@ -3317,6 +3455,9 @@ const indexFunctions = {
     getPaccSGrades: function (req, res) {
         try{
             res.render('p_acc_grades', {
+                firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
                 title: 'Student Grades'
             });
         }catch(e){
@@ -3515,6 +3656,9 @@ const indexFunctions = {
         );
         console.log(studentList);
         res.render('p_trans_SA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Statement of Accounts',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -3529,6 +3673,9 @@ const indexFunctions = {
 
     getPaccNewChild: function (req, res) {
         res.render('p_acc_NChild', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Register new Child'
         });
     },
@@ -3536,6 +3683,9 @@ const indexFunctions = {
     getPpaybank: function (req, res) {
         var amountDue = req.session.amountDue;
         res.render('p_pay_bank', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Bank Statement',
             amountDue: amountDue
         });
@@ -3548,6 +3698,9 @@ const indexFunctions = {
             console.log(studentList);
             if (studentList)
                 res.render('p_pay_BPlan', {
+                    firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
                     title: 'Bank Payment',
                     student: studentList
                 });
@@ -3563,24 +3716,36 @@ const indexFunctions = {
 
     getPschedacadCalendar: function (req, res) {
         res.render('p_sched_acadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
 
     getPschedacadCalendar2: function (req, res) {
         res.render('p_sched_acadCalendar2', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
 
     getPschedclassSched: function (req, res) {
         res.render('p_sched_classSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Schedule'
         });
     },
 
     getPtransBD: function (req, res) {
         res.render('p_trans_BD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Breakdown Details'
         });
     },
@@ -3870,42 +4035,63 @@ const indexFunctions = {
 
     getSaccgrades: function (req, res) {
         res.render('s_acc_grades', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Grades'
         });
     },
 
     getEnrollemtOld: function (req, res) {
         res.render('s_enroll_old', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Update Personal Information'
         });
     },
 
     getSschedacadCalendar: function (req, res) {
         res.render('s_sched_acadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
 
     getSschedacadCalendar2: function (req, res) {
         res.render('s_sched_acadCalendar2', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
 
     getSschedclassSched: function (req, res) {
         res.render('s_sched_classSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Schedule'
         });
     },
 
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Breakdown details'
         });
     },
 
     getStransSA: function (req, res) {
         res.render('s_trans_SA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Statement of Account'
         });
     },
