@@ -7,25 +7,20 @@
     <div class="shadow">
         <div class="d-flex flex-column mt-2 bg-light">
             <div class="container">
-                <div class="row mt-2">
-                    <div class="col-6">
-                        <div class="form-group row">
-                            <label for="a_u_ST_schoolYear"
-                                class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
-                            <select class="form-control col-9 p-0 m-0" id="a_u_ST_schoolYear">
-                                {{#each schoolYear}}
-                                {{>dropdownOpt this}}
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <form class="form-inline justify-content-end">
-                            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                    </div>
+                <div class="form-group row m-3">
+                    <label for="a_u_ST_schoolYear"
+                        class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
+                    <select class="form-control col-9 p-0 m-0 dropdown-schoolYear" id="schoolYear">
+                        {{#if (getBool schoolYear)}}
+                        <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
+                        {{#each schoolYear}}
+                        {{>dropdownOpt this}}
+                        {{/each}}
+                        {{else}}
+                        <option value="">--School Year--</option>
+                        {{/if}}
+                    </select>
                 </div>
-
             </div>
             <div class="mt-2">
 

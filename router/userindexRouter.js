@@ -26,6 +26,7 @@ router.get('/a/fees/manage', controller.getAfeeManage);
 router.get('/a/fees/uponE', controller.getAfeeUponE);
 router.get('/a/sched/AddClasses', controller.getAschedAddClasses);
 router.get('/a/sched/ViewClasses', controller.getAschedViewClasses);
+router.get('/a/sched/editSection/:sectionID', controller.getAschedEditSection)
 router.get('/a/sched/CurSchoolYr', controller.getAschedCurSchoolYr);
 router.get('/a/sched/ClassSched', controller.getAschedClassSched);
 router.get('/a/sched/newClassSched', controller.getAschednewClassSched);

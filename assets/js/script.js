@@ -302,6 +302,12 @@ function checkParentData(userInfo, parentData) {
     else return false;
 }
 $(document).ready(function () {
+    $('#editSelection_Save').on('click', function () {
+        var clsID = parseInt($(this).attr('class-id'));
+        var tchID = $('#editSection_tch_' + clsID).val();
+
+
+    });
     $('#submitLogin').click(function () {
 
         var user = $('#id').val();
@@ -457,7 +463,7 @@ $(document).ready(function () {
             $.post('/editUponE', {
                 schoolYear: schoolYear,
                 gradeLvl: gradeLvl,
-                ue:UEnroll
+                ue: UEnroll
             }, function (res) {
                 switch (res.status) {
                     case 200:

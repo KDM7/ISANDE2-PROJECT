@@ -1,0 +1,50 @@
+{{!-- This is for viewing all of the student's tuition fees, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+<div class="col-9">
+    <div class="shadow">
+        <div class="list-group mt-2 shadow bg-light">
+            <div class="container">
+                <p class="display-4">Edit Section</p>
+                <div class="mt-2">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Subject Name</th>
+                                <th scope="col">Teacher Name</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each clsDta.cList}}
+                            <tr>
+                                <th scope="row">{{subNm}}</th>
+                                <td>{{tchFNm}} {{tchMNm}} {{tchLNm}}</td>
+                                <td>
+                                    <select id="editSection_tch_{{clsID}}" class="form-control">
+                                        {{#each tchList}}
+                                        <option value="{{userID}}">{{tchNm}}</option>
+                                        {{/each}}
+                                    </select>
+                                </td>
+                                <td>
+                                    <button id="editSelection_Save" class-id="{{clsID}}" type="button" class="btn btn-outline-primary form-control">save</button>
+                                </td>
+                            </tr>
+                            {{/each}}
+
+                        </tbody>
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
