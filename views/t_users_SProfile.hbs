@@ -17,31 +17,36 @@
                                 <tbody>
                                     <tr>
                                         <th class="text-left">First Name</th>
-                                        <td class="text-left">Andre Emmanuel</td>
+                                        <td class="text-left">{{profile.firstName}}</td>
                                     </tr>
 
                                     <tr>
                                         <th class="text-left">Last Name</th>
-                                        <td class="text-left">Garcia</td>
+                                        <td class="text-left">{{profile.lastName}}</td>
                                     </tr>
                                     <tr>
                                         <th class="text-left">Middle Name</th>
-                                        <td class="text-left">Servillon</td>
+                                        <td class="text-left">{{profile.middleName}}</td>
                                     </tr>
 
                                     <tr>
                                         <th class="text-left">Gender</th>
-                                        <td class="text-left">Male</td>
+                                        <td class="text-left">{{profile.gender}}</td>
                                     </tr>
 
                                     <tr>
                                         <th class="text-left">Birthday</th>
-                                        <td class="text-left">08/08/2001</td>
+                                        <td class="text-left">{{profile.birthDate}}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th class="text-left">Age</th>
+                                        <td class="text-left">{{getAge profile.birthDate}}</td>
                                     </tr>
 
                                     <tr>
                                         <th class="text-left">Birthplace</th>
-                                        <td class="text-left">Manila City</td>
+                                        <td class="text-left">{{profile.birthPlace}}</td>
                                     </tr>
 
                                 </tbody>
@@ -60,16 +65,12 @@
                                 <tbody>
                                     <tr>
                                         <th class="text-left">User Name</th>
-                                        <td class="text-left">18-000001</td>
+                                        <td class="text-left">{{profile.userID}}</td>
                                     </tr>
 
                                     <tr>
                                         <th class="text-left">Grade Level</th>
-                                        <td class="text-left">Grade 11 GAS</td>
-                                    </tr>
-                                    <tr>
-                                        <th class="text-left">Password</th>
-                                        <td class="text-left">********</td>
+                                        <td class="text-left">{{profile.gradeLvl}}</td>
                                     </tr>
                                 </tbody>
                             </table>
