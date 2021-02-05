@@ -1094,6 +1094,50 @@ async function getClass(sectionID, schoolYear) {
     );
     return cls[0];
 }
+async function getStudentClassList(userID,sectionID)
+{
+    var classList = studentModel.aggregate([
+        {
+          '$match': {
+            'userID': userID
+          }
+        }, {
+          '$lookup': {
+            'from': 'studentMembers', 
+            'localField': 'userID', 
+            'foreignField': 'studentID', 
+            'as': 'studentMembers'
+          }
+        }, {
+          '$unwind': {
+            'path': '$studentMembers', 
+            'preserveNullAndEmptyArrays': false
+          }
+        }, {
+          '$match': {
+            'studentMembers.sectionID': sectionID
+          }
+        }, {
+          '$lookup': {
+            'from': 'classes', 
+            'localField': 'studentMembers.sectionID', 
+            'foreignField': 'sectionID', 
+            'as': 'classes'
+          }
+        }, {
+          '$unwind': {
+            'path': '$classes', 
+            'preserveNullAndEmptyArrays': true
+          }
+        }, {
+          '$project': {
+            '_id': 0, 
+            'classID': '$classes.classID'
+          }
+        }
+      ]);
+      return classList;
+}
 async function getParentChildren(userID) {
     var user = await userModel.aggregate([{
         '$match': {
@@ -2805,9 +2849,13 @@ const indexFunctions = {
     },
 
     getPaccSGrades: function (req, res) {
-        res.render('p_acc_grades', {
-            title: 'Student Grades'
-        });
+        try{
+            res.render('p_acc_grades', {
+                title: 'Student Grades'
+            });
+        }catch(e){
+            console.log(e);
+        } 
     },
 
     // to show the Statement of Accounts from the parents side
