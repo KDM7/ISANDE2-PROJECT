@@ -1048,6 +1048,7 @@ async function getClass(sectionID, schoolYear) {
             '$project': {
                 '_id': 1,
                 'secID': '$secDta.sectionID',
+                'adviserID':'$usrDta.userID',
                 'cList': 1,
                 'gradeLvl': '$refSec.gradeLvl',
                 'adviser': {
@@ -1600,7 +1601,8 @@ const indexFunctions = {
         }
         res.render('a_sched_EditSection', {
             title: 'Edit Section',
-            clsDta:clsDta
+            clsDta:clsDta,
+            tchList:tchList
         })
     },
     // to show the students from the admins side

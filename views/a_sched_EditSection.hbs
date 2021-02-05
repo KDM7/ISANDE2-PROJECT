@@ -7,7 +7,23 @@
     <div class="shadow">
         <div class="list-group mt-2 shadow bg-light">
             <div class="container">
-                <p class="display-4">Edit Section</p>
+                <p class="display-5">Edit Section</p>
+                <br>
+                <p class="display-4 ml-2">{{clsDta._id}} ({{clsDta.gradeLvl}})</p>
+                <div class="row m-2">
+                    <p class="col-4 font-weight-bold">Section Adviser: {{clsDta.adviser}}</p>
+                    <div class="col-8 row">
+                        <select id="" class="col-8">
+                            <option value="{{clsDta.adviserID}}">{{clsDta.adviser}} --current adviser--</option>
+                            {{#each tchList}}
+                            <option value="{{userID}}">{{tchNm}}</option>
+                            {{/each}}
+                        </select>
+                        <button id="editSection_adr" type="button" class="btn btn-outline-primary col-4">Change
+                            Adviser</button>
+                    </div>
+                </div>
+
                 <div class="mt-2">
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -32,15 +48,16 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <button id="editSelection_Save" class-id="{{clsID}}" type="button" class="btn btn-outline-primary form-control">save</button>
+                                    <button id="editSelection_Save" class-id="{{clsID}}" type="button"
+                                        class="btn btn-outline-primary form-control">save</button>
                                 </td>
                             </tr>
                             {{/each}}
 
                         </tbody>
                     </table>
-                    
                 </div>
+                <a href="/a/sched/ViewClasses" type="button" class="btn btn-primary btn-block mt-4 mb-4">Back</a>
             </div>
         </div>
     </div>
