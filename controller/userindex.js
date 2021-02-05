@@ -640,8 +640,7 @@ async function getStudentMembership(studentID) {
     }]);
     return membersList;
 }
-
-async function getAvailableTch() {
+async function getUnavailableTch() {
     var unavailableTch = await sectionModel.aggregate([{
         '$group': {
             '_id': null,
@@ -650,14 +649,16 @@ async function getAvailableTch() {
             }
         }
     }]);
+    return unavailableTch[0].advisers
+}
+async function getAvailableTch() {
+    var unavailableTch = await getUnavailableTch();
     var availableTch = await teacherModel.aggregate(
         [{
             '$match': {
                 'userID': {
                     '$not': {
-                        '$in': [
-                            'c.buffy'
-                        ]
+                        '$in': unavailableTch
                     }
                 }
             }
@@ -696,60 +697,60 @@ async function getStudentListParentID(parentID) {
         }
     }, {
         '$lookup': {
-          'from': 'users', 
-          'localField': 'userID', 
-          'foreignField': 'userID', 
-          'as': 'userData'
+            'from': 'users',
+            'localField': 'userID',
+            'foreignField': 'userID',
+            'as': 'userData'
         }
-      }, {
+    }, {
         '$unwind': {
-          'path': '$userData', 
-          'preserveNullAndEmptyArrays': true
+            'path': '$userData',
+            'preserveNullAndEmptyArrays': true
         }
-      }, {
+    }, {
         '$lookup': {
-          'from': 'studentMembers', 
-          'localField': 'userID', 
-          'foreignField': 'studentID', 
-          'as': 'sectionIdentity'
+            'from': 'studentMembers',
+            'localField': 'userID',
+            'foreignField': 'studentID',
+            'as': 'sectionIdentity'
         }
-      }, {
+    }, {
         '$unwind': {
-          'path': '$sectionIdentity', 
-          'preserveNullAndEmptyArrays': true
+            'path': '$sectionIdentity',
+            'preserveNullAndEmptyArrays': true
         }
-      }, {
+    }, {
         '$lookup': {
-          'from': 'sections', 
-          'localField': 'sectionIdentity.sectionID', 
-          'foreignField': 'sectionID', 
-          'as': 'section'
+            'from': 'sections',
+            'localField': 'sectionIdentity.sectionID',
+            'foreignField': 'sectionID',
+            'as': 'section'
         }
-      }, {
+    }, {
         '$unwind': {
-          'path': '$section', 
-          'preserveNullAndEmptyArrays': true
+            'path': '$section',
+            'preserveNullAndEmptyArrays': true
         }
-      }, {
+    }, {
         '$lookup': {
-          'from': 'ref_section', 
-          'localField': 'section.sectionName', 
-          'foreignField': 'sectionName', 
-          'as': 'sectionName'
+            'from': 'ref_section',
+            'localField': 'section.sectionName',
+            'foreignField': 'sectionName',
+            'as': 'sectionName'
         }
-      }, {
+    }, {
         '$unwind': {
-          'path': '$sectionName', 
-          'preserveNullAndEmptyArrays': true
+            'path': '$sectionName',
+            'preserveNullAndEmptyArrays': true
         }
-      }, {
+    }, {
         '$project': {
-          'userID': 1, 
-          'firstName': '$userData.firstName', 
-          'middleName': '$userData.middleName', 
-          'lastName': '$userData.lastName', 
-          'gradeLvl': '$sectionName.gradeLvl', 
-          '_id': 0
+            'userID': 1,
+            'firstName': '$userData.firstName',
+            'middleName': '$userData.middleName',
+            'lastName': '$userData.lastName',
+            'gradeLvl': '$sectionName.gradeLvl',
+            '_id': 0
         }
     }]);
 
@@ -1679,13 +1680,60 @@ const indexFunctions = {
 
         for (var i = 0; i < clsDta.cList.length; i++)
             clsDta.cList[i].tchList = tchList;
-            
+
         res.render('a_sched_EditSection', {
             title: 'Edit Section',
             clsDta: clsDta,
             tchList: tchList,
             availList: availList
         })
+    },
+    postEditClass: async function (req, res) {
+        try{
+            var classID = req.body.clsID;
+            var teacherID = req.body.tchID;
+    
+            await classModel.findOneAndUpdate({
+                classID: classID
+            }, {
+                teacherID: teacherID
+            }, {
+                useFindAndModify: false
+            });
+            res.send({
+                status: 200,
+                msg: 'Class Updated'
+            });
+        }catch (e){
+            console.log(e);
+            res.send({
+                status: 500,
+                msg: 'An error has occured'
+            });
+        }
+    },
+    postSectionAdviser: async function (req, res) {
+        try{
+            var sectionID = req.body.sectionID;
+            var adviserID = req.body.adviserID;
+            await sectionModel.findOneAndUpdate({
+                sectionID: sectionID
+            }, {
+                sectionAdviser: adviserID
+            }, {
+                useFindAndModify: false
+            });
+            res.send({
+                status: 200,
+                msg: 'Adviser Updated'
+            });
+        }catch (e){
+            console.log(e);
+            res.send({
+                status: 500,
+                msg: 'An error has occured'
+            });
+        }
     },
     // to show the students from the admins side
     getAuserStudents: async function (req, res) {

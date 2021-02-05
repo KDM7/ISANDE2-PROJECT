@@ -302,16 +302,45 @@ function checkParentData(userInfo, parentData) {
     else return false;
 }
 $(document).ready(function () {
-    $('#editSelection_Save').on('click', function () {
+    $('.editSelection_Save').on('click', function () {
         var clsID = parseInt($(this).attr('class-id'));
         var tchID = $('#editSection_tch_' + clsID).val();
 
         console.log(clsID + ' ' + tchID);
+        $.post('/editClass', {
+            clsID: clsID,
+            tchID: tchID
+        }, function (res) {
+            switch (res.status) {
+                case 200:
+                    alert(res.msg);
+                    location.reload();
+                    break;
+                case 500:
+                    alert(res.msg);
+                    break;
+            }
+        });
     });
     $('#editSection_adr').on('click', function () {
         var adviserID = $('#editSection_dropdown_adr').val();
+        var sectionID = $(this).attr('section-id');
 
-        console.log(adviserID);
+        console.log(sectionID + ' ' + adviserID);
+        $.post('/editSectionAdviser', {
+            adviserID: adviserID,
+            sectionID: sectionID
+        }, function (res) {
+            switch (res.status) {
+                case 200:
+                    alert(res.msg);
+                    location.reload();
+                    break;
+                case 500:
+                    alert(res.msg);
+                    break;
+            }
+        });
     });
     $('#submitLogin').click(function () {
 
