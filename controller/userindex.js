@@ -4247,6 +4247,30 @@ const indexFunctions = {
     postUserSettingsSID: function (req, res) {
         req.session.userSettings.studentID = req.params.SID;
         res.send();
+    },
+
+    getAaccEditPassword: function (req, res) {
+        res.render('a_acc_editPassword', {
+            title: 'Edit Password',
+        });
+    },
+
+    getTaccEditPassword: function (req, res) {
+        res.render('t_acc_editPassword', {
+            title: 'Edit Password',
+        });
+    },
+
+    getPaccEditPassword: function (req, res) {
+        res.render('p_acc_editPassword', {
+            title: 'Edit Password',
+        });
+    },
+
+    getSaccEditPassword: function (req, res) {
+        res.render('s_acc_editPassword', {
+            title: 'Edit Password',
+        });
     }
 }
 module.exports = indexFunctions;

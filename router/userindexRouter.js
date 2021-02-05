@@ -119,6 +119,11 @@ router.post('/userSettings/schoolYear/:SY', controller.postUserSettingsSY);
 router.post('/userSettings/gradeLvl/:GL', controller.postUserSettingsGL);
 router.post('/userSettings/studentID/:SID', controller.postUserSettingsSID);
 
+router.get('/a/acc/editPassword', controller.getAaccEditPassword);
+router.get('/t/acc/editPassword', controller.getTaccEditPassword);
+router.get('/p/acc/editPassword', controller.getPaccEditPassword);
+router.get('/s/acc/editPassword', controller.getSaccEditPassword);
+
 module.exports = router;
 
 
