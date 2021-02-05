@@ -208,30 +208,30 @@ async function findUser(userID) {
 
 async function findAdminDetails() {
     var user = await userModel.aggregate([{
-        '$match' : {
-            'type' : 'A'
+        '$match': {
+            'type': 'A'
         }
     }, {
         '$lookup': {
-            'from': 'admins', 
-            'localField': 'userID', 
-            'foreignField': 'userID', 
+            'from': 'admins',
+            'localField': 'userID',
+            'foreignField': 'userID',
             'as': 'admin'
         }
     }, {
         '$unwind': {
-            'path': '$admin', 
+            'path': '$admin',
             'preserveNullAndEmptyArrays': true
         }
     }, {
         '$project': {
-            'userID': 1, 
-            'password': 1, 
-            'firstName': 1, 
-            'lastName': 1, 
-            'middleName': 1, 
-            'type': 1, 
-            'gender': 1, 
+            'userID': 1,
+            'password': 1,
+            'firstName': 1,
+            'lastName': 1,
+            'middleName': 1,
+            'type': 1,
+            'gender': 1,
             'dateCreated': '$admin.dateCreated'
         }
     }]);
@@ -931,46 +931,46 @@ async function getClassList(schoolYear) {
 }
 async function getParentChildren(userID) {
     var user = await userModel.aggregate([{
-            '$match': {
+        '$match': {
             'type': 'S'
-            }
-        }, {
-            '$lookup': {
-            'from': 'students', 
-            'localField': 'userID', 
-            'foreignField': 'userID', 
+        }
+    }, {
+        '$lookup': {
+            'from': 'students',
+            'localField': 'userID',
+            'foreignField': 'userID',
             'as': 'students'
-            }
-        }, {
-            '$unwind': {
-            'path': '$students', 
+        }
+    }, {
+        '$unwind': {
+            'path': '$students',
             'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$lookup': {
-            'from': 'parents', 
-            'localField': 'students.parentID', 
-            'foreignField': 'userID', 
+        }
+    }, {
+        '$lookup': {
+            'from': 'parents',
+            'localField': 'students.parentID',
+            'foreignField': 'userID',
             'as': 'parents'
-            }
-        }, {
-            '$unwind': {
-            'path': '$parents', 
+        }
+    }, {
+        '$unwind': {
+            'path': '$parents',
             'preserveNullAndEmptyArrays': true
-            }
-        }, {
-            '$match': {
+        }
+    }, {
+        '$match': {
             'parents.userID': userID
-            }
-        }, {
-            '$project': {
+        }
+    }, {
+        '$project': {
             'studentID': '$userID',
             'value': '$userID',
             'name1': '$firstName',
             'name2': '$middleName',
             'name3': '$lastName',
             '_id': 0
-            }
+        }
     }]);
     console.log(user[0].studentID);
     return user;
@@ -1283,28 +1283,68 @@ async function getBalanceReportData(schoolYear) {
         '$unwind': {
             'path': '$studentInfo',
             'preserveNullAndEmptyArrays': false
-        }
-    }, {
-        '$addFields': {
-            'name': {
-                '$concat': [
-                    '$studentInfo.lastName', ',', '$studentInfo.firstName', ' ', '$studentInfo.middleName'
-                ]
+          }
+        }, {
+          '$addFields': {
+            'studentName': {
+              '$concat': [
+                '$studentInfo.lastName', ',', '$studentInfo.firstName', ' ', '$studentInfo.middleName'
+              ]
             }
+          }
+        }, {
+          '$sort': {
+            'sectionName':1,
+            'studentName': 1
+          }
+        }, {
+          '$project': {
+            'studentID': 1, 
+            'sectionName': 1, 
+            'remainingBalance': 1, 
+            'studentName': 1
+          }
         }
-    }, {
-        '$sort': {
-            'name': 1
-        }
-    }, {
-        '$project': {
-            'studentID': 1,
-            'sectionName': 1,
-            'remainingBalance': 1,
-            'name': 1
-        }
-    }])
+    ]);
     return reportData;
+}
+
+async function getTeacherClassesList(teacherID){
+    var classes = await classModel.aggregate([
+        {
+          '$match': {
+            'teacherID': teacherID
+          }
+        }, {
+          '$lookup': {
+            'from': 'sections', 
+            'localField': 'sectionID', 
+            'foreignField': 'sectionID', 
+            'as': 'section'
+          }
+        }, {
+          '$unwind': {
+            'path': '$section', 
+            'preserveNullAndEmptyArrays': false
+          }
+        }, {
+          '$sort': {
+            'section.sechoolYear': -1, 
+            'sectionID': 1, 
+            'classID': 1
+          }
+        }, {
+          '$project': {
+            'classID': 1, 
+            'sectionID': 1, 
+            'subjectCode': 1, 
+            'schoolYear': '$section.schoolYear', 
+            'sectionName': '$section.sectionName'
+          }
+        }
+      ]);
+    
+    return classes;
 }
 
 const indexFunctions = {
@@ -1335,8 +1375,7 @@ const indexFunctions = {
             if (match) {
                 try {
                     var student = await getParentChildren(user);
-                } catch (e) {
-                }
+                } catch (e) {}
                 bcrypt.compare(pass, match.password, function (err, result) {
                     // var result = match.password == pass;
                     if (result) {
@@ -1577,6 +1616,64 @@ const indexFunctions = {
         });
     },
 
+    postEditFees: async function (req, res) {
+        try {
+            var fees = await feesModel.aggregate(
+                [{
+                    '$match': {
+                        'schoolYear': req.session.userSettings.schoolYear
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'sections',
+                        'localField': 'sectionID',
+                        'foreignField': 'sectionID',
+                        'as': 'secDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$secDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'ref_section',
+                        'localField': 'secDta.sectionName',
+                        'foreignField': 'sectionName',
+                        'as': 'refSec'
+                    }
+                }, {
+                    '$match': {
+                        'refSec.gradeLvl': req.session.userSettings.gradeLvl
+                    }
+                }]
+            );
+            var feeDta = req.body.fees;
+            await feesModel.findOneAndUpdate({
+                sectionID: fees[0].sectionID
+            }, {
+                tuition: feeDta.tuition,
+                additional: feeDta.additional,
+                misc: feeDta.misc,
+                other: feeDta.other
+            }, {
+                useFindAndModify: false
+            });
+            res.send({
+                status: 200,
+                msg: 'Fees recorded'
+            });
+        } catch (e) {
+            console.log(e); //for debug purposes 
+            res.send({
+                status: 500,
+                msg: 'An error has occured'
+            });
+        }
+
+
+    },
+
     // to show Upon Enrollment page for admin side
     getAfeeUponE: async function (req, res) {
         var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
@@ -1646,6 +1743,61 @@ const indexFunctions = {
         });
     },
 
+    postEditUponE: async function (req, res) {
+        try {
+            var ueID = await upon_enrollmentModel.aggregate([{
+                '$match': {
+                    'schoolYear': '2020-2021'
+                }
+            }, {
+                '$lookup': {
+                    'from': 'sections',
+                    'localField': 'sectionID',
+                    'foreignField': 'sectionID',
+                    'as': 'secDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$secDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$lookup': {
+                    'from': 'ref_section',
+                    'localField': 'secDta.sectionName',
+                    'foreignField': 'sectionName',
+                    'as': 'refSec'
+                }
+            }, {
+                '$match': {
+                    'refSec.gradeLvl': 'Grade 1'
+                }
+            }]);
+
+            var ueDta = req.body.ue;
+            await upon_enrollmentModel.findOneAndUpdate({
+                sectionID: ueID[0].sectionID
+            }, {
+                fullPayment: ueDta.full,
+                semestralPayment: ueDta.sem,
+                trimestralPayment: ueDta.tri,
+                quarterlyPayment: ueDta.qtr,
+                monthlyPayment: ueDta.mon
+            }, {
+                useFindAndModify: false
+            });
+            res.send({
+                status: 200,
+                msg: 'Upon Enrollment Payments recorded'
+            });
+        } catch (e) {
+            console.log(e); //for debug purposes 
+            res.send({
+                status: 500,
+                msg: 'An error has occured'
+            });
+        }
+    },
     // to show the interface to add classes for admin side
     getAschedAddClasses: async function (req, res) {
         var subject = await subjectModel.aggregate(
@@ -1781,10 +1933,10 @@ const indexFunctions = {
         var schoolYear = req.session.reportschoolYear;
         var reportData = await getBalanceReportData(schoolYear);
         console.log(reportData);
-        res.render('a_report_OutstandingBalTable', {
-            title: "Outstanding Balance Report",
-            schoolYear: schoolYear,
-            reportData: reportData
+        res.render('a_report_OutstandingBalTable',{
+            title : "Outstanding Balance Report",
+            schoolYear:schoolYear,
+            reportData:reportData
         })
     },
     // function to approve student enrollment
@@ -1840,14 +1992,6 @@ const indexFunctions = {
             });
         }
     },
-
-    postAddClass: async function (req, res) {
-        var {
-            section,
-            subject,
-            teacher
-        } = req.body;
-    },
     // to show the new event page for admin side
     getAschednewAcadCalendar: function (req, res) {
         try {
@@ -1898,29 +2042,29 @@ const indexFunctions = {
     // to show all admins for admin side
     getAuserAdmin: async function (req, res) {
         var matches = await userModel.aggregate([{
-            '$match' : {
-                'type' : 'A'
+            '$match': {
+                'type': 'A'
             }
         }, {
             '$lookup': {
-                'from': 'admins', 
-                'localField': 'userID', 
-                'foreignField': 'userID', 
+                'from': 'admins',
+                'localField': 'userID',
+                'foreignField': 'userID',
                 'as': 'admin'
             }
         }, {
             '$unwind': {
-                'path': '$admin', 
+                'path': '$admin',
                 'preserveNullAndEmptyArrays': true
             }
         }, {
             '$project': {
                 'userID': 1,
-                'firstName': 1, 
-                'lastName': 1, 
-                'middleName': 1, 
-                'type': 1, 
-                'gender': 1, 
+                'firstName': 1,
+                'lastName': 1,
+                'middleName': 1,
+                'type': 1,
+                'gender': 1,
                 'dateCreated': '$admin.dateCreated'
             }
         }]);
@@ -1948,30 +2092,30 @@ const indexFunctions = {
     getAuserParent: async function (req, res) {
         var matches = await userModel.aggregate([{
             '$match': {
-              'type': 'P'
+                'type': 'P'
             }
-          }, {
+        }, {
             '$lookup': {
-              'from': 'parents', 
-              'localField': 'userID', 
-              'foreignField': 'userID', 
-              'as': 'parent'
+                'from': 'parents',
+                'localField': 'userID',
+                'foreignField': 'userID',
+                'as': 'parent'
             }
-          }, {
+        }, {
             '$unwind': {
-              'path': '$parent', 
-              'preserveNullAndEmptyArrays': true
+                'path': '$parent',
+                'preserveNullAndEmptyArrays': true
             }
-          }, {
+        }, {
             '$project': {
-              'userID': 1, 
-              'firstName': 1, 
-              'lastName': 1, 
-              'middleName': 1, 
-              'type': 1, 
-              'gender': 1
+                'userID': 1,
+                'firstName': 1,
+                'lastName': 1,
+                'middleName': 1,
+                'type': 1,
+                'gender': 1
             }
-          }]);
+        }]);
         res.render('a_users_parents', {
             title: 'Parents',
             parents: matches
@@ -2213,29 +2357,29 @@ const indexFunctions = {
     // to show a list of teachers for admin side
     getAuserTeachers: async function (req, res) {
         var matches = await userModel.aggregate([{
-            '$match' : {
-                'type' : 'T'
+            '$match': {
+                'type': 'T'
             }
         }, {
             '$lookup': {
-                'from': 'teachers', 
-                'localField': 'userID', 
-                'foreignField': 'userID', 
+                'from': 'teachers',
+                'localField': 'userID',
+                'foreignField': 'userID',
                 'as': 'teacher'
             }
         }, {
             '$unwind': {
-                'path': '$teacher', 
+                'path': '$teacher',
                 'preserveNullAndEmptyArrays': true
             }
         }, {
             '$project': {
-                'userID': 1,  
-                'firstName': 1, 
-                'lastName': 1, 
-                'middleName': 1, 
-                'type': 1, 
-                'gender': 1, 
+                'userID': 1,
+                'firstName': 1,
+                'lastName': 1,
+                'middleName': 1,
+                'type': 1,
+                'gender': 1,
                 'dateCreated': '$teacher.dateCreated'
             }
         }]);
@@ -2346,7 +2490,10 @@ const indexFunctions = {
     },
 
     // to show the students from the teachers side
+    // 
     getTuserStudents: async function (req, res) {
+        // var schoolYear = 
+        // var classes = await getClassList()
         var schoolYear = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
             [{
                 '$project': {
@@ -2366,8 +2513,8 @@ const indexFunctions = {
             }]
         );
         var students = await getStudentListSYGL(req.session.userSettings.schoolYear, req.session.userSettings.gradeLvl);
+
         res.render('t_users_students', {
-            title: 'Students',
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
             lastname: req.session.logUser.lastName,
@@ -2377,6 +2524,7 @@ const indexFunctions = {
             gradeLvl: gradeLvl,
             GLSettings: req.session.userSettings.gradeLvl,
             student: students
+            
         });
     },
 

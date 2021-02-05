@@ -33,6 +33,8 @@ router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
 router.get('/a/report/outstandingBalance',controller.getAReportBalance);
 router.get('/a/report/outstandingBalanceTable',controller.getAReportBalanceTable);
 
+router.post('/editUponE', controller.postEditUponE);
+router.post('/editFees', indexMiddleware.validateEditFees, controller.postEditFees);
 router.post('/addClass', controller.postAddClass);
 router.post('/enroll/approve', controller.postEnrollmentApproved);
 router.post('/enroll/deny', controller.postEnrollmentRejected);

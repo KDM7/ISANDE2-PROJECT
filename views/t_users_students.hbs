@@ -1,92 +1,89 @@
-{{!-- This is for viewing the students, Teachers --}}
+{{!-- This is for viewing all of the students, Admin --}}
 
 {{>t_navbar}}
 {{>t_sidebar}}
 
-                <div class="col-9">
-                    <div class="shadow">
-                        <div class="d-flex flex-column mt-2 bg-light">
-                            <div class="container">
-                                <div class="row mt-2">
-                                    <div class="col-6">
-                                        <div class="form-group row">
-                                            <label for="a_u_ST_schoolYear"
-                                                class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
-                                            <select class="form-control col-9 p-0 m-0 dropdown-schoolYear">
-                                                {{#if (getBool schoolYear)}}
-                                                <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
-                                                {{#each schoolYear}}
-                                                {{>dropdownOpt this}}
-                                                {{/each}}
-                                                {{else}}
-                                                <option value="">--School Year--</option>
-                                                {{/if}}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="form-inline justify-content-end">
-                                            <input class="form-control mr-sm-2" type="search" placeholder="Search Users"
-                                                aria-label="Search">
-                                            <button class="btn btn-outline-primary my-2 my-sm-0" id="a_u_ST_Search">Search</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-2">
-
-                                    <div class="col-6 mt-4">
-                                        <div class="form-group row">
-                                            <label for="a_u_ST_gradeLVL"
-                                                class="col-3 d-flex justify-content-center align-items-center m-0">Grade Level:</label>
-                                            <select class="form-control col-9 p-0 m-0 dropdown-gradeLvl">
-                                                {{#if (getBool gradeLvl)}}
-                                                <option value="{{GLSettings}}">{{GLSettings}}--selected</option>
-                                                {{#each gradeLvl}}
-                                                {{>dropdownOpt this}}
-                                                {{/each}}
-                                                {{else}}
-                                                <option value="">--Grade Level--</option>
-                                                {{/if}}
-                                            
-                                            </select>
-                                        </div>
-                                    </div>
-                                                    <div class="col-6 form-inline justify-content-end my-4">
-                                        <a href="/t/users/SGrades" class="btn btn-outline-dark">Set Grades</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-2">
-                                <table class="table table-bordered">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th scope="col">Student Number</th>
-                                            <th scope="col">Student Name</th>
-                                            <th scope="col"></th>
-                                                
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {{#each student}}
-                                            {{>t_u_ST_students this}}
-                                        {{/each}}
-                                    </tbody>
-                                </table>
-                                <nav aria-label="Page navigation example">
-                                    <ul class="pagination pagination-sm justify-content-end m-2">
-                                        <li class="page-item"><a class="page-link text-dark" href="#">Previous</a></li>
-                                        <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link text-dark" href="#">Next</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
+<div class="col-9">
+    <div class="shadow">
+        <div class="d-flex flex-column mt-2 bg-light">
+            <div class="container">
+                <div class="row mt-2">
+                    <div class="col-6">
+                        <div class="form-group row">
+                            <label for="a_u_ST_schoolYear"
+                                class="col-3 d-flex justify-content-center align-items-center m-0">School Year:</label>
+                            <select class="form-control col-9 p-0 m-0 dropdown-schoolYear">
+                                {{#if (getBool schoolYear)}}
+                                <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
+                                {{#each schoolYear}}
+                                {{>dropdownOpt this}}
+                                {{/each}}
+                                {{else}}
+                                <option value="">--School Year--</option>
+                                {{/if}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-inline justify-content-end">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search Users"
+                                aria-label="Search">
+                            <button class="btn btn-outline-primary my-2 my-sm-0" id="a_u_ST_Search">Search</button>
                         </div>
                     </div>
                 </div>
+                <div class="row mt-2">
 
+                    <div class="col-6 mt-4">
+                        <div class="form-group row">
+                            <label for="a_u_ST_gradeLVL"
+                                class="col-3 d-flex justify-content-center align-items-center m-0">Grade Level:</label>
+                            <select class="form-control col-9 p-0 m-0 dropdown-gradeLvl">
+                                {{#if (getBool gradeLvl)}}
+                                 <option value="{{GLSettings}}">{{GLSettings}}--selected</option>
+                                {{#each gradeLvl}}
+                                {{>dropdownOpt this}}
+                                {{/each}}
+                                {{else}}
+                                <option value="">--Grade Level--</option>
+                                {{/if}}
+                               
+                            </select>
+                        </div>
+                    </div>
 
+                    <div class="col-6">
+                        <div class="btn-group mt-4" style="margin-left: 69px;">
+                            <a id="goToSetGrades" class="btn btn-outline-primary">
+                               Set Grades
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-2">
+                <table class="table table-bordered">
+                    <thead class="thead-primary">
+                        <tr>
+                            <th scope="col">Student Number</th>
+                            <th scope="col">Student Name</th>
+
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{#each student}}
+                        {{>t_u_ST_students this}}
+                        {{/each}}
+
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+</div>
+
+
+</div>
+</div>

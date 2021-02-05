@@ -8,7 +8,7 @@ function isNumber(myString) {
     return /^\d+$/.test(myString);
 }
 
-function validCCExp(myString){
+function validCCExp(myString) {
     return /(0[1-9]|1[0-2])\/([0-9][0-9])/.test(myString);
 }
 // check user data to see if it is valid when creating any new user
@@ -382,16 +382,18 @@ $(document).ready(function () {
         });
     });
 
-    $('#submitBalanceReport').click(function(){
+    $('#submitBalanceReport').click(function () {
         var schoolYear = $('#schoolYear').val();
 
-        $.post('/a/viewOutstandingBalReport',{schoolYear:schoolYear},function(result){
+        $.post('/a/viewOutstandingBalReport', {
+            schoolYear: schoolYear
+        }, function (result) {
             switch (result.status) {
                 case 201: {
                     window.location.href = '/a/report/outstandingBalanceTable';
                     break;
                 }
-                case 401:{
+                case 401: {
                     alert('case 401: ' + result.msg);
                     break;
                 }
@@ -401,6 +403,76 @@ $(document).ready(function () {
                 }
             }
         });
+    });
+
+    $('#a_f_M_Save').on('click', function () {
+        var schoolYear = $('#schoolYear').val();
+        var gradeLvl = $('#gradeLvl').val();
+        var tuition = parseInt($('#fee_tuition').val());
+        var addtnl = parseInt($('#fee_add').val());
+        var misc = parseInt($('#fee_misc').val());
+        var other = parseInt($('#fee_other').val());
+
+        var sum = tuition + addtnl + misc + other;
+        var fees = {
+            tuition: tuition,
+            additional: addtnl,
+            misc: misc,
+            other: other
+        };
+        $.post('/editFees', {
+            sum: sum,
+            schoolYear: schoolYear,
+            gradeLvl: gradeLvl,
+            fees: fees
+        }, function (res) {
+            switch (res.status) {
+                case 200:
+                    alert(res.msg);
+                    location.reload();
+                    break;
+                case 500:
+                    alert(res.msg);
+                    break;
+            }
+        });
+    });
+    $('#a_f_UE_Save').on('click', function () {
+        var schoolYear = $('#schoolYear').val();
+        var gradeLvl = $('#gradeLvl').val();
+        var full = parseInt($('#enroll_full').val());
+        var semestral = parseInt($('#enroll_sem').val());
+        var trimestral = parseInt($('#enroll_tri').val());
+        var quarterly = parseInt($('#enroll_qrt').val());
+        var monthly = parseInt($('#enroll_mon').val());
+
+        var UEnroll = {
+            full: full,
+            sem: semestral,
+            tri: trimestral,
+            qtr: quarterly,
+            mon: monthly
+        }
+        if (full > semestral && full > trimestral && full > quarterly && full > monthly) {
+            $.post('/editUponE', {
+                schoolYear: schoolYear,
+                gradeLvl: gradeLvl,
+                ue:UEnroll
+            }, function (res) {
+                switch (res.status) {
+                    case 200:
+                        alert(res.msg);
+                        location.reload();
+                        break;
+                    case 500:
+                        alert(res.msg);
+                        break;
+                }
+            });
+        } else {
+            alert('Cannot have amounts greater than full');
+        }
+
     });
     /*
         TEACHER
@@ -459,7 +531,7 @@ $(document).ready(function () {
         })
     });
 
-    $('#submitCCInfo').click(function() {
+    $('#submitCCInfo').click(function () {
         var ccType = $('input[name="ccType"]:checked').val();
         var ccHolderName = $('#ccHolderName').val();
         var ccNo = $('#ccNo').val();
@@ -469,46 +541,41 @@ $(document).ready(function () {
         var valid = true;
         var inv_fields = "Credit Card Info is Invalid. Modify the following: \n"
 
-        if(ccType != "MasterCard" && ccType != "Visa")
-        {
+        if (ccType != "MasterCard" && ccType != "Visa") {
             valid = false;
-            inv_fields =inv_fields + "   Credit Card Type is Unselected\n";
+            inv_fields = inv_fields + "   Credit Card Type is Unselected\n";
         }
 
-        if(validator.isEmpty(ccHolderName) || hasNumber(ccHolderName))
-        {
+        if (validator.isEmpty(ccHolderName) || hasNumber(ccHolderName)) {
             valid = false;
-            inv_fields =inv_fields + "   Credit Card Holder's Name is Empty or Invalid\n";
+            inv_fields = inv_fields + "   Credit Card Holder's Name is Empty or Invalid\n";
         }
 
-        if(validator.isEmpty(ccNo) || !isNumber(ccNo) || ccNo.length != 16)
-        {
+        if (validator.isEmpty(ccNo) || !isNumber(ccNo) || ccNo.length != 16) {
             valid = false;
-            inv_fields =inv_fields +"   Credit Card Number is Empty or Invalid\n";
+            inv_fields = inv_fields + "   Credit Card Number is Empty or Invalid\n";
         }
 
-        if(validator.isEmpty(ccExp) || !validCCExp(ccExp)){
+        if (validator.isEmpty(ccExp) || !validCCExp(ccExp)) {
             valid = false;
-            inv_fields = inv_fields +"   Credit Card Expiration is Empty or Invalid\n";
+            inv_fields = inv_fields + "   Credit Card Expiration is Empty or Invalid\n";
         }
 
-        if(validator.isEmpty(ccv) || !isNumber(ccv) || ccv.length != 3)
-        {
+        if (validator.isEmpty(ccv) || !isNumber(ccv) || ccv.length != 3) {
             valid = false;
-            inv_fields = inv_fields +"   CCV is Empty or Invalid\n";
+            inv_fields = inv_fields + "   CCV is Empty or Invalid\n";
         }
-        
-        if(valid)
-        {
+
+        if (valid) {
             $.post('/p/submitCCInfo', {
-                ccHolderName:ccHolderName,
+                ccHolderName: ccHolderName,
                 ccNo: ccNo,
                 ccExp: ccExp,
-                ccType:ccType
+                ccType: ccType
             }, function (result) {
                 switch (result.status) {
                     case 201: {
-                        alert('To confirm payment use this OTP: '+ result.otp);
+                        alert('To confirm payment use this OTP: ' + result.otp);
                         window.location.href = '/p/pay/ccOTP'
                         break;
                     }
@@ -522,17 +589,16 @@ $(document).ready(function () {
                     }
                 }
             })
-        }
-        else
+        } else
             alert(inv_fields);
     });
 
-    $('#submitCCOTP').click(function(){
+    $('#submitCCOTP').click(function () {
         var otp = $('#otp').val();
 
-        if(!validator.isEmpty(otp)){
+        if (!validator.isEmpty(otp)) {
             $.post('/p/submitCCOTP', {
-                otp:otp
+                otp: otp
             }, function (result) {
                 switch (result.status) {
                     case 201: {
@@ -550,19 +616,18 @@ $(document).ready(function () {
                     }
                 }
             })
-        }
-        else alert('Please enter the OTP');
+        } else alert('Please enter the OTP');
 
     });
 
-    $('#submitBankPlan').click(function() {
+    $('#submitBankPlan').click(function () {
         var paymentPlan = $('input[name="paymentPlan"]:checked').val();
         var studentID = $('#studentID').val();
 
         console.log(paymentPlan);
         $.post('/p/submitCCPlan', {
-            studentID : studentID,
-            paymentPlan : paymentPlan
+            studentID: studentID,
+            paymentPlan: paymentPlan
         }, function (result) {
             switch (result.status) {
                 case 201: {
@@ -581,7 +646,7 @@ $(document).ready(function () {
         })
     });
 
-    $('#submitBankPayment').click(function() {
+    $('#submitBankPayment').click(function () {
         var accountNumber = $('#accountNumber').val();
         var accountName = $('#accountName').val();
 
@@ -589,32 +654,26 @@ $(document).ready(function () {
         var valid = true;
         var inv_fields = "Bank Info is Invalid. Modify the following: \n"
 
-        if(validator.isEmpty(accountNumber))
-        {
+        if (validator.isEmpty(accountNumber)) {
             valid = false;
-            inv_fields =inv_fields + "   Account Number is Empty or Invalid\n";
-        }
-        else if(!isNumber(accountNumber))
-        {
+            inv_fields = inv_fields + "   Account Number is Empty or Invalid\n";
+        } else if (!isNumber(accountNumber)) {
             valid = false;
-            inv_fields =inv_fields + "   Account Number is Empty or Invalid\n";
-        }
-        else if(accountNumber.length < 8 || accountNumber.lenth > 12)
-        {
+            inv_fields = inv_fields + "   Account Number is Empty or Invalid\n";
+        } else if (accountNumber.length < 8 || accountNumber.lenth > 12) {
             valid = false;
-            inv_fields =inv_fields + "   Account Number is Empty or Invalid\n";
+            inv_fields = inv_fields + "   Account Number is Empty or Invalid\n";
         }
 
-        if(validator.isEmpty(accountName) || hasNumber(accountName))
-        {
+        if (validator.isEmpty(accountName) || hasNumber(accountName)) {
             valid = false;
-            inv_fields =inv_fields + "   Account Name is Empty or Invalid\n";
+            inv_fields = inv_fields + "   Account Name is Empty or Invalid\n";
         }
 
-        if(valid){
+        if (valid) {
             $.post('/p/submitBankPayment', {
-                accountNumber : accountNumber,
-                accountName : accountName
+                accountNumber: accountNumber,
+                accountName: accountName
             }, function (result) {
                 switch (result.status) {
                     case 201: {
@@ -632,8 +691,7 @@ $(document).ready(function () {
                     }
                 }
             })
-        }
-        else alert(inv_fields);
+        } else alert(inv_fields);
     });
     /*
         STUDENT
@@ -728,21 +786,21 @@ $(document).ready(function () {
         If Parent does not have account
             -Create Parent Account
     */
-    $('.dropdown-schoolYear').on('change', function(){
+    $('.dropdown-schoolYear').on('change', function () {
         var schoolYear = $('.dropdown-schoolYear').val();
         console.log(schoolYear);
         $.post('/userSettings/schoolYear/' + schoolYear, function () {
             location.reload();
         });
     });
-    $('.dropdown-gradeLvl').on('change', function(){
+    $('.dropdown-gradeLvl').on('change', function () {
         var gradeLvl = $('.dropdown-gradeLvl').val();
         console.log(gradeLvl);
         $.post('/userSettings/gradeLvl/' + gradeLvl, function () {
             location.reload();
         });
     });
-    $('.dropdown-studentID').on('change', function(){
+    $('.dropdown-studentID').on('change', function () {
         var studentID = $('.dropdown-studentID').val();
         console.log(studentID);
         $.post('/userSettings/studentID/' + studentID, function () {
@@ -758,9 +816,10 @@ $(document).ready(function () {
             sub: subject,
             tch: teacher
         }, function (result) {
-            switch(result.status){
-                case 200: alert(result.msg);
-                break;
+            switch (result.status) {
+                case 200:
+                    alert(result.msg);
+                    break;
             }
         });
     });
