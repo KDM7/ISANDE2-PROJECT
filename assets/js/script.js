@@ -302,7 +302,7 @@ function checkParentData(userInfo, parentData) {
     else return false;
 }
 $(document).ready(function () {
-    $('.editSelection_Save').on('click', function () {
+    $('.editSection_Save').on('click', function () {
         var clsID = parseInt($(this).attr('class-id'));
         var tchID = $('#editSection_tch_' + clsID).val();
 
