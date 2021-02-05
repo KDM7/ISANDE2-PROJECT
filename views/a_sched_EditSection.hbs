@@ -19,7 +19,7 @@
                             <option value="{{userID}}">{{name}}</option>
                             {{/each}}
                         </select>
-                        <button id="editSection_adr" type="button" class="btn btn-outline-primary col-4">Change
+                        <button id="editSection_adr" type="button" section-id="{{clsDta.secID}}" class="btn btn-outline-primary col-4">Change
                             Adviser</button>
                     </div>
                 </div>
@@ -48,8 +48,8 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <button class="editSelection_Save" class-id="{{clsID}}" type="button"
-                                        class="btn btn-outline-primary form-control">save</button>
+                                    <button class-id="{{clsID}}" type="button"
+                                        class="btn btn-outline-primary form-control editSelection_Save">save</button>
                                 </td>
                             </tr>
                             {{/each}}

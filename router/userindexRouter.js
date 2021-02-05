@@ -34,6 +34,8 @@ router.get('/a/sched/AcadCalendar', controller.getAschedAcadCalendar);
 router.get('/a/report/outstandingBalance',controller.getAReportBalance);
 router.get('/a/report/outstandingBalanceTable',controller.getAReportBalanceTable);
 
+router.post('/editClass', controller.postEditClass);
+router.post('/editSectionAdviser', indexMiddleware.validateSectionAdviser, controller.postSectionAdviser)
 router.post('/editUponE', controller.postEditUponE);
 router.post('/editFees', indexMiddleware.validateEditFees, controller.postEditFees);
 router.post('/addClass', controller.postAddClass);

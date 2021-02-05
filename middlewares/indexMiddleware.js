@@ -3,6 +3,7 @@ const studentModel = require('../model/studentdb');
 const sectionModel = require('../model/sectiondb');
 const upon_enrollmentModel = require("../model/upon_enrollmentdb");
 const feesModel = require("../model/feesdb");
+const teacherModel = require("../model/teacherdb");
 
 async function getFullPmtSYGL(schoolYear, gradeLvl) {
     var uponEnrollment = await upon_enrollmentModel.aggregate(
@@ -41,6 +42,18 @@ async function getFullPmtSYGL(schoolYear, gradeLvl) {
         }]
     );
     return parseInt(uponEnrollment[0].fullPayment);
+}
+
+async function getUnavailableTch() {
+    var unavailableTch = await sectionModel.aggregate([{
+        '$group': {
+            '_id': null,
+            'advisers': {
+                '$push': '$sectionAdviser'
+            }
+        }
+    }]);
+    return unavailableTch[0].advisers
 }
 
 const indexMiddleware = {
@@ -91,11 +104,35 @@ const indexMiddleware = {
         var sum = parseInt(req.body.sum);
         if (sum == fullPmt)
             return next();
-        
+
         res.send({
             status: 500,
-            msg: 'Sum of Fees(' + sum + ') does not equal Full Payment(' + fullPmt + ') with difference of '+Math.abs(sum - fullPmt)
+            msg: 'Sum of Fees(' + sum + ') does not equal Full Payment(' + fullPmt + ') with difference of ' + Math.abs(sum - fullPmt)
         });
+    },
+    validateSectionAdviser: async function (req, res, next) {
+        var adviserID = req.body.adviserID;
+        var unavailableLst = await getUnavailableTch();
+        var validateID = await teacherModel.aggregate(
+            [{
+                '$match': {
+                    'userID': {
+                        '$in': unavailableLst
+                    }
+                }
+            }, {
+                '$match': {
+                    'userID': adviserID.toString()
+                }
+            }]
+        );
+        if(!(validateID[0]))
+            return next();
+
+            res.send({
+                status: 500,
+                msg: 'Teacher is already an adviser to another class'
+            });
     },
 
 };
