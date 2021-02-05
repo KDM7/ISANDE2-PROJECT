@@ -1517,49 +1517,53 @@ async function getStudentClassList(userID, sectionID) {
     return classList;
 }
 async function getParentChildren(userID) {
-    var user = await userModel.aggregate([{
-        '$match': {
-            'type': 'S'
-        }
-    }, {
-        '$lookup': {
-            'from': 'students',
-            'localField': 'userID',
-            'foreignField': 'userID',
-            'as': 'students'
-        }
-    }, {
-        '$unwind': {
-            'path': '$students',
-            'preserveNullAndEmptyArrays': true
-        }
-    }, {
-        '$lookup': {
-            'from': 'parents',
-            'localField': 'students.parentID',
-            'foreignField': 'userID',
-            'as': 'parents'
-        }
-    }, {
-        '$unwind': {
-            'path': '$parents',
-            'preserveNullAndEmptyArrays': true
-        }
-    }, {
-        '$match': {
-            'parents.userID': userID
-        }
-    }, {
-        '$project': {
-            'studentID': '$userID',
-            'value': '$userID',
-            'name1': '$firstName',
-            'name2': '$middleName',
-            'name3': '$lastName',
-            '_id': 0
-        }
-    }]);
-    return user;
+    try {
+        var user = await userModel.aggregate([{
+            '$match': {
+                'type': 'S'
+            }
+        }, {
+            '$lookup': {
+                'from': 'students',
+                'localField': 'userID',
+                'foreignField': 'userID',
+                'as': 'students'
+            }
+        }, {
+            '$unwind': {
+                'path': '$students',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$lookup': {
+                'from': 'parents',
+                'localField': 'students.parentID',
+                'foreignField': 'userID',
+                'as': 'parents'
+            }
+        }, {
+            '$unwind': {
+                'path': '$parents',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$match': {
+                'parents.userID': userID
+            }
+        }, {
+            '$project': {
+                'studentID': '$userID',
+                'value': '$userID',
+                'name1': '$firstName',
+                'name2': '$middleName',
+                'name3': '$lastName',
+                '_id': 0
+            }
+        }]);
+        return user;
+    } catch {
+        return;
+    }
 }
 // gets the amount the student already paid, as well as the payment plan
 async function getStudentPaymentsSummary(studentID, sectionID) {
@@ -3442,207 +3446,217 @@ const indexFunctions = {
 
     // to show the Statement of Accounts from the parents side
     getPtransSA: async function (req, res) {
-        var studentID = req.session.userSettings.studentID;
-        var schoolYear = await getStudentSY(studentID);
-        var studentinfo = await studentModel.aggregate(
-            [{
-                '$match': {
-                    'userID': studentID
-                }
-            }, {
-                '$lookup': {
-                    'from': 'users',
-                    'localField': 'userID',
-                    'foreignField': 'userID',
-                    'as': 'usrDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$usrDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'studentMembers',
-                    'localField': 'userID',
-                    'foreignField': 'studentID',
-                    'as': 'mbrDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$mbrDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'sections',
-                    'localField': 'mbrDta.sectionID',
-                    'foreignField': 'sectionID',
-                    'as': 'secDta'
-                }
-            }, {
-                '$match': {
-                    'secDta.schoolYear': req.session.userSettings.schoolYear
-                }
-            }, {
-                '$lookup': {
-                    'from': 'upon_enrollment',
-                    'localField': 'mbrDta.sectionID',
-                    'foreignField': 'sectionID',
-                    'as': 'erlDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$erlDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$unwind': {
-                    'path': '$secDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'ref_section',
-                    'localField': 'secDta.sectionName',
-                    'foreignField': 'sectionName',
-                    'as': 'refSec'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$refSec',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'payments',
-                    'localField': 'userID',
-                    'foreignField': 'studentID',
-                    'as': 'pmtDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$pmtDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$match': {
-                    '$expr': {
-                        '$eq': [
-                            '$pmtDta.sectionID', '$mbrDta.sectionID'
-                        ]
+        try {
+            var studentID = req.session.userSettings.studentID;
+            var schoolYear = await getStudentSY(studentID);
+            var studentinfo = await studentModel.aggregate(
+                [{
+                    '$match': {
+                        'userID': studentID
                     }
-                }
-            }, {
-                '$project': {
-                    '_id': 0,
-                    'schoolYear': '$secDta.schoolYear',
-                    'gradeLvl': '$refSec.gradeLvl',
-                    'userID': 1,
-                    'name': {
-                        '$concat': [
-                            '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
-                        ]
-                    },
-                    'pmtType': '$pmtDta.paymentPlan',
-                    'begBal': '$erlDta.fullPayment',
-                    'secID': '$mbrDta.sectionID'
-                }
-            }]
-        );
-        var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID);
-        var remBal = studentinfo[0].begBal - paidAmt[0].totalAmountPaid;
-        var studentList = await getParentChildren(req.session.logUser.userID);
-        var transHistPmt = await studentModel.aggregate(
-            [{
-                '$match': {
-                    //get only the relevant user
-                    'userID': studentinfo[0].userID
-                }
-            }, {
-                '$lookup': {
-                    'from': 'payments',
-                    'localField': 'userID',
-                    'foreignField': 'studentID',
-                    'as': 'pmtDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$pmtDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$match': {
-                    //get only the relevant section
-                    'pmtDta.sectionID': studentinfo[0].secID
-                }
-            }, {
-                '$lookup': {
-                    'from': 'cc_payment',
-                    'localField': 'pmtDta.paymentID',
-                    'foreignField': 'paymentID',
-                    'as': 'ccDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$ccDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'bank_payment',
-                    'localField': 'pmtDta.paymentID',
-                    'foreignField': 'paymentID',
-                    'as': 'bnkDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$bnkDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$project': {
-                    'pmtMtd': {
-                        '$switch': {
-                            //converts either cctype(cc) or accountNumber(bank) to boolean then if null(doesnt exist) pmtMtd field gets null otherwise gets either cctype or accountNumber
-                            'branches': [{
-                                'case': {
-                                    '$toBool': [
-                                        '$ccDta.ccType'
-                                    ]
-                                },
-                                'then': '$ccDta.ccType'
-                            }, {
-                                'case': {
-                                    '$toBool': [
-                                        '$bnkDta.accountNumber'
-                                    ]
-                                },
-                                'then': '$bnkDta.accountNumber'
-                            }],
-                            'default': null
+                }, {
+                    '$lookup': {
+                        'from': 'users',
+                        'localField': 'userID',
+                        'foreignField': 'userID',
+                        'as': 'usrDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$usrDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'studentMembers',
+                        'localField': 'userID',
+                        'foreignField': 'studentID',
+                        'as': 'mbrDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$mbrDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'sections',
+                        'localField': 'mbrDta.sectionID',
+                        'foreignField': 'sectionID',
+                        'as': 'secDta'
+                    }
+                }, {
+                    '$match': {
+                        'secDta.schoolYear': req.session.userSettings.schoolYear
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'upon_enrollment',
+                        'localField': 'mbrDta.sectionID',
+                        'foreignField': 'sectionID',
+                        'as': 'erlDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$erlDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$secDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'ref_section',
+                        'localField': 'secDta.sectionName',
+                        'foreignField': 'sectionName',
+                        'as': 'refSec'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$refSec',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'payments',
+                        'localField': 'userID',
+                        'foreignField': 'studentID',
+                        'as': 'pmtDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$pmtDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$match': {
+                        '$expr': {
+                            '$eq': [
+                                '$pmtDta.sectionID', '$mbrDta.sectionID'
+                            ]
                         }
-                    },
-                    'dtPaid': '$pmtDta.datePaid',
-                    'pmtID': '$pmtDta.paymentID',
-                    'amt': '$pmtDta.amountPaid'
-                }
-            }]
-        );
-        res.render('p_trans_SA', {
-            firstname: req.session.logUser.firstName,
-            middlename: req.session.logUser.middleName,
-            lastname: req.session.logUser.lastName,
-            title: 'Statement of Accounts',
-            schoolYear: schoolYear,
-            SYSettings: req.session.userSettings.schoolYear,
-            info: studentinfo[0],
-            paidAmt: paidAmt[0].totalAmountPaid,
-            remBal: remBal,
-            histPmt: transHistPmt,
-            studentID: studentList,
-            SIDSettings: studentinfo[0].name,
-        });
+                    }
+                }, {
+                    '$project': {
+                        '_id': 0,
+                        'schoolYear': '$secDta.schoolYear',
+                        'gradeLvl': '$refSec.gradeLvl',
+                        'userID': 1,
+                        'name': {
+                            '$concat': [
+                                '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
+                            ]
+                        },
+                        'pmtType': '$pmtDta.paymentPlan',
+                        'begBal': '$erlDta.fullPayment',
+                        'secID': '$mbrDta.sectionID'
+                    }
+                }]
+            );
+            var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID);
+            var remBal = studentinfo[0].begBal - paidAmt[0].totalAmountPaid;
+            var studentList = await getParentChildren(req.session.logUser.userID);
+            var transHistPmt = await studentModel.aggregate(
+                [{
+                    '$match': {
+                        //get only the relevant user
+                        'userID': studentinfo[0].userID
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'payments',
+                        'localField': 'userID',
+                        'foreignField': 'studentID',
+                        'as': 'pmtDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$pmtDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$match': {
+                        //get only the relevant section
+                        'pmtDta.sectionID': studentinfo[0].secID
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'cc_payment',
+                        'localField': 'pmtDta.paymentID',
+                        'foreignField': 'paymentID',
+                        'as': 'ccDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$ccDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'bank_payment',
+                        'localField': 'pmtDta.paymentID',
+                        'foreignField': 'paymentID',
+                        'as': 'bnkDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$bnkDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$project': {
+                        'pmtMtd': {
+                            '$switch': {
+                                //converts either cctype(cc) or accountNumber(bank) to boolean then if null(doesnt exist) pmtMtd field gets null otherwise gets either cctype or accountNumber
+                                'branches': [{
+                                    'case': {
+                                        '$toBool': [
+                                            '$ccDta.ccType'
+                                        ]
+                                    },
+                                    'then': '$ccDta.ccType'
+                                }, {
+                                    'case': {
+                                        '$toBool': [
+                                            '$bnkDta.accountNumber'
+                                        ]
+                                    },
+                                    'then': '$bnkDta.accountNumber'
+                                }],
+                                'default': null
+                            }
+                        },
+                        'dtPaid': '$pmtDta.datePaid',
+                        'pmtID': '$pmtDta.paymentID',
+                        'amt': '$pmtDta.amountPaid'
+                    }
+                }]
+            );
+            res.render('p_trans_SA', {
+                firstname: req.session.logUser.firstName,
+                middlename: req.session.logUser.middleName,
+                lastname: req.session.logUser.lastName,
+                title: 'Statement of Accounts',
+                schoolYear: schoolYear,
+                SYSettings: req.session.userSettings.schoolYear,
+                info: studentinfo[0],
+                paidAmt: paidAmt[0].totalAmountPaid,
+                remBal: remBal,
+                histPmt: transHistPmt,
+                studentID: studentList,
+                SIDSettings: studentinfo[0].name,
+            });
+        } catch {
+            res.render('p_trans_SA', {
+                firstname: req.session.logUser.firstName,
+                middlename: req.session.logUser.middleName,
+                lastname: req.session.logUser.lastName,
+                title: 'Statement of Accounts',
+            });
+        }
+        
     },
 
     getPaccNewChild: function (req, res) {
