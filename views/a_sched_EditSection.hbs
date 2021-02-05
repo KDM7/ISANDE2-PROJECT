@@ -7,7 +7,8 @@
     <div class="shadow">
         <div class="list-group mt-2 shadow bg-light">
             <div class="container">
-                <p class="display-5">Edit Section</p>
+                <br>
+                <h1 class="display-5 text-center font-weight-bold">Edit Classes</h1>
                 <br>
                 <p class="display-4 ml-2">{{clsDta._id}} ({{clsDta.gradeLvl}})</p>
                 <div class="row m-2">
@@ -30,8 +31,8 @@
                             <tr>
                                 <th scope="col">Subject Name</th>
                                 <th scope="col">Teacher Name</th>
-                                <th scope="col"></th>
-                                <th scope="col"></th>
+                                <th scope="col">Change Teacher</th>
+                                <th scope="col">Save Changes</th>
                                 </th>
                             </tr>
                         </thead>
@@ -49,7 +50,7 @@
                                 </td>
                                 <td>
                                     <button class-id="{{clsID}}" type="button"
-                                        class="btn btn-outline-primary form-control editSelection_Save">save</button>
+                                        class="btn btn-outline-primary form-control editSection_Save">save</button>
                                 </td>
                             </tr>
                             {{/each}}
