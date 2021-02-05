@@ -13,10 +13,10 @@
                 <div class="row m-2">
                     <p class="col-4 font-weight-bold">Section Adviser: {{clsDta.adviser}}</p>
                     <div class="col-8 row">
-                        <select id="" class="col-8">
+                        <select id="editSection_dropdown_adr" class="col-8">
                             <option value="{{clsDta.adviserID}}">{{clsDta.adviser}} --current adviser--</option>
-                            {{#each tchList}}
-                            <option value="{{userID}}">{{tchNm}}</option>
+                            {{#each availList}}
+                            <option value="{{userID}}">{{name}}</option>
                             {{/each}}
                         </select>
                         <button id="editSection_adr" type="button" class="btn btn-outline-primary col-4">Change

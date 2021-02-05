@@ -306,7 +306,12 @@ $(document).ready(function () {
         var clsID = parseInt($(this).attr('class-id'));
         var tchID = $('#editSection_tch_' + clsID).val();
 
+        console.log(clsID + ' ' + tchID);
+    });
+    $('#editSection_adr').on('click', function () {
+        var adviserID = $('#editSection_dropdown_adr').val();
 
+        console.log(adviserID);
     });
     $('#submitLogin').click(function () {
 

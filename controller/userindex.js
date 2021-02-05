@@ -639,6 +639,52 @@ async function getStudentMembership(studentID) {
     }]);
     return membersList;
 }
+
+async function getAvailableTch() {
+    var unavailableTch = await sectionModel.aggregate([{
+        '$group': {
+            '_id': null,
+            'advisers': {
+                '$push': '$sectionAdviser'
+            }
+        }
+    }]);
+    var availableTch = await teacherModel.aggregate(
+        [{
+            '$match': {
+                'userID': {
+                    '$not': {
+                        '$in': [
+                            'c.buffy'
+                        ]
+                    }
+                }
+            }
+        }, {
+            '$lookup': {
+                'from': 'users',
+                'localField': 'userID',
+                'foreignField': 'userID',
+                'as': 'usrDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$usrDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$project': {
+                'userID': 1,
+                'name': {
+                    '$concat': [
+                        '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
+                    ]
+                }
+            }
+        }]
+    );
+    return availableTch;
+}
 /*
     Gets user information of students under a specific parentID
 */
@@ -1048,7 +1094,7 @@ async function getClass(sectionID, schoolYear) {
             '$project': {
                 '_id': 1,
                 'secID': '$secDta.sectionID',
-                'adviserID':'$usrDta.userID',
+                'adviserID': '$usrDta.userID',
                 'cList': 1,
                 'gradeLvl': '$refSec.gradeLvl',
                 'adviser': {
@@ -1571,6 +1617,8 @@ const indexFunctions = {
         var sectionID = req.params.sectionID;
         var schoolYear = req.session.userSettings.schoolYear;
         var clsDta = await getClass(sectionID, schoolYear);
+        var availList = await getAvailableTch();
+        console.log(availList);
         var tchList = await teacherModel.aggregate(
             [{
                 '$lookup': {
@@ -1596,13 +1644,14 @@ const indexFunctions = {
             }]
         );
 
-        for(var i=0; i<clsDta.cList.length;i++){
+        for (var i = 0; i < clsDta.cList.length; i++)
             clsDta.cList[i].tchList = tchList;
-        }
+            
         res.render('a_sched_EditSection', {
             title: 'Edit Section',
-            clsDta:clsDta,
-            tchList:tchList
+            clsDta: clsDta,
+            tchList: tchList,
+            availList: availList
         })
     },
     // to show the students from the admins side
