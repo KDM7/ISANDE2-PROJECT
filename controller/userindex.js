@@ -2350,6 +2350,7 @@ const indexFunctions = {
                 }]
             );
             var feeDta = req.body.fees;
+            var sum = req.body.sum;
             await feesModel.findOneAndUpdate({
                 sectionID: fees[0].sectionID
             }, {
@@ -2357,6 +2358,13 @@ const indexFunctions = {
                 additional: feeDta.additional,
                 misc: feeDta.misc,
                 other: feeDta.other
+            }, {
+                useFindAndModify: false
+            });
+            await upon_enrollmentModel.findOneAndUpdate({
+                sectionID: fees[0].sectionID
+            }, {
+                fullPayment: sum
             }, {
                 useFindAndModify: false
             });
@@ -3656,7 +3664,7 @@ const indexFunctions = {
                 title: 'Statement of Accounts',
             });
         }
-        
+
     },
 
     getPaccNewChild: function (req, res) {
@@ -4268,7 +4276,7 @@ const indexFunctions = {
 
 
 
-    
+
     getAaccEditPassword: function (req, res) {
         res.render('a_acc_editPassword', {
             firstname: req.session.logUser.firstName,

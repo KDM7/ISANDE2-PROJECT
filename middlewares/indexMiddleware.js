@@ -95,21 +95,6 @@ const indexMiddleware = {
         }
 
     },
-    validateEditFees: async function (req, res, next) {
-        var schoolYear = req.body.schoolYear;
-        var gradeLvl = req.body.gradeLvl;
-        var fullPmt = await getFullPmtSYGL(schoolYear, gradeLvl);
-
-        console.log(req.body.fees);
-        var sum = parseInt(req.body.sum);
-        if (sum == fullPmt)
-            return next();
-
-        res.send({
-            status: 500,
-            msg: 'Sum of Fees(' + sum + ') does not equal Full Payment(' + fullPmt + ') with difference of ' + Math.abs(sum - fullPmt)
-        });
-    },
     validateSectionAdviser: async function (req, res, next) {
         var adviserID = req.body.adviserID;
         var unavailableLst = await getUnavailableTch();
