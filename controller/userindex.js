@@ -206,6 +206,338 @@ async function findUser(userID) {
     return user[0];
 }
 
+
+
+async function getSectionReport(schoolYear) {
+    return await sectionModel.aggregate([{
+        '$lookup': {
+            'from': 'payments',
+            'localField': 'sectionID',
+            'foreignField': 'sectionID',
+            'as': 'pmtDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$pmtDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'bank_payment',
+            'localField': 'pmtDta.paymentID',
+            'foreignField': 'paymentID',
+            'as': 'bnkDta'
+        }
+    }, {
+        '$lookup': {
+            'from': 'cc_payment',
+            'localField': 'pmtDta.paymentID',
+            'foreignField': 'paymentID',
+            'as': 'ccDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$bnkDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$unwind': {
+            'path': '$ccDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$match': {
+            'schoolYear': schoolYear
+        }
+    }, {
+        '$group': {
+            '_id': '$sectionID',
+            'ccPayment': {
+                '$sum': {
+                    '$cond': [
+                        '$ccDta.ccType', '$pmtDta.amountPaid', ''
+                    ]
+                }
+            },
+            'bnkPayment': {
+                '$sum': {
+                    '$cond': [
+                        '$bnkDta.accountNumber', '$pmtDta.amountPaid', ''
+                    ]
+                }
+            },
+            'payments': {
+                '$sum': '$pmtDta.amountPaid'
+            }
+        }
+    }, {
+        '$lookup': {
+            'from': 'sections',
+            'localField': '_id',
+            'foreignField': 'sectionID',
+            'as': 'secDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$secDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'ref_section',
+            'localField': 'secDta.sectionName',
+            'foreignField': 'sectionName',
+            'as': 'refSec'
+        }
+    }, {
+        '$unwind': {
+            'path': '$refSec',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$project': {
+            '_id': 0,
+            'sectionID': '$_id',
+            'ccPayment': 1,
+            'bnkPayment': 1,
+            'payments': 1,
+            'sectionName': '$secDta.sectionName',
+            'gradeLvl': '$refSec.gradeLvl'
+        }
+    }]);
+}
+
+async function getBankReportTotal(schoolYear) {
+    var total = await bank_paymentModel.aggregate([{
+        '$lookup': {
+            'from': 'payments',
+            'localField': 'paymentID',
+            'foreignField': 'paymentID',
+            'as': 'pmtDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$pmtDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'sections',
+            'localField': 'pmtDta.sectionID',
+            'foreignField': 'sectionID',
+            'as': 'secDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$secDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$group': {
+            '_id': '$secDta.sectionID',
+            'amountPaid': {
+                '$sum': '$pmtDta.amountPaid'
+            }
+        }
+    }, {
+        '$lookup': {
+            'from': 'sections',
+            'localField': '_id',
+            'foreignField': 'sectionID',
+            'as': 'secDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$secDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'ref_section',
+            'localField': 'secDta.sectionName',
+            'foreignField': 'sectionName',
+            'as': 'refSec'
+        }
+    }, {
+        '$unwind': {
+            'path': '$refSec',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$project': {
+            '_id': 0,
+            'amountPaid': 1,
+            'sectionID': '$_id',
+            'sectionName': '$secDta.sectionName',
+            'gradeLvl': '$refSec.gradeLvl',
+            'schoolYear': '$secDta.schoolYear',
+            'sectionAdviser': '$secDta.sectionAdviser'
+        }
+    }, {
+        '$match': {
+            'schoolYear': schoolYear
+        }
+    }, {
+        '$group': {
+            '_id': null,
+            'total': {
+                '$sum': '$amountPaid'
+            }
+        }
+    }]);
+    return total[0].total;
+}
+
+async function getCCReportTotal(schoolYear) {
+    var total = await cc_paymentModel.aggregate([{
+        '$lookup': {
+            'from': 'payments',
+            'localField': 'paymentID',
+            'foreignField': 'paymentID',
+            'as': 'pmtDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$pmtDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'sections',
+            'localField': 'pmtDta.sectionID',
+            'foreignField': 'sectionID',
+            'as': 'secDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$secDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$group': {
+            '_id': '$secDta.sectionID',
+            'amountPaid': {
+                '$sum': '$pmtDta.amountPaid'
+            }
+        }
+    }, {
+        '$lookup': {
+            'from': 'sections',
+            'localField': '_id',
+            'foreignField': 'sectionID',
+            'as': 'secDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$secDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'ref_section',
+            'localField': 'secDta.sectionName',
+            'foreignField': 'sectionName',
+            'as': 'refSec'
+        }
+    }, {
+        '$unwind': {
+            'path': '$refSec',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$project': {
+            '_id': 0,
+            'amountPaid': 1,
+            'sectionID': '$_id',
+            'sectionName': '$secDta.sectionName',
+            'gradeLvl': '$refSec.gradeLvl',
+            'schoolYear': '$secDta.schoolYear',
+            'sectionAdviser': '$secDta.sectionAdviser'
+        }
+    }, {
+        '$match': {
+            'schoolYear': schoolYear
+        }
+    }, {
+        '$group': {
+            '_id': null,
+            'total': {
+                '$sum': '$amountPaid'
+            }
+        }
+    }]);
+    return total[0].total;
+}
+
+async function getPaymentReportTotal(schoolYear) {
+    var total = await paymentModel.aggregate([{
+        '$lookup': {
+            'from': 'sections',
+            'localField': 'sectionID',
+            'foreignField': 'sectionID',
+            'as': 'secDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$secDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$group': {
+            '_id': '$secDta.sectionID',
+            'amountPaid': {
+                '$sum': '$amountPaid'
+            }
+        }
+    }, {
+        '$lookup': {
+            'from': 'sections',
+            'localField': '_id',
+            'foreignField': 'sectionID',
+            'as': 'secDta'
+        }
+    }, {
+        '$unwind': {
+            'path': '$secDta',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$lookup': {
+            'from': 'ref_section',
+            'localField': 'secDta.sectionName',
+            'foreignField': 'sectionName',
+            'as': 'refSec'
+        }
+    }, {
+        '$unwind': {
+            'path': '$refSec',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$project': {
+            '_id': 0,
+            'amountPaid': 1,
+            'sectionID': '$_id',
+            'sectionName': '$secDta.sectionName',
+            'gradeLvl': '$refSec.gradeLvl',
+            'schoolYear': '$secDta.schoolYear',
+            'sectionAdviser': '$secDta.sectionAdviser'
+        }
+    }, {
+        '$match': {
+            'schoolYear': schoolYear
+        }
+    }, {
+        '$group': {
+            '_id': null,
+            'total': {
+                '$sum': '$amountPaid'
+            }
+        }
+    }]);
+    return total[0].total;
+}
+
 async function findAdminDetails() {
     var user = await userModel.aggregate([{
         '$match': {
@@ -1689,10 +2021,10 @@ const indexFunctions = {
         })
     },
     postEditClass: async function (req, res) {
-        try{
+        try {
             var classID = req.body.clsID;
             var teacherID = req.body.tchID;
-    
+
             await classModel.findOneAndUpdate({
                 classID: classID
             }, {
@@ -1704,7 +2036,7 @@ const indexFunctions = {
                 status: 200,
                 msg: 'Class Updated'
             });
-        }catch (e){
+        } catch (e) {
             console.log(e);
             res.send({
                 status: 500,
@@ -1713,7 +2045,7 @@ const indexFunctions = {
         }
     },
     postSectionAdviser: async function (req, res) {
-        try{
+        try {
             var sectionID = req.body.sectionID;
             var adviserID = req.body.adviserID;
             await sectionModel.findOneAndUpdate({
@@ -1727,7 +2059,7 @@ const indexFunctions = {
                 status: 200,
                 msg: 'Adviser Updated'
             });
-        }catch (e){
+        } catch (e) {
             console.log(e);
             res.send({
                 status: 500,
@@ -2236,6 +2568,38 @@ const indexFunctions = {
             schoolYear: schoolYear,
             reportData: reportData
         })
+    },
+
+    getAreportPaymentsReport: async function (req, res) {
+        var schoolYears = await schoolYearModel.aggregate( //get school years in database for display in dropdown element
+            [{
+                '$project': {
+                    'value': '$schoolYear',
+                }
+            }]
+        );
+        var schoolYear = req.session.userSettings.schoolYear;
+     
+        var sectionReport = await getSectionReport(schoolYear);
+        var bankReportTotal = await getBankReportTotal(schoolYear);
+        var ccReportTotal = await getCCReportTotal(schoolYear);
+        var paymentReportTotal = await getPaymentReportTotal(schoolYear);
+
+        var totals = {
+            brt: bankReportTotal,
+            crt: ccReportTotal,
+            prt: paymentReportTotal
+        }
+
+        // console.log(totals);
+        res.render('a_report_paymentsReport', {
+            title: 'Payment Report',
+            schoolYear:schoolYears,
+            SYSettings: req.session.userSettings.schoolYear,
+            sectionReport: sectionReport,
+            total:totals
+        });
+
     },
     // function to approve student enrollment
     postEnrollmentApproved: async function (req, res) {

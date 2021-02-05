@@ -1,0 +1,66 @@
+{{!-- This is for viewing all of the students, Admin --}}
+
+{{>a_navbar}}
+{{>a_sidebar}}
+
+
+<div class="col-9">
+    <div class="shadow">
+        <div class="d-flex flex-column mt-2 bg-light">
+            <div class="container">
+                <h1 class="display-4 text-center">Summary of Payments Report</h1>
+                <h1 class="display-4 text-center">SY {{SYSettings}}</h1>
+            </div>
+            <div class="container">
+                <div class="form-group row m-3">
+                    <label for="schoolYear" class="col-3 d-flex justify-content-center align-items-center m-0">School
+                        Year:</label>
+                    <select class="form-control col-9 p-0 m-0 dropdown-schoolYear" id="schoolYear">
+                        {{#if (getBool schoolYear)}}
+                        <option value="{{SYSettings}}">{{SYSettings}}--selected</option>
+                        {{#each schoolYear}}
+                        {{>dropdownOpt this}}
+                        {{/each}}
+                        {{else}}
+                        <option value="">--School Year--</option>
+                        {{/if}}
+                    </select>
+                </div>
+            </div>
+            <div class="mt-2">
+
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-primary">
+                        <tr>
+                            <th scope="col"></th>
+                            <th class="text-center" scope="col">Bank</th>
+                            <th class="text-center"scope="col">Credit Card</th>
+                            <th class="text-center" scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each sectionReport}}
+                        <tr>
+                            <th>{{sectionName}}({{gradeLvl}})</th>
+                            <td class="text-right">Php {{getPrice bnkPayment}}</td>
+                            <td class="text-right">Php {{getPrice ccPayment}}</td>
+                            <td class="text-right">Php {{getPrice payments}}</td>
+                        </tr>
+                        {{/each}}
+                        <tr>
+                            <th>Total</th>
+                            <th class="text-right">Php {{getPrice total.brt}}</th>
+                            <th class="text-right">Php {{getPrice total.crt}}</th>
+                            <th class="text-right">Php {{getPrice total.prt}}</th>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+</div>
