@@ -25,69 +25,20 @@
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="form-inline justify-content-end">
-                            <input class="form-control mr-sm-2" type="search" placeholder="Search Users"
-                                aria-label="Search">
-                            <button class="btn btn-outline-primary my-2 my-sm-0" id="a_u_ST_Search">Search</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-2">
-
-                    <div class="col-6 mt-4">
                         <div class="form-group row">
                             <label for="a_u_ST_gradeLVL"
                                 class="col-3 d-flex justify-content-center align-items-center m-0">Grade Level:</label>
                             <select class="form-control col-9 p-0 m-0 dropdown-gradeLvl">
                                 {{#if (getBool gradeLvl)}}
-                                 <option value="{{GLSettings}}">{{GLSettings}}--selected</option>
+                                <option value="{{GLSettings}}">{{GLSettings}}--selected</option>
                                 {{#each gradeLvl}}
                                 {{>dropdownOpt this}}
                                 {{/each}}
                                 {{else}}
                                 <option value="">--Grade Level--</option>
                                 {{/if}}
-                               
+
                             </select>
-                        </div>
-                    </div>
-
-                    <div class="col-6">
-                        <div class="btn-group mt-4" style="margin-left: 69px;">
-                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false">
-                                Send Enrollment Notification
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Send Enrollment Notification</a>
-                                <a class="dropdown-item" href="#">Send Grades Notification</a>
-                                <a class="dropdown-item" href="#">Send Class Schedule Notification</a>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-outline-primary mt-4" data-toggle="modal"
-                            data-target="#exampleModal">Send</button>
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        Email has been sent
-
-
-
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

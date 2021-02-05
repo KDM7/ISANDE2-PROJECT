@@ -640,6 +640,52 @@ async function getStudentMembership(studentID) {
     }]);
     return membersList;
 }
+
+async function getAvailableTch() {
+    var unavailableTch = await sectionModel.aggregate([{
+        '$group': {
+            '_id': null,
+            'advisers': {
+                '$push': '$sectionAdviser'
+            }
+        }
+    }]);
+    var availableTch = await teacherModel.aggregate(
+        [{
+            '$match': {
+                'userID': {
+                    '$not': {
+                        '$in': [
+                            'c.buffy'
+                        ]
+                    }
+                }
+            }
+        }, {
+            '$lookup': {
+                'from': 'users',
+                'localField': 'userID',
+                'foreignField': 'userID',
+                'as': 'usrDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$usrDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$project': {
+                'userID': 1,
+                'name': {
+                    '$concat': [
+                        '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
+                    ]
+                }
+            }
+        }]
+    );
+    return availableTch;
+}
 /*
     Gets user information of students under a specific parentID
 */
@@ -869,65 +915,231 @@ async function getClassList(schoolYear) {
      */
     return await classModel.aggregate(
         [{
-                '$lookup': {
-                    'from': 'sections',
-                    'localField': 'sectionID',
-                    'foreignField': 'sectionID',
-                    'as': 'secDta'
-                }
-            }, {
-                '$lookup': {
-                    'from': 'users',
-                    'localField': 'teacherID',
-                    'foreignField': 'userID',
-                    'as': 'tchDta'
-                }
-            }, {
-                '$lookup': {
-                    'from': 'subjects',
-                    'localField': 'subjectCode',
-                    'foreignField': 'subjectCode',
-                    'as': 'subDta'
-                }
-            }, {
-                '$match': {
-                    'secDta.schoolYear': schoolYear
-                }
-            }, {
-                '$unwind': {
-                    'path': '$tchDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$unwind': {
-                    'path': '$secDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$unwind': {
-                    'path': '$subDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            },
-            {
-                '$sort': {
-                    'sectionID': -1
-                }
-            }, {
-                '$group': {
-                    '_id': '$secDta.sectionName',
-                    'cList': {
-                        '$push': {
-                            'subNm': '$subDta.subjectName',
-                            'tchFNm': '$tchDta.firstName',
-                            'tchMNm': '$tchDta.middleName',
-                            'tchLNm': '$tchDta.lastName'
-                        }
+            '$lookup': {
+                'from': 'sections',
+                'localField': 'sectionID',
+                'foreignField': 'sectionID',
+                'as': 'secDta'
+            }
+        }, {
+            '$lookup': {
+                'from': 'users',
+                'localField': 'teacherID',
+                'foreignField': 'userID',
+                'as': 'tchDta'
+            }
+        }, {
+            '$lookup': {
+                'from': 'subjects',
+                'localField': 'subjectCode',
+                'foreignField': 'subjectCode',
+                'as': 'subDta'
+            }
+        }, {
+            '$match': {
+                'secDta.schoolYear': schoolYear
+            }
+        }, {
+            '$unwind': {
+                'path': '$tchDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$unwind': {
+                'path': '$secDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$unwind': {
+                'path': '$subDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$group': {
+                '_id': '$secDta.sectionName',
+                'cList': {
+                    '$push': {
+                        'subNm': '$subDta.subjectName',
+                        'tchFNm': '$tchDta.firstName',
+                        'tchMNm': '$tchDta.middleName',
+                        'tchLNm': '$tchDta.lastName'
                     }
                 }
             }
-        ]
+        }, {
+            '$lookup': {
+                'from': 'ref_section',
+                'localField': '_id',
+                'foreignField': 'sectionName',
+                'as': 'refSec'
+            }
+        }, {
+            '$lookup': {
+                'from': 'sections',
+                'localField': '_id',
+                'foreignField': 'sectionName',
+                'as': 'secDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$refSec',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$unwind': {
+                'path': '$secDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$match': {
+                'secDta.schoolYear': schoolYear
+            }
+        }, {
+            '$lookup': {
+                'from': 'users',
+                'localField': 'secDta.sectionAdviser',
+                'foreignField': 'userID',
+                'as': 'usrDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$usrDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$project': {
+                '_id': 1,
+                'secID': '$secDta.sectionID',
+                'cList': 1,
+                'gradeLvl': '$refSec.gradeLvl',
+                'adviser': {
+                    '$concat': [
+                        '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
+                    ]
+                }
+            }
+        }, {
+            '$sort': {
+                'gradeLvl': 1
+            }
+        }]
     );
+}
+async function getClass(sectionID, schoolYear) {
+    var cls = await classModel.aggregate(
+        [{
+            '$match': {
+                'sectionID': parseInt(sectionID)
+            }
+        }, {
+            '$lookup': {
+                'from': 'sections',
+                'localField': 'sectionID',
+                'foreignField': 'sectionID',
+                'as': 'secDta'
+            }
+        }, {
+            '$lookup': {
+                'from': 'users',
+                'localField': 'teacherID',
+                'foreignField': 'userID',
+                'as': 'tchDta'
+            }
+        }, {
+            '$lookup': {
+                'from': 'subjects',
+                'localField': 'subjectCode',
+                'foreignField': 'subjectCode',
+                'as': 'subDta'
+            }
+        }, {
+            '$match': {
+                'secDta.schoolYear': schoolYear
+            }
+        }, {
+            '$unwind': {
+                'path': '$tchDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$unwind': {
+                'path': '$secDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$unwind': {
+                'path': '$subDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$group': {
+                '_id': '$secDta.sectionName',
+                'cList': {
+                    '$push': {
+                        'subNm': '$subDta.subjectName',
+                        'tchFNm': '$tchDta.firstName',
+                        'tchMNm': '$tchDta.middleName',
+                        'tchLNm': '$tchDta.lastName',
+                        'clsID': '$classID'
+                    }
+                }
+            }
+        }, {
+            '$lookup': {
+                'from': 'ref_section',
+                'localField': '_id',
+                'foreignField': 'sectionName',
+                'as': 'refSec'
+            }
+        }, {
+            '$lookup': {
+                'from': 'sections',
+                'localField': '_id',
+                'foreignField': 'sectionName',
+                'as': 'secDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$refSec',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$unwind': {
+                'path': '$secDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$match': {
+                'secDta.schoolYear': schoolYear
+            }
+        }, {
+            '$lookup': {
+                'from': 'users',
+                'localField': 'secDta.sectionAdviser',
+                'foreignField': 'userID',
+                'as': 'usrDta'
+            }
+        }, {
+            '$unwind': {
+                'path': '$usrDta',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$project': {
+                '_id': 1,
+                'secID': '$secDta.sectionID',
+                'adviserID': '$usrDta.userID',
+                'cList': 1,
+                'gradeLvl': '$refSec.gradeLvl',
+                'adviser': {
+                    '$concat': [
+                        '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
+                    ]
+                }
+            }
+        }]
+    );
+    return cls[0];
 }
 async function getParentChildren(userID) {
     var user = await userModel.aggregate([{
@@ -1283,67 +1495,64 @@ async function getBalanceReportData(schoolYear) {
         '$unwind': {
             'path': '$studentInfo',
             'preserveNullAndEmptyArrays': false
-          }
-        }, {
-          '$addFields': {
-            'studentName': {
-              '$concat': [
-                '$studentInfo.lastName', ',', '$studentInfo.firstName', ' ', '$studentInfo.middleName'
-              ]
-            }
-          }
-        }, {
-          '$sort': {
-            'sectionName':1,
-            'studentName': 1
-          }
-        }, {
-          '$project': {
-            'studentID': 1, 
-            'sectionName': 1, 
-            'remainingBalance': 1, 
-            'studentName': 1
-          }
         }
-    ]);
+    }, {
+        '$addFields': {
+            'studentName': {
+                '$concat': [
+                    '$studentInfo.lastName', ',', '$studentInfo.firstName', ' ', '$studentInfo.middleName'
+                ]
+            }
+        }
+    }, {
+        '$sort': {
+            'sectionName': 1,
+            'studentName': 1
+        }
+    }, {
+        '$project': {
+            'studentID': 1,
+            'sectionName': 1,
+            'remainingBalance': 1,
+            'studentName': 1
+        }
+    }]);
     return reportData;
 }
 
-async function getTeacherClassesList(teacherID){
-    var classes = await classModel.aggregate([
-        {
-          '$match': {
+async function getTeacherClassesList(teacherID) {
+    var classes = await classModel.aggregate([{
+        '$match': {
             'teacherID': teacherID
-          }
-        }, {
-          '$lookup': {
-            'from': 'sections', 
-            'localField': 'sectionID', 
-            'foreignField': 'sectionID', 
-            'as': 'section'
-          }
-        }, {
-          '$unwind': {
-            'path': '$section', 
-            'preserveNullAndEmptyArrays': false
-          }
-        }, {
-          '$sort': {
-            'section.sechoolYear': -1, 
-            'sectionID': 1, 
-            'classID': 1
-          }
-        }, {
-          '$project': {
-            'classID': 1, 
-            'sectionID': 1, 
-            'subjectCode': 1, 
-            'schoolYear': '$section.schoolYear', 
-            'sectionName': '$section.sectionName'
-          }
         }
-      ]);
-    
+    }, {
+        '$lookup': {
+            'from': 'sections',
+            'localField': 'sectionID',
+            'foreignField': 'sectionID',
+            'as': 'section'
+        }
+    }, {
+        '$unwind': {
+            'path': '$section',
+            'preserveNullAndEmptyArrays': false
+        }
+    }, {
+        '$sort': {
+            'section.sechoolYear': -1,
+            'sectionID': 1,
+            'classID': 1
+        }
+    }, {
+        '$project': {
+            'classID': 1,
+            'sectionID': 1,
+            'subjectCode': 1,
+            'schoolYear': '$section.schoolYear',
+            'sectionName': '$section.sectionName'
+        }
+    }]);
+
     return classes;
 }
 
@@ -1438,6 +1647,46 @@ const indexFunctions = {
     /*      
         ADMIN FUNCTIONS
     */
+    getAschedEditSection: async function (req, res) {
+        var sectionID = req.params.sectionID;
+        var schoolYear = req.session.userSettings.schoolYear;
+        var clsDta = await getClass(sectionID, schoolYear);
+        var availList = await getAvailableTch();
+        var tchList = await teacherModel.aggregate(
+            [{
+                '$lookup': {
+                    'from': 'users',
+                    'localField': 'userID',
+                    'foreignField': 'userID',
+                    'as': 'usrDta'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$usrDta',
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$project': {
+                    'userID': 1,
+                    'tchNm': {
+                        '$concat': [
+                            '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
+                        ]
+                    }
+                }
+            }]
+        );
+
+        for (var i = 0; i < clsDta.cList.length; i++)
+            clsDta.cList[i].tchList = tchList;
+            
+        res.render('a_sched_EditSection', {
+            title: 'Edit Section',
+            clsDta: clsDta,
+            tchList: tchList,
+            availList: availList
+        })
+    },
     // to show the students from the admins side
     getAuserStudents: async function (req, res) {
         // after grades have been set up: may have to merge student and another var grades instead of trying to aggregate for remarks
@@ -1877,10 +2126,11 @@ const indexFunctions = {
                 }
             }]
         );
-        var list = await getClassList(await getCurrentSY());
+        var list = await getClassList(req.session.userSettings.schoolYear);
         res.render('a_sched_ViewClasses', {
             title: 'View Classes',
             schoolYear: schoolYear,
+            SYSettings: req.session.userSettings.schoolYear,
             list: list,
         });
     },
@@ -1933,10 +2183,10 @@ const indexFunctions = {
         var schoolYear = req.session.reportschoolYear;
         var reportData = await getBalanceReportData(schoolYear);
         console.log(reportData);
-        res.render('a_report_OutstandingBalTable',{
-            title : "Outstanding Balance Report",
-            schoolYear:schoolYear,
-            reportData:reportData
+        res.render('a_report_OutstandingBalTable', {
+            title: "Outstanding Balance Report",
+            schoolYear: schoolYear,
+            reportData: reportData
         })
     },
     // function to approve student enrollment
@@ -2524,7 +2774,7 @@ const indexFunctions = {
             gradeLvl: gradeLvl,
             GLSettings: req.session.userSettings.gradeLvl,
             student: students
-            
+
         });
     },
 
