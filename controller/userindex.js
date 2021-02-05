@@ -306,9 +306,9 @@ async function getSectionReport(schoolYear) {
         }
     }, {
         '$sort': {
-          'gradeLvl': 1
+            'gradeLvl': 1
         }
-      }]);
+    }]);
 }
 
 async function getBankReportTotal(schoolYear) {
@@ -1125,7 +1125,6 @@ async function getNextStudentID() {
             'userID': 1
         }
     }]);
-    //   console.log(start);
     if (students.length == 0)
         return start + '000001'
     else {
@@ -1134,7 +1133,6 @@ async function getNextStudentID() {
         studentNum++;
 
         leadingzeroes = 6 - studentNum.toString().length;
-        // console.log(leadingzeroes);
 
         nextStudent = '' + start;
 
@@ -1145,8 +1143,7 @@ async function getNextStudentID() {
 
         return nextStudent;
     }
-    // var highestID = students[0].userID;
-    //  console.log(highestID);
+
 }
 
 function renamePaymentPlan(string) {
@@ -1478,49 +1475,46 @@ async function getClass(sectionID, schoolYear) {
     );
     return cls[0];
 }
-async function getStudentClassList(userID,sectionID)
-{
-    var classList = studentModel.aggregate([
-        {
-          '$match': {
+async function getStudentClassList(userID, sectionID) {
+    var classList = studentModel.aggregate([{
+        '$match': {
             'userID': userID
-          }
-        }, {
-          '$lookup': {
-            'from': 'studentMembers', 
-            'localField': 'userID', 
-            'foreignField': 'studentID', 
-            'as': 'studentMembers'
-          }
-        }, {
-          '$unwind': {
-            'path': '$studentMembers', 
-            'preserveNullAndEmptyArrays': false
-          }
-        }, {
-          '$match': {
-            'studentMembers.sectionID': sectionID
-          }
-        }, {
-          '$lookup': {
-            'from': 'classes', 
-            'localField': 'studentMembers.sectionID', 
-            'foreignField': 'sectionID', 
-            'as': 'classes'
-          }
-        }, {
-          '$unwind': {
-            'path': '$classes', 
-            'preserveNullAndEmptyArrays': true
-          }
-        }, {
-          '$project': {
-            '_id': 0, 
-            'classID': '$classes.classID'
-          }
         }
-      ]);
-      return classList;
+    }, {
+        '$lookup': {
+            'from': 'studentMembers',
+            'localField': 'userID',
+            'foreignField': 'studentID',
+            'as': 'studentMembers'
+        }
+    }, {
+        '$unwind': {
+            'path': '$studentMembers',
+            'preserveNullAndEmptyArrays': false
+        }
+    }, {
+        '$match': {
+            'studentMembers.sectionID': sectionID
+        }
+    }, {
+        '$lookup': {
+            'from': 'classes',
+            'localField': 'studentMembers.sectionID',
+            'foreignField': 'sectionID',
+            'as': 'classes'
+        }
+    }, {
+        '$unwind': {
+            'path': '$classes',
+            'preserveNullAndEmptyArrays': true
+        }
+    }, {
+        '$project': {
+            '_id': 0,
+            'classID': '$classes.classID'
+        }
+    }]);
+    return classList;
 }
 async function getParentChildren(userID) {
     var user = await userModel.aggregate([{
@@ -1565,7 +1559,6 @@ async function getParentChildren(userID) {
             '_id': 0
         }
     }]);
-    console.log(user[0].studentID);
     return user;
 }
 // gets the amount the student already paid, as well as the payment plan
@@ -1613,7 +1606,6 @@ async function getAmountOwed(studentID, sectionID, paymentPlan) {
             $eq: sectionID
         }
     });
-    console.log(upon_enrollment);
     var amountPrevPaid = await getStudentPaymentsSummary(studentID, sectionID);
     var amountDue = 0;
     //this is student's first payment
@@ -1642,7 +1634,6 @@ async function getAmountOwed(studentID, sectionID, paymentPlan) {
     }
     //they have selected a payment plan in the past
     else {
-        console.log(amountPrevPaid);
         if (upon_enrollment.fullPayment == amountPrevPaid[0].totalAmountPaid)
             amountDue = -1;
         else if (paymentPlan == "remainingPayment" || paymentPlan == "fullPayment") {
@@ -1714,7 +1705,6 @@ async function getNextParentID() {
             'userID': 1
         }
     }]);
-    //   console.log(start);
     if (students.length == 0)
         return start + '000001'
     else {
@@ -1723,8 +1713,6 @@ async function getNextParentID() {
         studentNum++;
 
         leadingzeroes = 6 - studentNum.toString().length;
-        // console.log(leadingzeroes);
-
         nextStudent = '' + start;
 
         for (var i = 0; i < leadingzeroes; i++)
@@ -1734,15 +1722,10 @@ async function getNextParentID() {
 
         return nextStudent;
     }
-    // var highestID = students[0].userID;
-    //  console.log(highestID);
-    return true;
 }
 
 async function assignParent(parentID, studentID) {
     try {
-        console.log(parentID);
-        console.log(studentID);
         var result = await studentModel.findOneAndUpdate({
             userID: studentID
         }, {
@@ -1750,7 +1733,6 @@ async function assignParent(parentID, studentID) {
         }, {
             useFindAndModify: false
         });
-        console.log(result);
         return result;
     } catch (e) {
         res.send({
@@ -1991,7 +1973,6 @@ const indexFunctions = {
                             req.session.type = 'parent';
                             req.session.userSettings = initSettings;
                             req.session.userSettings.studentID = student[0].studentID;
-                            console.log(req.session);
                             res.send({
                                 status: 203
                             });
@@ -2673,7 +2654,6 @@ const indexFunctions = {
     getAReportBalanceTable: async function (req, res) {
         var schoolYear = req.session.reportschoolYear;
         var reportData = await getBalanceReportData(schoolYear);
-        console.log(reportData);
         res.render('a_report_OutstandingBalTable', {
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
@@ -2693,7 +2673,7 @@ const indexFunctions = {
             }]
         );
         var schoolYear = req.session.userSettings.schoolYear;
-     
+
         var sectionReport = await getSectionReport(schoolYear);
         var bankReportTotal = await getBankReportTotal(schoolYear);
         var ccReportTotal = await getCCReportTotal(schoolYear);
@@ -2705,16 +2685,15 @@ const indexFunctions = {
             prt: paymentReportTotal
         }
 
-        // console.log(totals);
         res.render('a_report_paymentsReport', {
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
             lastname: req.session.logUser.lastName,
             title: 'Payment Report',
-            schoolYear:schoolYears,
+            schoolYear: schoolYears,
             SYSettings: req.session.userSettings.schoolYear,
             sectionReport: sectionReport,
-            total:totals
+            total: totals
         });
 
     },
@@ -2776,8 +2755,8 @@ const indexFunctions = {
         try {
             res.render('a_sched_newAcadCalendar', {
                 firstname: req.session.logUser.firstName,
-            middlename: req.session.logUser.middleName,
-            lastname: req.session.logUser.lastName,
+                middlename: req.session.logUser.middleName,
+                lastname: req.session.logUser.lastName,
                 title: 'New Event',
             });
         } catch (e) {
@@ -3384,7 +3363,6 @@ const indexFunctions = {
     // to show paying for enrollment (credit card) from the parents side
     getPpaycc: function (req, res) {
         var amountDue = req.session.amountDue;
-        //console.log(amountDue);
         res.render('p_pay_cc', {
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
@@ -3399,14 +3377,11 @@ const indexFunctions = {
         var parentID = req.session.logUser.userID;
         try {
             var studentList = await getStudentListParentID(parentID);
-            console.log(studentList);
-            console.log("HELLO WORLD!");
-            console.log(studentList[0].gradeLvl);
             if (studentList)
                 res.render('p_pay_CCPlan', {
                     firstname: req.session.logUser.firstName,
-            middlename: req.session.logUser.middleName,
-            lastname: req.session.logUser.lastName,
+                    middlename: req.session.logUser.middleName,
+                    lastname: req.session.logUser.lastName,
                     title: 'Credit Card Payment',
                     student: studentList
                 });
@@ -3437,8 +3412,8 @@ const indexFunctions = {
             if (studentList)
                 res.render('p_acc_enrollChild', {
                     firstname: req.session.logUser.firstName,
-            middlename: req.session.logUser.middleName,
-            lastname: req.session.logUser.lastName,
+                    middlename: req.session.logUser.middleName,
+                    lastname: req.session.logUser.lastName,
                     title: 'Enroll Child',
                     student: studentList
                 });
@@ -3453,16 +3428,16 @@ const indexFunctions = {
     },
 
     getPaccSGrades: function (req, res) {
-        try{
+        try {
             res.render('p_acc_grades', {
                 firstname: req.session.logUser.firstName,
-            middlename: req.session.logUser.middleName,
-            lastname: req.session.logUser.lastName,
+                middlename: req.session.logUser.middleName,
+                lastname: req.session.logUser.lastName,
                 title: 'Student Grades'
             });
-        }catch(e){
+        } catch (e) {
             console.log(e);
-        } 
+        }
     },
 
     // to show the Statement of Accounts from the parents side
@@ -3654,7 +3629,6 @@ const indexFunctions = {
                 }
             }]
         );
-        console.log(studentList);
         res.render('p_trans_SA', {
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
@@ -3695,12 +3669,11 @@ const indexFunctions = {
         var parentID = req.session.logUser.userID;
         try {
             var studentList = await getStudentListParentID(parentID);
-            console.log(studentList);
             if (studentList)
                 res.render('p_pay_BPlan', {
                     firstname: req.session.logUser.firstName,
-            middlename: req.session.logUser.middleName,
-            lastname: req.session.logUser.lastName,
+                    middlename: req.session.logUser.middleName,
+                    lastname: req.session.logUser.lastName,
                     title: 'Bank Payment',
                     student: studentList
                 });
@@ -3828,7 +3801,6 @@ const indexFunctions = {
                     });
 
                 var amountDue = await getAmountOwed(studentID, studentMembers[0].sectionID, paymentPlan);
-                console.log(amountDue);
                 switch (amountDue) {
                     case -1:
                         res.send({
@@ -3849,14 +3821,10 @@ const indexFunctions = {
                         });
                         break;
                     default:
-                        console.log(amountDue);
-                        console.log(studentID);
-
                         req.session.studentID = studentID;
                         req.session.amountDue = amountDue;
                         req.session.paymentPlan = paymentPlan;
                         req.session.sectionID = studentMembers[0].sectionID;
-                        console.log(req.session);
 
                         res.send({
                             status: 201
@@ -4010,7 +3978,6 @@ const indexFunctions = {
     getEnrollmentNew: async function (req, res) {
         try {
             var sections = await getCurrentSections()
-            // console.log(sections);
             res.render('s_enroll_new.hbs', {
                 title: 'Enrollment Page',
                 sections: sections
@@ -4023,7 +3990,6 @@ const indexFunctions = {
     getEnrollmentParent: async function (req, res) {
         //for testing purposes
         // req.session.studentID = '20-000023';
-        console.log(req.session);
         res.render('s_enroll_parent', {
             title: 'Register Parent'
         });
@@ -4105,33 +4071,24 @@ const indexFunctions = {
             sectionID
         } = req.body;
         try {
-            console.log(userInfo);
-            console.log(studentDetail);
-            console.log(studentData);
-
             var userID = await getNextStudentID();
             var password = generator.generate({
                 length: 12,
                 numbers: true
             });
-            console.log(password)
             var hash = await bcrypt.hash(password, saltRounds)
 
             // create user
             var user = new User(userID, hash, userInfo.firstName, userInfo.lastName, userInfo.middleName, 'S', userInfo.gender);
             var newUser = new userModel(user);
             var userResult = await newUser.recordNewUser();
-            // console.log(userResult);
             //create student
             if (userResult) {
                 var student = new Student(userID, studentData.mobileNum, studentData.teleNum, studentData.nationality,
                     studentData.birthDate, studentData.birthPlace, studentData.email, studentData.religion,
                     studentData.address);
-                // console.log(student);
                 var newStudent = new studentModel(student);
                 var studentResult = await newStudent.recordNewStudent();
-                // console.log(studentResult);
-
                 // create student details
                 // reminder to self, add siblings and education background
                 if (studentResult) {
@@ -4140,13 +4097,10 @@ const indexFunctions = {
                     var studentDetailsResult = await newStudentDetails.recordNewStudentDetails();
 
                     var sectionMemberData = new sectionMembers(sectionID, userID, 'FA');
-                    console.log(sectionMemberData);
                     var newSectionMember = new sectionMemberModel(sectionMemberData);
                     var sectionMemberResult = await newSectionMember.recordNewSectionMember();
-                    console.log(sectionMemberResult)
                     if (studentDetailsResult && sectionMemberResult) {
                         req.session.studentID = userID;
-                        console.log(req.session);
                         res.send({
                             status: 201,
                             userID: userID,
@@ -4176,7 +4130,7 @@ const indexFunctions = {
             });
         } catch (e) {
             //res.send({status : 500, msg : e});
-            console.log('It entered the catch');
+            console.log(e);
         }
     },
 
@@ -4185,7 +4139,6 @@ const indexFunctions = {
         try {
             var parentID = req.body.parentInfo.parentID;
             var studentID = req.session.studentID;
-            console.log(parentID);
             var result = await assignParent(parentID, studentID);
 
             if (result)
@@ -4213,31 +4166,26 @@ const indexFunctions = {
         } = req.body;
         studentID = req.session.studentID;
         try {
-            console.log(userInfo);
-            console.log(parentData);
-
             var userID = await getNextParentID();
-            console.log(userID);
             var password = generator.generate({
                 length: 12,
                 numbers: true
             });
-            console.log(password)
             var hash = await bcrypt.hash(password, saltRounds)
 
             // create user
             var user = new User(userID, hash, userInfo.firstName, userInfo.lastName, userInfo.middleName, 'P', userInfo.gender);
             var newUser = new userModel(user);
             var userResult = await newUser.recordNewUser();
-            console.log(userResult);
+
             //create parent
             if (userResult) {
                 var parent = new Parent(userID, parentData.phoneNum, parentData.nationality,
                     parentData.birthDate, parentData.birthPlace);
-                console.log(parent);
+
                 var newParent = new parentModel(parent);
                 var parentResult = await newParent.recordNewParent();
-                console.log(parentResult);
+
 
                 // assign student
                 // reminder to self, add siblings and education background
@@ -4245,7 +4193,7 @@ const indexFunctions = {
                     var assignResult = await assignParent(userID, studentID);
                     if (assignResult) {
                         req.session.studentID = userID;
-                        console.log(req.session);
+
                         res.send({
                             status: 201,
                             userID: userID,
@@ -4278,7 +4226,7 @@ const indexFunctions = {
                 status: 500,
                 msg: e
             });
-            // console.log('It entered the catch');
+
         }
     },
 
