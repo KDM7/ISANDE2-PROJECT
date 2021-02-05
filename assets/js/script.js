@@ -373,7 +373,7 @@ $(document).ready(function () {
                     }
                     case 203: {
                         //parent
-                        window.location.href = '/p/trans/brkdwn';
+                        window.location.href = '/p/trans/stmacc';
                         break;
                     }
                     case 204: {

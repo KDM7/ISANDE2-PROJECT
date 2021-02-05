@@ -304,6 +304,10 @@ async function getSectionReport(schoolYear) {
             'sectionName': '$secDta.sectionName',
             'gradeLvl': '$refSec.gradeLvl'
         }
+    }, {
+        '$sort': {
+            'gradeLvl': 1
+        }
     }]);
 }
 
@@ -1121,7 +1125,6 @@ async function getNextStudentID() {
             'userID': 1
         }
     }]);
-    //   console.log(start);
     if (students.length == 0)
         return start + '000001'
     else {
@@ -1130,7 +1133,6 @@ async function getNextStudentID() {
         studentNum++;
 
         leadingzeroes = 6 - studentNum.toString().length;
-        // console.log(leadingzeroes);
 
         nextStudent = '' + start;
 
@@ -1141,8 +1143,7 @@ async function getNextStudentID() {
 
         return nextStudent;
     }
-    // var highestID = students[0].userID;
-    //  console.log(highestID);
+
 }
 
 function renamePaymentPlan(string) {
@@ -1474,51 +1475,95 @@ async function getClass(sectionID, schoolYear) {
     );
     return cls[0];
 }
-async function getParentChildren(userID) {
-    var user = await userModel.aggregate([{
+async function getStudentClassList(userID, sectionID) {
+    var classList = studentModel.aggregate([{
         '$match': {
-            'type': 'S'
+            'userID': userID
         }
     }, {
         '$lookup': {
-            'from': 'students',
+            'from': 'studentMembers',
             'localField': 'userID',
-            'foreignField': 'userID',
-            'as': 'students'
+            'foreignField': 'studentID',
+            'as': 'studentMembers'
         }
     }, {
         '$unwind': {
-            'path': '$students',
-            'preserveNullAndEmptyArrays': true
-        }
-    }, {
-        '$lookup': {
-            'from': 'parents',
-            'localField': 'students.parentID',
-            'foreignField': 'userID',
-            'as': 'parents'
-        }
-    }, {
-        '$unwind': {
-            'path': '$parents',
-            'preserveNullAndEmptyArrays': true
+            'path': '$studentMembers',
+            'preserveNullAndEmptyArrays': false
         }
     }, {
         '$match': {
-            'parents.userID': userID
+            'studentMembers.sectionID': sectionID
+        }
+    }, {
+        '$lookup': {
+            'from': 'classes',
+            'localField': 'studentMembers.sectionID',
+            'foreignField': 'sectionID',
+            'as': 'classes'
+        }
+    }, {
+        '$unwind': {
+            'path': '$classes',
+            'preserveNullAndEmptyArrays': true
         }
     }, {
         '$project': {
-            'studentID': '$userID',
-            'value': '$userID',
-            'name1': '$firstName',
-            'name2': '$middleName',
-            'name3': '$lastName',
-            '_id': 0
+            '_id': 0,
+            'classID': '$classes.classID'
         }
     }]);
-    console.log(user[0].studentID);
-    return user;
+    return classList;
+}
+async function getParentChildren(userID) {
+    try {
+        var user = await userModel.aggregate([{
+            '$match': {
+                'type': 'S'
+            }
+        }, {
+            '$lookup': {
+                'from': 'students',
+                'localField': 'userID',
+                'foreignField': 'userID',
+                'as': 'students'
+            }
+        }, {
+            '$unwind': {
+                'path': '$students',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$lookup': {
+                'from': 'parents',
+                'localField': 'students.parentID',
+                'foreignField': 'userID',
+                'as': 'parents'
+            }
+        }, {
+            '$unwind': {
+                'path': '$parents',
+                'preserveNullAndEmptyArrays': true
+            }
+        }, {
+            '$match': {
+                'parents.userID': userID
+            }
+        }, {
+            '$project': {
+                'studentID': '$userID',
+                'value': '$userID',
+                'name1': '$firstName',
+                'name2': '$middleName',
+                'name3': '$lastName',
+                '_id': 0
+            }
+        }]);
+        return user;
+    } catch {
+        return;
+    }
 }
 // gets the amount the student already paid, as well as the payment plan
 async function getStudentPaymentsSummary(studentID, sectionID) {
@@ -1565,7 +1610,6 @@ async function getAmountOwed(studentID, sectionID, paymentPlan) {
             $eq: sectionID
         }
     });
-    console.log(upon_enrollment);
     var amountPrevPaid = await getStudentPaymentsSummary(studentID, sectionID);
     var amountDue = 0;
     //this is student's first payment
@@ -1594,7 +1638,6 @@ async function getAmountOwed(studentID, sectionID, paymentPlan) {
     }
     //they have selected a payment plan in the past
     else {
-        console.log(amountPrevPaid);
         if (upon_enrollment.fullPayment == amountPrevPaid[0].totalAmountPaid)
             amountDue = -1;
         else if (paymentPlan == "remainingPayment" || paymentPlan == "fullPayment") {
@@ -1666,7 +1709,6 @@ async function getNextParentID() {
             'userID': 1
         }
     }]);
-    //   console.log(start);
     if (students.length == 0)
         return start + '000001'
     else {
@@ -1675,8 +1717,6 @@ async function getNextParentID() {
         studentNum++;
 
         leadingzeroes = 6 - studentNum.toString().length;
-        // console.log(leadingzeroes);
-
         nextStudent = '' + start;
 
         for (var i = 0; i < leadingzeroes; i++)
@@ -1686,15 +1726,10 @@ async function getNextParentID() {
 
         return nextStudent;
     }
-    // var highestID = students[0].userID;
-    //  console.log(highestID);
-    return true;
 }
 
 async function assignParent(parentID, studentID) {
     try {
-        console.log(parentID);
-        console.log(studentID);
         var result = await studentModel.findOneAndUpdate({
             userID: studentID
         }, {
@@ -1702,7 +1737,6 @@ async function assignParent(parentID, studentID) {
         }, {
             useFindAndModify: false
         });
-        console.log(result);
         return result;
     } catch (e) {
         res.send({
@@ -1943,7 +1977,6 @@ const indexFunctions = {
                             req.session.type = 'parent';
                             req.session.userSettings = initSettings;
                             req.session.userSettings.studentID = student[0].studentID;
-                            console.log(req.session);
                             res.send({
                                 status: 203
                             });
@@ -2014,6 +2047,9 @@ const indexFunctions = {
             clsDta.cList[i].tchList = tchList;
 
         res.render('a_sched_EditSection', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Section',
             clsDta: clsDta,
             tchList: tchList,
@@ -2104,6 +2140,9 @@ const indexFunctions = {
     // to show edit student agreements page for admins side
     getAdocEditSA: function (req, res) {
         res.render('a_doc_editSA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Student Agreement',
         });
     },
@@ -2111,6 +2150,9 @@ const indexFunctions = {
     // to show edit student documents page for admins side
     getAdocEditSD: function (req, res) {
         res.render('a_doc_editSD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Student Document',
         });
     },
@@ -2118,6 +2160,9 @@ const indexFunctions = {
     // to show new student agreements page for admin side
     getAdocNewSA: function (req, res) {
         res.render('a_doc_newSA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'New Student Agreement',
         });
     },
@@ -2125,6 +2170,9 @@ const indexFunctions = {
     // to show new student documents page for admin side
     getAdocNewSD: function (req, res) {
         res.render('a_doc_newSD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'New Student Document',
         });
     },
@@ -2132,6 +2180,9 @@ const indexFunctions = {
     // to show student agreements page for admin side
     getAdocSA: function (req, res) {
         res.render('a_doc_SA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Agreement',
         });
     },
@@ -2139,6 +2190,9 @@ const indexFunctions = {
     // to show student documents page for admin side
     getAdocSD: function (req, res) {
         res.render('a_doc_SD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Document',
         });
     },
@@ -2146,6 +2200,9 @@ const indexFunctions = {
     // to show Additional Fees page for admin side
     getAfeeAdd: function (req, res) {
         res.render('a_fees_add', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Additional Fees',
         });
     },
@@ -2153,6 +2210,9 @@ const indexFunctions = {
     // to show Edit Upon Enrollment page for admin side
     getAfeeEditUE: function (req, res) {
         res.render('a_fees_editUE', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Upon Enrollment'
         });
     },
@@ -2160,6 +2220,9 @@ const indexFunctions = {
     // to show Miscellaneous Fees page for admin side
     getAfeeMisc: function (req, res) {
         res.render('a_fees_misc', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Miscellaneous Fees'
         });
     },
@@ -2167,6 +2230,9 @@ const indexFunctions = {
     // to show Other Fees page for admin side
     getAfeeOthers: function (req, res) {
         res.render('a_fees_other', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Other Fees'
         });
     },
@@ -2174,6 +2240,9 @@ const indexFunctions = {
     // to show Tuition Fees page for admin side
     getAfeeTuition: function (req, res) {
         res.render('a_fees_tuition', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Tuition Fees',
         });
     },
@@ -2236,6 +2305,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_fees_Manage', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Manage Fees',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -2363,6 +2435,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_fees_uponE', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Upon Enrollment',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -2475,6 +2550,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_sched_AddClasses', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Add Classes',
             subject: subject,
             section: section,
@@ -2508,6 +2586,9 @@ const indexFunctions = {
         );
         var list = await getClassList(req.session.userSettings.schoolYear);
         res.render('a_sched_ViewClasses', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'View Classes',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -2518,6 +2599,9 @@ const indexFunctions = {
     // to show the set school year page for admin side
     getAschedCurSchoolYr: function (req, res) {
         res.render('a_sched_CurSchoolYr', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Set CUrrent School Year',
         });
     },
@@ -2525,6 +2609,9 @@ const indexFunctions = {
     // to show the class schedule page for admin side
     getAschedClassSched: function (req, res) {
         res.render('a_sched_classSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Class Schedules',
         });
     },
@@ -2532,6 +2619,9 @@ const indexFunctions = {
     // to show the add class schedule page for admin side
     getAschednewClassSched: function (req, res) {
         res.render('a_sched_newClassSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'New Class Schedules',
         });
     },
@@ -2539,6 +2629,9 @@ const indexFunctions = {
     // to show the academic calendar page for admin side
     getAschedAcadCalendar: function (req, res) {
         res.render('a_sched_acadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar',
         });
     },
@@ -2554,6 +2647,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_report_OutstandingBalForm', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: "Outstanding Balance Report",
             schoolYear: schoolYear
         })
@@ -2562,8 +2658,10 @@ const indexFunctions = {
     getAReportBalanceTable: async function (req, res) {
         var schoolYear = req.session.reportschoolYear;
         var reportData = await getBalanceReportData(schoolYear);
-        console.log(reportData);
         res.render('a_report_OutstandingBalTable', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: "Outstanding Balance Report",
             schoolYear: schoolYear,
             reportData: reportData
@@ -2579,7 +2677,7 @@ const indexFunctions = {
             }]
         );
         var schoolYear = req.session.userSettings.schoolYear;
-     
+
         var sectionReport = await getSectionReport(schoolYear);
         var bankReportTotal = await getBankReportTotal(schoolYear);
         var ccReportTotal = await getCCReportTotal(schoolYear);
@@ -2591,13 +2689,15 @@ const indexFunctions = {
             prt: paymentReportTotal
         }
 
-        // console.log(totals);
         res.render('a_report_paymentsReport', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Payment Report',
-            schoolYear:schoolYears,
+            schoolYear: schoolYears,
             SYSettings: req.session.userSettings.schoolYear,
             sectionReport: sectionReport,
-            total:totals
+            total: totals
         });
 
     },
@@ -2658,6 +2758,9 @@ const indexFunctions = {
     getAschednewAcadCalendar: function (req, res) {
         try {
             res.render('a_sched_newAcadCalendar', {
+                firstname: req.session.logUser.firstName,
+                middlename: req.session.logUser.middleName,
+                lastname: req.session.logUser.lastName,
                 title: 'New Event',
             });
         } catch (e) {
@@ -2695,6 +2798,9 @@ const indexFunctions = {
     // to show the edit event page for admin side
     getAschededitAcadCalendar: function (req, res) {
         res.render('a_sched_editAcadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Event',
         });
     },
@@ -2731,6 +2837,9 @@ const indexFunctions = {
             }
         }]);
         res.render('a_users_admins', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Admins',
             admins: matches
         });
@@ -2739,6 +2848,9 @@ const indexFunctions = {
     // to show the profile of an admin for admin side
     getAuserAProf: function (req, res) {
         res.render('a_users_AProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Admin Profile',
         });
     },
@@ -2746,6 +2858,9 @@ const indexFunctions = {
     // to show all accounts of all of the parent's children for admin side
     getAuserPAcc: function (req, res) {
         res.render('a_users_PAccount', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Parent Account',
         });
     },
@@ -2779,6 +2894,9 @@ const indexFunctions = {
             }
         }]);
         res.render('a_users_parents', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Parents',
             parents: matches
         });
@@ -2787,6 +2905,9 @@ const indexFunctions = {
     //to show the profile of a parent for admin side 
     getAuserPProf: function (req, res) {
         res.render('a_users_PProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Parent Profile',
         });
     },
@@ -2980,6 +3101,9 @@ const indexFunctions = {
             }]
         );
         res.render('a_users_SAccount', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Account',
             schoolYear: schoolYear,
             SYSettings: req.session.userSettings.schoolYear,
@@ -2993,6 +3117,9 @@ const indexFunctions = {
     // to show page for sending a student an email for admin side
     getAuserSEmail: function (req, res) {
         res.render('a_users_SEmail', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Send Email',
         });
     },
@@ -3046,6 +3173,9 @@ const indexFunctions = {
             }
         }]);
         res.render('a_users_teachers', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Teachers',
             teachers: matches
         });
@@ -3054,6 +3184,9 @@ const indexFunctions = {
     // to show the teachers profile page for admin side
     getAuserTProf: function (req, res) {
         res.render('a_users_TProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Teacher Profile',
         });
     },
@@ -3061,6 +3194,9 @@ const indexFunctions = {
     // to show the edit teachers page for admin side
     getAusereditTeachers: function (req, res) {
         res.render('a_users_editT', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Teacher',
         });
     },
@@ -3106,6 +3242,9 @@ const indexFunctions = {
     // to show the students from the teachers side
     getTschedacadCalendar: function (req, res) {
         res.render('t_sched_acadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
@@ -3113,6 +3252,9 @@ const indexFunctions = {
     // to show the students from the teachers side
     getTschedacadCalendar2: function (req, res) {
         res.render('t_sched_acadCalendar2', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
@@ -3120,6 +3262,9 @@ const indexFunctions = {
     // to show the students from the teachers side
     getTschedclassSched: function (req, res) {
         res.render('t_sched_classSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Teacher Schedule'
         });
     },
@@ -3127,6 +3272,9 @@ const indexFunctions = {
     // to show the students from the teachers side
     getTuserSgrades: function (req, res) {
         res.render('t_users_SGrades', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Students grades'
         });
     },
@@ -3140,6 +3288,9 @@ const indexFunctions = {
             userID: userID
         });
         res.render('t_users_SProfile', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student profile',
             firstname: req.session.logUser.firstName,
             middlename: req.session.logUser.middleName,
@@ -3196,6 +3347,9 @@ const indexFunctions = {
     // to show paying for enrollment (bank) from the parents side
     getPpaybank: function (req, res) {
         res.render('p_pay_bank', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Payment'
         });
     },
@@ -3203,6 +3357,9 @@ const indexFunctions = {
     // to show selecting of payment plan for enrollment (bank) from the parents side
     getPpayBPlan: function (req, res) {
         res.render('p_pay_BPlan', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Payment'
         });
     },
@@ -3210,8 +3367,10 @@ const indexFunctions = {
     // to show paying for enrollment (credit card) from the parents side
     getPpaycc: function (req, res) {
         var amountDue = req.session.amountDue;
-        //console.log(amountDue);
         res.render('p_pay_cc', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Payment',
             amountDue: amountDue
         });
@@ -3222,11 +3381,11 @@ const indexFunctions = {
         var parentID = req.session.logUser.userID;
         try {
             var studentList = await getStudentListParentID(parentID);
-            console.log(studentList);
-            console.log("HELLO WORLD!");
-            console.log(studentList[0].gradeLvl);
             if (studentList)
                 res.render('p_pay_CCPlan', {
+                    firstname: req.session.logUser.firstName,
+                    middlename: req.session.logUser.middleName,
+                    lastname: req.session.logUser.lastName,
                     title: 'Credit Card Payment',
                     student: studentList
                 });
@@ -3242,6 +3401,9 @@ const indexFunctions = {
 
     getPpayCCOTP: async function (req, res) {
         res.render('p_pay_CCOTP', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Confirm Payment',
             amountDue: req.session.amountDue
         })
@@ -3253,6 +3415,9 @@ const indexFunctions = {
             var studentList = await getStudentListParentID(parentID);
             if (studentList)
                 res.render('p_acc_enrollChild', {
+                    firstname: req.session.logUser.firstName,
+                    middlename: req.session.logUser.middleName,
+                    lastname: req.session.logUser.lastName,
                     title: 'Enroll Child',
                     student: studentList
                 });
@@ -3267,216 +3432,238 @@ const indexFunctions = {
     },
 
     getPaccSGrades: function (req, res) {
-        res.render('p_acc_grades', {
-            title: 'Student Grades'
-        });
+        try {
+            res.render('p_acc_grades', {
+                firstname: req.session.logUser.firstName,
+                middlename: req.session.logUser.middleName,
+                lastname: req.session.logUser.lastName,
+                title: 'Student Grades'
+            });
+        } catch (e) {
+            console.log(e);
+        }
     },
 
     // to show the Statement of Accounts from the parents side
     getPtransSA: async function (req, res) {
-        var studentID = req.session.userSettings.studentID;
-        var schoolYear = await getStudentSY(studentID);
-        var studentinfo = await studentModel.aggregate(
-            [{
-                '$match': {
-                    'userID': studentID
-                }
-            }, {
-                '$lookup': {
-                    'from': 'users',
-                    'localField': 'userID',
-                    'foreignField': 'userID',
-                    'as': 'usrDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$usrDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'studentMembers',
-                    'localField': 'userID',
-                    'foreignField': 'studentID',
-                    'as': 'mbrDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$mbrDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'sections',
-                    'localField': 'mbrDta.sectionID',
-                    'foreignField': 'sectionID',
-                    'as': 'secDta'
-                }
-            }, {
-                '$match': {
-                    'secDta.schoolYear': req.session.userSettings.schoolYear
-                }
-            }, {
-                '$lookup': {
-                    'from': 'upon_enrollment',
-                    'localField': 'mbrDta.sectionID',
-                    'foreignField': 'sectionID',
-                    'as': 'erlDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$erlDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$unwind': {
-                    'path': '$secDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'ref_section',
-                    'localField': 'secDta.sectionName',
-                    'foreignField': 'sectionName',
-                    'as': 'refSec'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$refSec',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'payments',
-                    'localField': 'userID',
-                    'foreignField': 'studentID',
-                    'as': 'pmtDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$pmtDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$match': {
-                    '$expr': {
-                        '$eq': [
-                            '$pmtDta.sectionID', '$mbrDta.sectionID'
-                        ]
+        try {
+            var studentID = req.session.userSettings.studentID;
+            var schoolYear = await getStudentSY(studentID);
+            var studentinfo = await studentModel.aggregate(
+                [{
+                    '$match': {
+                        'userID': studentID
                     }
-                }
-            }, {
-                '$project': {
-                    '_id': 0,
-                    'schoolYear': '$secDta.schoolYear',
-                    'gradeLvl': '$refSec.gradeLvl',
-                    'userID': 1,
-                    'name': {
-                        '$concat': [
-                            '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
-                        ]
-                    },
-                    'pmtType': '$pmtDta.paymentPlan',
-                    'begBal': '$erlDta.fullPayment',
-                    'secID': '$mbrDta.sectionID'
-                }
-            }]
-        );
-        var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID);
-        var remBal = studentinfo[0].begBal - paidAmt[0].totalAmountPaid;
-        var studentList = await getParentChildren(req.session.logUser.userID);
-        var transHistPmt = await studentModel.aggregate(
-            [{
-                '$match': {
-                    //get only the relevant user
-                    'userID': studentinfo[0].userID
-                }
-            }, {
-                '$lookup': {
-                    'from': 'payments',
-                    'localField': 'userID',
-                    'foreignField': 'studentID',
-                    'as': 'pmtDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$pmtDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$match': {
-                    //get only the relevant section
-                    'pmtDta.sectionID': studentinfo[0].secID
-                }
-            }, {
-                '$lookup': {
-                    'from': 'cc_payment',
-                    'localField': 'pmtDta.paymentID',
-                    'foreignField': 'paymentID',
-                    'as': 'ccDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$ccDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$lookup': {
-                    'from': 'bank_payment',
-                    'localField': 'pmtDta.paymentID',
-                    'foreignField': 'paymentID',
-                    'as': 'bnkDta'
-                }
-            }, {
-                '$unwind': {
-                    'path': '$bnkDta',
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$project': {
-                    'pmtMtd': {
-                        '$switch': {
-                            //converts either cctype(cc) or accountNumber(bank) to boolean then if null(doesnt exist) pmtMtd field gets null otherwise gets either cctype or accountNumber
-                            'branches': [{
-                                'case': {
-                                    '$toBool': [
-                                        '$ccDta.ccType'
-                                    ]
-                                },
-                                'then': '$ccDta.ccType'
-                            }, {
-                                'case': {
-                                    '$toBool': [
-                                        '$bnkDta.accountNumber'
-                                    ]
-                                },
-                                'then': '$bnkDta.accountNumber'
-                            }],
-                            'default': null
+                }, {
+                    '$lookup': {
+                        'from': 'users',
+                        'localField': 'userID',
+                        'foreignField': 'userID',
+                        'as': 'usrDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$usrDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'studentMembers',
+                        'localField': 'userID',
+                        'foreignField': 'studentID',
+                        'as': 'mbrDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$mbrDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'sections',
+                        'localField': 'mbrDta.sectionID',
+                        'foreignField': 'sectionID',
+                        'as': 'secDta'
+                    }
+                }, {
+                    '$match': {
+                        'secDta.schoolYear': req.session.userSettings.schoolYear
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'upon_enrollment',
+                        'localField': 'mbrDta.sectionID',
+                        'foreignField': 'sectionID',
+                        'as': 'erlDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$erlDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$secDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'ref_section',
+                        'localField': 'secDta.sectionName',
+                        'foreignField': 'sectionName',
+                        'as': 'refSec'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$refSec',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'payments',
+                        'localField': 'userID',
+                        'foreignField': 'studentID',
+                        'as': 'pmtDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$pmtDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$match': {
+                        '$expr': {
+                            '$eq': [
+                                '$pmtDta.sectionID', '$mbrDta.sectionID'
+                            ]
                         }
-                    },
-                    'dtPaid': '$pmtDta.datePaid',
-                    'pmtID': '$pmtDta.paymentID',
-                    'amt': '$pmtDta.amountPaid'
-                }
-            }]
-        );
-        console.log(studentList);
-        res.render('p_trans_SA', {
-            title: 'Statement of Accounts',
-            schoolYear: schoolYear,
-            SYSettings: req.session.userSettings.schoolYear,
-            info: studentinfo[0],
-            paidAmt: paidAmt[0].totalAmountPaid,
-            remBal: remBal,
-            histPmt: transHistPmt,
-            studentID: studentList,
-            SIDSettings: studentinfo[0].name,
-        });
+                    }
+                }, {
+                    '$project': {
+                        '_id': 0,
+                        'schoolYear': '$secDta.schoolYear',
+                        'gradeLvl': '$refSec.gradeLvl',
+                        'userID': 1,
+                        'name': {
+                            '$concat': [
+                                '$usrDta.firstName', ' ', '$usrDta.middleName', ' ', '$usrDta.lastName'
+                            ]
+                        },
+                        'pmtType': '$pmtDta.paymentPlan',
+                        'begBal': '$erlDta.fullPayment',
+                        'secID': '$mbrDta.sectionID'
+                    }
+                }]
+            );
+            var paidAmt = await getStudentPaymentsSummary(studentinfo[0].userID, studentinfo[0].secID);
+            var remBal = studentinfo[0].begBal - paidAmt[0].totalAmountPaid;
+            var studentList = await getParentChildren(req.session.logUser.userID);
+            var transHistPmt = await studentModel.aggregate(
+                [{
+                    '$match': {
+                        //get only the relevant user
+                        'userID': studentinfo[0].userID
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'payments',
+                        'localField': 'userID',
+                        'foreignField': 'studentID',
+                        'as': 'pmtDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$pmtDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$match': {
+                        //get only the relevant section
+                        'pmtDta.sectionID': studentinfo[0].secID
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'cc_payment',
+                        'localField': 'pmtDta.paymentID',
+                        'foreignField': 'paymentID',
+                        'as': 'ccDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$ccDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$lookup': {
+                        'from': 'bank_payment',
+                        'localField': 'pmtDta.paymentID',
+                        'foreignField': 'paymentID',
+                        'as': 'bnkDta'
+                    }
+                }, {
+                    '$unwind': {
+                        'path': '$bnkDta',
+                        'preserveNullAndEmptyArrays': true
+                    }
+                }, {
+                    '$project': {
+                        'pmtMtd': {
+                            '$switch': {
+                                //converts either cctype(cc) or accountNumber(bank) to boolean then if null(doesnt exist) pmtMtd field gets null otherwise gets either cctype or accountNumber
+                                'branches': [{
+                                    'case': {
+                                        '$toBool': [
+                                            '$ccDta.ccType'
+                                        ]
+                                    },
+                                    'then': '$ccDta.ccType'
+                                }, {
+                                    'case': {
+                                        '$toBool': [
+                                            '$bnkDta.accountNumber'
+                                        ]
+                                    },
+                                    'then': '$bnkDta.accountNumber'
+                                }],
+                                'default': null
+                            }
+                        },
+                        'dtPaid': '$pmtDta.datePaid',
+                        'pmtID': '$pmtDta.paymentID',
+                        'amt': '$pmtDta.amountPaid'
+                    }
+                }]
+            );
+            res.render('p_trans_SA', {
+                firstname: req.session.logUser.firstName,
+                middlename: req.session.logUser.middleName,
+                lastname: req.session.logUser.lastName,
+                title: 'Statement of Accounts',
+                schoolYear: schoolYear,
+                SYSettings: req.session.userSettings.schoolYear,
+                info: studentinfo[0],
+                paidAmt: paidAmt[0].totalAmountPaid,
+                remBal: remBal,
+                histPmt: transHistPmt,
+                studentID: studentList,
+                SIDSettings: studentinfo[0].name,
+            });
+        } catch {
+            res.render('p_trans_SA', {
+                firstname: req.session.logUser.firstName,
+                middlename: req.session.logUser.middleName,
+                lastname: req.session.logUser.lastName,
+                title: 'Statement of Accounts',
+            });
+        }
+        
     },
 
     getPaccNewChild: function (req, res) {
         res.render('p_acc_NChild', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Register new Child'
         });
     },
@@ -3484,6 +3671,9 @@ const indexFunctions = {
     getPpaybank: function (req, res) {
         var amountDue = req.session.amountDue;
         res.render('p_pay_bank', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Bank Statement',
             amountDue: amountDue
         });
@@ -3493,9 +3683,11 @@ const indexFunctions = {
         var parentID = req.session.logUser.userID;
         try {
             var studentList = await getStudentListParentID(parentID);
-            console.log(studentList);
             if (studentList)
                 res.render('p_pay_BPlan', {
+                    firstname: req.session.logUser.firstName,
+                    middlename: req.session.logUser.middleName,
+                    lastname: req.session.logUser.lastName,
                     title: 'Bank Payment',
                     student: studentList
                 });
@@ -3511,24 +3703,36 @@ const indexFunctions = {
 
     getPschedacadCalendar: function (req, res) {
         res.render('p_sched_acadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
 
     getPschedacadCalendar2: function (req, res) {
         res.render('p_sched_acadCalendar2', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
 
     getPschedclassSched: function (req, res) {
         res.render('p_sched_classSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Schedule'
         });
     },
 
     getPtransBD: function (req, res) {
         res.render('p_trans_BD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Breakdown Details'
         });
     },
@@ -3611,7 +3815,6 @@ const indexFunctions = {
                     });
 
                 var amountDue = await getAmountOwed(studentID, studentMembers[0].sectionID, paymentPlan);
-                console.log(amountDue);
                 switch (amountDue) {
                     case -1:
                         res.send({
@@ -3632,14 +3835,10 @@ const indexFunctions = {
                         });
                         break;
                     default:
-                        console.log(amountDue);
-                        console.log(studentID);
-
                         req.session.studentID = studentID;
                         req.session.amountDue = amountDue;
                         req.session.paymentPlan = paymentPlan;
                         req.session.sectionID = studentMembers[0].sectionID;
-                        console.log(req.session);
 
                         res.send({
                             status: 201
@@ -3793,7 +3992,6 @@ const indexFunctions = {
     getEnrollmentNew: async function (req, res) {
         try {
             var sections = await getCurrentSections()
-            // console.log(sections);
             res.render('s_enroll_new.hbs', {
                 title: 'Enrollment Page',
                 sections: sections
@@ -3806,7 +4004,6 @@ const indexFunctions = {
     getEnrollmentParent: async function (req, res) {
         //for testing purposes
         // req.session.studentID = '20-000023';
-        console.log(req.session);
         res.render('s_enroll_parent', {
             title: 'Register Parent'
         });
@@ -3818,42 +4015,63 @@ const indexFunctions = {
 
     getSaccgrades: function (req, res) {
         res.render('s_acc_grades', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Grades'
         });
     },
 
     getEnrollemtOld: function (req, res) {
         res.render('s_enroll_old', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Update Personal Information'
         });
     },
 
     getSschedacadCalendar: function (req, res) {
         res.render('s_sched_acadCalendar', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
 
     getSschedacadCalendar2: function (req, res) {
         res.render('s_sched_acadCalendar2', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Academic Calendar'
         });
     },
 
     getSschedclassSched: function (req, res) {
         res.render('s_sched_classSched', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Student Schedule'
         });
     },
 
     getStransBD: function (req, res) {
         res.render('s_trans_BD', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Breakdown details'
         });
     },
 
     getStransSA: function (req, res) {
         res.render('s_trans_SA', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Statement of Account'
         });
     },
@@ -3867,33 +4085,24 @@ const indexFunctions = {
             sectionID
         } = req.body;
         try {
-            console.log(userInfo);
-            console.log(studentDetail);
-            console.log(studentData);
-
             var userID = await getNextStudentID();
             var password = generator.generate({
                 length: 12,
                 numbers: true
             });
-            console.log(password)
             var hash = await bcrypt.hash(password, saltRounds)
 
             // create user
             var user = new User(userID, hash, userInfo.firstName, userInfo.lastName, userInfo.middleName, 'S', userInfo.gender);
             var newUser = new userModel(user);
             var userResult = await newUser.recordNewUser();
-            // console.log(userResult);
             //create student
             if (userResult) {
                 var student = new Student(userID, studentData.mobileNum, studentData.teleNum, studentData.nationality,
                     studentData.birthDate, studentData.birthPlace, studentData.email, studentData.religion,
                     studentData.address);
-                // console.log(student);
                 var newStudent = new studentModel(student);
                 var studentResult = await newStudent.recordNewStudent();
-                // console.log(studentResult);
-
                 // create student details
                 // reminder to self, add siblings and education background
                 if (studentResult) {
@@ -3902,13 +4111,10 @@ const indexFunctions = {
                     var studentDetailsResult = await newStudentDetails.recordNewStudentDetails();
 
                     var sectionMemberData = new sectionMembers(sectionID, userID, 'FA');
-                    console.log(sectionMemberData);
                     var newSectionMember = new sectionMemberModel(sectionMemberData);
                     var sectionMemberResult = await newSectionMember.recordNewSectionMember();
-                    console.log(sectionMemberResult)
                     if (studentDetailsResult && sectionMemberResult) {
                         req.session.studentID = userID;
-                        console.log(req.session);
                         res.send({
                             status: 201,
                             userID: userID,
@@ -3938,7 +4144,7 @@ const indexFunctions = {
             });
         } catch (e) {
             //res.send({status : 500, msg : e});
-            console.log('It entered the catch');
+            console.log(e);
         }
     },
 
@@ -3947,7 +4153,6 @@ const indexFunctions = {
         try {
             var parentID = req.body.parentInfo.parentID;
             var studentID = req.session.studentID;
-            console.log(parentID);
             var result = await assignParent(parentID, studentID);
 
             if (result)
@@ -3975,31 +4180,26 @@ const indexFunctions = {
         } = req.body;
         studentID = req.session.studentID;
         try {
-            console.log(userInfo);
-            console.log(parentData);
-
             var userID = await getNextParentID();
-            console.log(userID);
             var password = generator.generate({
                 length: 12,
                 numbers: true
             });
-            console.log(password)
             var hash = await bcrypt.hash(password, saltRounds)
 
             // create user
             var user = new User(userID, hash, userInfo.firstName, userInfo.lastName, userInfo.middleName, 'P', userInfo.gender);
             var newUser = new userModel(user);
             var userResult = await newUser.recordNewUser();
-            console.log(userResult);
+
             //create parent
             if (userResult) {
                 var parent = new Parent(userID, parentData.phoneNum, parentData.nationality,
                     parentData.birthDate, parentData.birthPlace);
-                console.log(parent);
+
                 var newParent = new parentModel(parent);
                 var parentResult = await newParent.recordNewParent();
-                console.log(parentResult);
+
 
                 // assign student
                 // reminder to self, add siblings and education background
@@ -4007,7 +4207,7 @@ const indexFunctions = {
                     var assignResult = await assignParent(userID, studentID);
                     if (assignResult) {
                         req.session.studentID = userID;
-                        console.log(req.session);
+
                         res.send({
                             status: 201,
                             userID: userID,
@@ -4040,7 +4240,7 @@ const indexFunctions = {
                 status: 500,
                 msg: e
             });
-            // console.log('It entered the catch');
+
         }
     },
 
@@ -4071,24 +4271,36 @@ const indexFunctions = {
     
     getAaccEditPassword: function (req, res) {
         res.render('a_acc_editPassword', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Password',
         });
     },
 
     getTaccEditPassword: function (req, res) {
         res.render('t_acc_editPassword', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Password',
         });
     },
 
     getPaccEditPassword: function (req, res) {
         res.render('p_acc_editPassword', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Password',
         });
     },
 
     getSaccEditPassword: function (req, res) {
         res.render('s_acc_editPassword', {
+            firstname: req.session.logUser.firstName,
+            middlename: req.session.logUser.middleName,
+            lastname: req.session.logUser.lastName,
             title: 'Edit Password',
         });
     }
