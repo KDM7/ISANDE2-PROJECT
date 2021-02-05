@@ -1652,7 +1652,6 @@ const indexFunctions = {
         var schoolYear = req.session.userSettings.schoolYear;
         var clsDta = await getClass(sectionID, schoolYear);
         var availList = await getAvailableTch();
-        console.log(availList);
         var tchList = await teacherModel.aggregate(
             [{
                 '$lookup': {
