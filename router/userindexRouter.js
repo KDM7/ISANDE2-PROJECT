@@ -38,7 +38,7 @@ router.get('/a/report/paymentSummary', controller.getAreportPaymentsReport)
 router.post('/editClass', controller.postEditClass);
 router.post('/editSectionAdviser', indexMiddleware.validateSectionAdviser, controller.postSectionAdviser)
 router.post('/editUponE', controller.postEditUponE);
-router.post('/editFees', indexMiddleware.validateEditFees, controller.postEditFees);
+router.post('/editFees', controller.postEditFees);
 router.post('/addClass', controller.postAddClass);
 router.post('/enroll/approve', controller.postEnrollmentApproved);
 router.post('/enroll/deny', controller.postEnrollmentRejected);
